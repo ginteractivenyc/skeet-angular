@@ -5,46 +5,81 @@ skeetApp.config(['$routeProvider', function($routeProvider) {
     when('/', {
       templateUrl: 'views/home.html',
       controller: 'homeCtrl'
+    }).
+    when('/music',{
+      templateUrl: 'views/music.html',
+      controller:'musicCtrl'
     });
 }]);
 
-skeetApp.controller('homeCtrl', function(musicHomeService, videoHomeService, instagramHomeService, merchHomeService,newsHomeService, $scope){
+skeetApp.controller('homeCtrl', function(musicHomeService, videoHomeService, instagramHomeService, merchHomeService,newsHomeService, $scope, $location){
 	 // get Music Items
-	  musicHomeService.get(function(data) {
-	    $scope.homeMusic = data;
+
+ 
+  var musicService = function() {
+
+    musicHomeService.get(function success(data) {
+        $scope.homeMusic = data;
+        videoService();
+      },
+      function err() {
+        alert('there was an error')
+      });
+  }
 
 
 
-});  
 
-	  // get Video Items
-  videoHomeService.get(function(data) {
-    $scope.homeVideo = data.feed.entry;
-    //console.log($scope.homeVideo);
-});
+  // get Video Items
+  var videoService = function() {
+    videoHomeService.get(function success(data) {
+        $scope.homeVideo = data.feed.entry;
+        igService();
 
-//get instagram Items
-    // get Video Items
-  instagramHomeService.get(function(data) {
-    $scope.homeIg = data.data;
-});
+      },
+      function err() {
+        alert('there was an error')
 
-    // get Merch Items
-  merchHomeService.get(function(data) {
-    $scope.homeMerch = data;
-       // console.log($scope.homeMerch);
+      });
+  }
 
-    //console.log($scope.homeVideo);
-});
+  //get instagram Items
+  var igService = function() {
+    instagramHomeService.get(function success(data) {
+        $scope.homeIg = data.data;
+        merchService();
+      },
+      function err() {
+        alert('there was an error')
+      });
+  }
+
+  // get Merch Items
+  var merchService = function() {
+
+    merchHomeService.get(function success(data) {
+      $scope.homeMerch = data;
+      newsService();
+loadCarousel();
+
+    }, function err() {
+      alert('there was an error')
+
+    });
+
+  }
 
 
     // get News Items
-  newsHomeService.get(function(data) {
+
+var newsService = function(){
+
+  newsHomeService.get(function success(data) {
     $scope.homeNews = data;
     $scope.newsTitle = $scope.homeNews.rss.channel.item;
-    console.log($scope.newsTitle)
+   // console.log($scope.newsTitle)
     $scope.homeNewsImg  = [];
-    console.log($scope.homeNews.rss.channel.item)
+    //console.log($scope.homeNews.rss.channel.item)
        // console.log($scope.homeNews.rss.channel.item[0].encoded.__cdata);
        for (var i = 0; i < $scope.homeNews.rss.channel.item.length; i++){
           var __cdata = $scope.homeNews.rss.channel.item[i].encoded.__cdata;
@@ -57,12 +92,36 @@ skeetApp.controller('homeCtrl', function(musicHomeService, videoHomeService, ins
 
 $scope.homeNewsImg.push(src);
 
-
 }
-console.log($scope.homeNewsImg)
-});
 
-});  
+}, function err(){
+alert('error');
+});
+}
+
+
+
+musicService();
+
+$scope.musicClick = function(){
+  $location.path('/music')
+}
+
+}).controller('musicCtrl', function($scope, musicHomeService){
+
+  var musicService = function() {
+
+    musicHomeService.get(function success(data) {
+        $scope.homeMusic = data;
+        loadCarousel();
+
+      },
+      function err() {
+        alert('there was an error')
+      });
+  }
+musicService();
+}); 
 
 skeetApp.filter('artworkCheck', function () {
 
@@ -70,9 +129,10 @@ skeetApp.filter('artworkCheck', function () {
         return (!value) ? '' : value.replace('-large', '-t500x500');
     };
 });
-
+function loadCarousel(){
 setTimeout(function(){
 $('.rn-carousel-controls').each(function(){
   $(this).appendTo($(this).parent().parent());
 })
-},130)
+}, 150);
+}
