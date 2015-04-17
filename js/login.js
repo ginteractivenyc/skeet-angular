@@ -56,6 +56,7 @@ SC.connect(function(){
 });
 
 
+<<<<<<< HEAD
 $('#loginbtn').click(function(){
   login();
 });
@@ -65,6 +66,8 @@ $('#logoutbtn').click(function(){
 });
 
 });
+=======
+>>>>>>> a32f8ce444b2cb4bccdacb542f0693f2c86a374f
 
  
 function logout()
@@ -74,7 +77,10 @@ function logout()
 }
 function login() 
 {
+<<<<<<< HEAD
 
+=======
+>>>>>>> a32f8ce444b2cb4bccdacb542f0693f2c86a374f
   var myParams = {
     'clientid' : '468337602361-g8r9h81rem7usdpfsbi0l0k3h4p3du51.apps.googleusercontent.com',
     'cookiepolicy' : 'single_host_origin',
@@ -114,11 +120,15 @@ function loginCallback(result)
             str += "URL:" + resp['url'] + "<br>";
             str += "Email:" + email + "<br>";
             document.getElementById("profile").innerHTML = str;
+<<<<<<< HEAD
             var youtubeName = resp['displayName'];
                 var currentUser = Parse.User.current();
 
                currentUser.set("youtube",youtubeName );
                 currentUser.save();     
+=======
+            
+>>>>>>> a32f8ce444b2cb4bccdacb542f0693f2c86a374f
 
         });
  
@@ -131,3 +141,7 @@ function onLoadCallback()
     gapi.client.setApiKey('AIzaSyAkzujLtz2bL7io3FH3nNSIO63ZfdSxkWo');
     gapi.client.load('plus', 'v1',function(){});
 }
+<<<<<<< HEAD
+=======
+ 
+>>>>>>> a32f8ce444b2cb4bccdacb542f0693f2c86a374f
