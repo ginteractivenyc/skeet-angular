@@ -1,3 +1,14 @@
+
+angular.module('parseService', ['ngResource'])
+.factory('parseService', function($resource, $location) {
+  return $resource('https://api.parse.com/1/users/', {},        
+    { get: { method: "GET", isArray: false,   params: {
+       where:'',
+    }, headers:  {'X-Parse-Application-Id':'tzlVexuKShRsUHAGSV30qJYz28953tIOPSs0dl3z', 'X-Parse-REST-API-Key':'tY4eHyUnom4FZC9xAypgXsquEauGFQErvqx2YZZQ'} }});
+
+});
+
+
 //home Music
 angular.module('musicHomeService', ['ngResource'])
 .factory('musicHomeService', function($resource) {
@@ -75,4 +86,3 @@ angular.module('newsHomeService',[]).
            }
        }
     }]);
-

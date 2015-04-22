@@ -1,0 +1,11 @@
+<div class="carouselWrapperOuter">
+<div class="carouselWrapper">
+	<h3>Music</h3>
+	<ul rn-carousel rn-carousel-controls  rn-carousel-duration="300" class="image">
+		<li ng-repeat="music in homeMusic" class="square" data-url="{{music.id}}" ng-click="musicClick()">
+			<div class="squareThumb"><img ng-src="{{music.artwork_url | artworkCheck}}"></div>
+			<div class="itemTitle">{{music.title}}</div>
+		</li>
+	</ul>
+</div>
+</div>

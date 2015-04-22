@@ -47,6 +47,8 @@ SC.connect(function(){
         $("#username").text(soundcloudName);
          console.log(soundcloudName);
         $("#description").val(me.description);
+        var currentUser = Parse.User.current();
+
         //save soundcloud Name to parse
         currentUser.set("soundcloud",soundcloudName );
         currentUser.save();
@@ -55,6 +57,55 @@ SC.connect(function(){
     });
 });
 
+
+$('#connectIg').click(function(){
+  var url = "https://api.instagram.com/oauth/authorize/?client_id=7380072fbc2f438994b747e10485357f&redirect_uri=http://localhost:8888/skeet-angular/login.html&response_type=token&callback=retrieveToken"
+  location.replace(url)
+
+//https://instagram.com/oauth/authorize/?client_id=CLIENTID&redirect_uri=http://localhost:8888/skeet-angular&response_type=token
+
+
+
+});
+
+var retrieveToken = setTimeout(function(){
+var myVar = self.location.toString();
+
+if(myVar === "http://localhost:8888/skeet-angular/login.html"){
+
+}else{
+
+console.log(myVar)
+var __cdata = myVar;
+var tagIndex = __cdata.indexOf('access_token'); // Find where the img tag starts
+var srcIndex = __cdata.substring(tagIndex).indexOf('=') + tagIndex; // Find where the src attribute starts
+var urlStart = srcIndex + 1; // Find where the actual image URL starts; 5 for the length of 'src="'
+var src = __cdata.substring(urlStart); // Extract just the URL
+console.log(src)
+
+$.ajax({
+  type: "get",
+  url: 'https://api.instagram.com/v1/users/self/media/recent?access_token=' + src,
+  dataType: 'jsonp',
+  success: function(data){
+console.log(data.data[0].user.username);
+var instagramName = data.data[0].user.username;
+            var currentUser = Parse.User.current();
+
+               currentUser.set("instagram", instagramName );
+                currentUser.save(); 
+
+  },
+  error: function(){
+
+  }
+})
+
+
+
+}
+//alert(src)
+}, 2500);
 
 $('#loginbtn').click(function(){
   login();
