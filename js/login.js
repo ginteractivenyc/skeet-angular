@@ -89,10 +89,10 @@ $.ajax({
   dataType: 'jsonp',
   success: function(data){
 console.log(data.data[0].user.username);
-var instagramName = data.data[0].user.username;
+var instagramName = data.data[0].user.id;
             var currentUser = Parse.User.current();
 
-               currentUser.set("instagram", instagramName );
+               currentUser.set("instagram", instagramName);
                 currentUser.save(); 
 
   },
