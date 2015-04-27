@@ -14,7 +14,7 @@
 <div class="carouselWrapper rectWrapper">
 	<h3>Video</h3>
 	<ul rn-carousel rn-carousel-controls  rn-carousel-duration="300" class="image">
-		<li ng-repeat="video in homeVideo" class="rectangle" data-url="{{video['media$group']['yt$videoid']['$t']}}">
+		<li ng-repeat="video in homeVideo" ng-if="$index > 0" class="rectangle" data-url="{{video['media$group']['yt$videoid']['$t']}}">
 			<div class="rectangleThumb"><img ng-src="http://img.youtube.com/vi/{{video['media$group']['yt$videoid']['$t']}}/maxresdefault.jpg"></div>
 			<div class="itemTitle-rectangle">{{video["media$group"]["media$title"]["$t"]}}</div>
 

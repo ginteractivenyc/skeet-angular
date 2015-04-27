@@ -2,7 +2,11 @@ var nameHolderMain = [];
 var skeetApp = angular.module('skeetApp',  [ 'angular-carousel','ngRoute', 'ngResource', 'parseService']);
 
 skeetApp.config(['$routeProvider', function($routeProvider) {
-	$routeProvider. 
+	$routeProvider.
+    when('/loggedin',{
+      templateUrl: 'views/loggedin.html',
+      controller:'loggedinCtrl'
+    }). 
     when('/:nameHolder', {
       templateUrl: 'views/parse.html',
       controller: 'homeCtrl'
@@ -37,7 +41,7 @@ skeetApp.controller('indexCtrl', function($scope, $location){
 //get music 
       $http({
         method: 'GET',
-        url: 'http://api.soundcloud.com/resolve.json?url=http://soundcloud.com/' + soundcloudId + '/tracks&client_id=07b0e9b7e4ac9e8454b61d33eaba766b'
+        url: 'https://api.soundcloud.com/users/' + soundcloudId +'/tracks.json?client_id=07b0e9b7e4ac9e8454b61d33eaba766b'
       }).success(function(data) {
         // With the data succesfully returned, call our callback
         //console.log(data)
@@ -57,23 +61,23 @@ var getVideos = function(){
         // With the data succesfully returned, call our callback
         console.log(data)
         $scope.homeVideo = data.feed.entry;
+      getInstagram();
+
 
       }).error(function() {
         //alert("error");
       });
 }
-      getInstagram();
 
 var getInstagram = function(){
-        $http.jsonp({
-        url: 'https://api.instagram.com/v1/users/' + instagramId + '/media/recent?count=5&client_id=7380072fbc2f438994b747e10485357f&callback=JSON_CALLBACK'
-      }).success(function(data) {
+        $http.jsonp('https://api.instagram.com/v1/users/' + instagramId + '/media/recent?count=5&client_id=7380072fbc2f438994b747e10485357f&callback=JSON_CALLBACK').success(function(data) {
         // With the data succesfully returned, call our callback
-        //console.log(data)
-         $scope.homeIg = data.data;
+        console.log(data)
+        $scope.homeIg = data.data;
       }).error(function() {
        // alert("error");
-      });
+      });    
+
 }
 
 
@@ -87,6 +91,22 @@ parseServiceGet();
 
 
 
+}).controller('loggedinCtrl', function($scope){
+    function readURL(input) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+            
+            reader.onload = function (e) {
+                $('#blah').attr('src', e.target.result);
+            }
+            
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+    
+    $("#imgInp").change(function(){
+        readURL(this);
+    });
 });
 skeetApp.filter('artworkCheck', function () {
 
