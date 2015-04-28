@@ -103,10 +103,20 @@ parseServiceGet();
             reader.readAsDataURL(input.files[0]);
         }
     }
+
     
     $("#imgInp").change(function(){
         readURL(this);
     });
+
+$scope.addMusic = function(){
+  $('#addMusicBox').fadeIn();
+}
+
+$scope.addVideo = function(){
+  $('#addVideoBox').fadeIn();
+}
+
 });
 skeetApp.filter('artworkCheck', function () {
 

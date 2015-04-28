@@ -12,3 +12,18 @@ form#uploadPhoto{
 #blah{
 	max-width: 640px;
 }
+
+.addModule{
+	display:none;
+}
+ul{
+	padding:0;
+}
+
+.addModule  li{
+ list-style: none;
+}
+
+.addModule  li img{
+	max-width:200px;
+}

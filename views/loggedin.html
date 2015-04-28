@@ -3,3 +3,41 @@
 							        <input type='file' id="imgInp" />
 							        
 							    </form>
+
+
+<div class="dropdown">
+  <button id="dLabel" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+    Add Content
+    <span class="caret"></span>
+  </button>
+  <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+   <li class="addMusic" ng-click="addMusic()">Music</li>
+   <li class="addVideo" ng-click="addVideo()">Video</li>
+   <li>Photos</li>
+  </ul>
+</div>
+
+
+<div class="carouselWrapperOuter addModule" id="addMusicBox">
+<div class="carouselWrapper">
+	<h3>Music</h3>
+	<ul>
+		<li>
+			<img src="img/soundcloud.jpg">
+		</li>
+	</ul>
+</div>
+</div>
+
+
+<div class="carouselWrapperOuter addModule" id="addVideoBox">
+<div class="carouselWrapper">
+	<h3>Video</h3>
+	<ul >
+		<li>
+			<img src="img/YouTube-logo-dark.png">
+		</li>
+	</ul>
+</div>
+</div>
+
