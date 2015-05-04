@@ -1,8 +1,14 @@
+Parse.initialize("tzlVexuKShRsUHAGSV30qJYz28953tIOPSs0dl3z", "F1g9SlNa2FhcneKqj4AdowudvI7zkMXNZUsjtgJm");
+
 var nameHolderMain = [];
 var skeetApp = angular.module('skeetApp',  [ 'angular-carousel','ngRoute', 'ngResource', 'parseService']);
 
 skeetApp.config(['$routeProvider', function($routeProvider) {
 	$routeProvider.
+    when('/signup',{
+      templateUrl: 'views/signup.html',
+      controller:'signupCtrl'
+    }).  
     when('/loggedin',{
       templateUrl: 'views/loggedin.html',
       controller:'loggedinCtrl'
@@ -17,7 +23,42 @@ skeetApp.config(['$routeProvider', function($routeProvider) {
     });
 }]);
 
-skeetApp.controller('indexCtrl', function($scope, $location){
+skeetApp.controller('signupCtrl', function($scope, $location){
+
+var user = new Parse.User();
+var loginSubmit = document.getElementById('loginSubmit');
+
+loginSubmit.addEventListener('click', function(){
+var userName = document.getElementById('inputUsername').value;
+var userPass= document.getElementById('inputPassword').value;
+var userEmail= document.getElementById('inputEmail').value;
+
+user.set("username", userName);
+user.set("password", userPass);
+user.set("email", userEmail);
+ console.log(userName + userEmail)
+user.signUp(null, {
+  success: function(user) {
+   // alert()// Hooray! Let them use the app now.
+   $('#skeetLogin').fadeOut();
+   
+// initiate auth popup
+
+    return false;
+  },
+  error: function(user, error) {
+    // Show the error message somewhere and let the user try again.
+    alert("Error: " + error.code + " " + error.message);
+  }
+});
+
+});
+
+
+
+
+
+}).controller('indexCtrl', function($scope, $location){
   $scope.viewUser = function($event){
     //var nameHolder = angular.element($event.currentTarget).attr('data-user');
     //nameHolderMain.push(nameHolder);

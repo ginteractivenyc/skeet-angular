@@ -22,6 +22,7 @@ user.signUp(null, {
   success: function(user) {
    // alert()// Hooray! Let them use the app now.
    $('#skeetLogin').fadeOut();
+   
 // initiate auth popup
 
     return false;
