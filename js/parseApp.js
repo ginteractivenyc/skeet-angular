@@ -1,8 +1,8 @@
 Parse.initialize("tzlVexuKShRsUHAGSV30qJYz28953tIOPSs0dl3z", "F1g9SlNa2FhcneKqj4AdowudvI7zkMXNZUsjtgJm");
 
 SC.initialize({
-  client_id: '07b0e9b7e4ac9e8454b61d33eaba766b',
-  redirect_uri: 'http://localhost:8888/skeet-angular/loginfiles/callback.html'
+  client_id: '0f993f2250c9e82a24acc020437d5da9',
+  redirect_uri: 'http://gregatria.com/skeet-angular/loginfiles/callback.html'
 });
 
 
@@ -113,7 +113,11 @@ SC.connect(function(){
 
 //youtube login
 
-$scope.ytLogin = function() 
+$scope.ytLogin = function() {
+
+login();
+
+function login() 
 {
 
   var myParams = {
@@ -124,6 +128,9 @@ $scope.ytLogin = function()
     'scope' : 'https://www.googleapis.com/auth/plus.login https://www.googleapis.com/auth/plus.profile.emails.read'
   };
   gapi.auth.signIn(myParams);
+}
+
+
 }
 
 
@@ -178,53 +185,6 @@ var instagramName = data.data[0].user.id;
 }, 2500);
 
 
-
-function loginCallback(result)
-{
-   if(result['status']['signed_in'])
-    {
-        var request = gapi.client.plus.people.get(
-        {
-            'userId': 'me'
-        }); 
-        request.execute(function (resp)
-        {
-            var email = '';
-            if(resp['emails'])
-            {
-                for(i = 0; i < resp['emails'].length; i++)
-                {
-                    if(resp['emails'][i]['type'] == 'account')
-                    {
-                        email = resp['emails'][i]['value'];
-                    }
-                }
-            }
- 
-            var str = "Name:" + resp['displayName'] + "<br>";
-            //str += "Image:" + resp['image']['url'] + "<br>";
-            //str += "<img src='" + resp['image']['url'] + "' /><br>";
- 
-            str += "URL:" + resp['url'] + "<br>";
-            str += "Email:" + email + "<br>";
-            document.getElementById("profile").innerHTML = str;
-            var youtubeName = resp['displayName'];
-                var currentUser = Parse.User.current();
-
-               currentUser.set("youtube",youtubeName );
-                currentUser.save();     
-
-        });
- 
-    }  
-}
-
-
-function onLoadCallback()
-{
-    gapi.client.setApiKey('AIzaSyAkzujLtz2bL7io3FH3nNSIO63ZfdSxkWo');
-    gapi.client.load('plus', 'v1',function(){});
-}
 
 
 
