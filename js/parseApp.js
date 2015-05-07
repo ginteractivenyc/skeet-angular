@@ -20,7 +20,7 @@ skeetApp.config(['$routeProvider', function($routeProvider) {
       controller:'loggedinCtrl'
     }). 
     when('/:nameHolder', {
-      templateUrl: 'views/parse.html',
+      templateUrl: 'views/userpage.html',
       controller: 'homeCtrl'
   }).
     when('/music',{
@@ -30,7 +30,7 @@ skeetApp.config(['$routeProvider', function($routeProvider) {
 }]);
 
 skeetApp.controller('signupCtrl', function($scope, $window){
-
+$('.globalHeader').hide();
 var user = new Parse.User();
 var loginSubmit = document.getElementById('loginSubmit');
 
@@ -127,6 +127,58 @@ $scope.ytLogin = function()
 }
 
 
+//instagram login
+
+
+$scope.igLogin = function(){
+
+  var url = "https://api.instagram.com/oauth/authorize/?client_id=7380072fbc2f438994b747e10485357f&redirect_uri=http://localhost:8888/skeet-angular/&response_type=token&callback=retrieveToken"
+  location.replace(url)
+
+
+
+
+var retrieveToken = setTimeout(function(){
+var myVar = self.location.toString();
+
+if(myVar === "http://localhost:8888/skeet-angular/"){
+
+}else{
+
+console.log(myVar)
+var __cdata = myVar;
+var tagIndex = __cdata.indexOf('access_token'); // Find where the img tag starts
+var srcIndex = __cdata.substring(tagIndex).indexOf('=') + tagIndex; // Find where the src attribute starts
+var urlStart = srcIndex + 1; // Find where the actual image URL starts; 5 for the length of 'src="'
+var src = __cdata.substring(urlStart); // Extract just the URL
+console.log(src)
+
+$.ajax({
+  type: "get",
+  url: 'https://api.instagram.com/v1/users/self/media/recent?access_token=' + src,
+  dataType: 'jsonp',
+  success: function(data){
+console.log(data.data[0].user.username);
+var instagramName = data.data[0].user.id;
+            var currentUser = Parse.User.current();
+
+               currentUser.set("instagram", instagramName);
+                currentUser.save(); 
+
+  },
+  error: function(){
+
+  }
+})
+
+
+
+}
+//alert(src)
+}, 2500);
+
+
+
 function loginCallback(result)
 {
    if(result['status']['signed_in'])
@@ -174,75 +226,18 @@ function onLoadCallback()
     gapi.client.load('plus', 'v1',function(){});
 }
 
+
+
+}
+
+
+
 }).controller('indexCtrl', function($scope, $location){
   $scope.viewUser = function($event){
     //var nameHolder = angular.element($event.currentTarget).attr('data-user');
     //nameHolderMain.push(nameHolder);
      //$location.path(nameHolder);
   }
-
-
-//instagram login
-
-
-$scope.igLogin = function(){
-
-
-  var url = "https://api.instagram.com/oauth/authorize/?client_id=7380072fbc2f438994b747e10485357f&redirect_uri=http://localhost:8888/skeet-angular/login.html&response_type=token&callback=retrieveToken"
-  location.replace(url)
-
-
-
-
-var retrieveToken = setTimeout(function(){
-var myVar = self.location.toString();
-
-if(myVar === "http://localhost:8888/skeet-angular/login.html"){
-
-}else{
-
-console.log(myVar)
-var __cdata = myVar;
-var tagIndex = __cdata.indexOf('access_token'); // Find where the img tag starts
-var srcIndex = __cdata.substring(tagIndex).indexOf('=') + tagIndex; // Find where the src attribute starts
-var urlStart = srcIndex + 1; // Find where the actual image URL starts; 5 for the length of 'src="'
-var src = __cdata.substring(urlStart); // Extract just the URL
-console.log(src)
-
-$.ajax({
-  type: "get",
-  url: 'https://api.instagram.com/v1/users/self/media/recent?access_token=' + src,
-  dataType: 'jsonp',
-  success: function(data){
-console.log(data.data[0].user.username);
-var instagramName = data.data[0].user.id;
-            var currentUser = Parse.User.current();
-
-               currentUser.set("instagram", instagramName);
-                currentUser.save(); 
-
-  },
-  error: function(){
-
-  }
-})
-
-
-
-}
-//alert(src)
-}, 2500);
-
-
-
-
-
-
-
-
-
-
-}
 
 
 }).controller('homeCtrl', function(parseService, $scope, $location, $http, $routeParams){
@@ -278,18 +273,40 @@ var instagramName = data.data[0].user.id;
 var getVideos = function(){
         $http({
         method: 'GET',
-        url: 'https://gdata.youtube.com/feeds/api/users/' + youtubeId + '/uploads?v=2&alt=json&orderby=published&max-results=5'
+        url: 'https://www.googleapis.com/youtube/v3/channels?part=contentDetails&forUsername=' + youtubeId + '&key=AIzaSyBZGeefjprHm8Zq6DkblpvNV0eQ65l2E84'
       }).success(function(data) {
         // With the data succesfully returned, call our callback
-        console.log(data)
-        $scope.homeVideo = data.feed.entry;
-      getInstagram();
+        var userId = data.items[0].contentDetails.relatedPlaylists.uploads
+          setTimeout(function() {
+            $http({
+              method: 'GET',
+              url: 'https://www.googleapis.com/youtube/v3/playlistItems?part=snippet&maxResults=50&playlistId=' + userId  + '&key=AIzaSyBZGeefjprHm8Zq6DkblpvNV0eQ65l2E84'
+            }).success(function(data) {
+              // With the data succesfully returned, call our callback
+
+              console.log(data.items)
+              $scope.homeVideo = data.items
+
+
+              getInstagram();
+
+
+            }).error(function() {
+              //alert("error");
+            });
+
+
+          }, 20);
+          
+       // $scope.homeVideo = data.feed.entry;
+      //getInstagram();
 
 
       }).error(function() {
         //alert("error");
       });
 }
+
 
 var getInstagram = function(){
         $http.jsonp('https://api.instagram.com/v1/users/' + instagramId + '/media/recent?count=5&client_id=7380072fbc2f438994b747e10485357f&callback=JSON_CALLBACK').success(function(data) {
