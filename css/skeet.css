@@ -1,6 +1,11 @@
 html, body{
-  font-family: 'Fjalla One', sans-serif;
   margin:0;
+}
+
+
+#skeetlogin{
+    font-family: 'Fjalla One', sans-serif;
+
 }
 
 h3{
