@@ -6,14 +6,13 @@
 
 
 <div class="dropdown">
-  <button id="dLabel" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-    Add Content
-    <span class="caret"></span>
-  </button>
+  <span class="glyphicon glyphicon-plus" id="dLabel" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+
+  </span>
   <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
-   <li class="addMusic" ng-click="addMusic()">Music</li>
-   <li class="addVideo" ng-click="addVideo()">Video</li>
-   <li class="addPhoto" ng-click="addPhoto()">Photos</li>
+   <li class="addMusic" ng-click="addMusic($event)"><span class="glyphicon glyphicon-volume-up options"></span></li>
+   <li class="addVideo" ng-click="addVideo()"><span class="glyphicon glyphicon-film options"></span></li>
+   <li class="addPhoto" ng-click="addPhoto()"><span class="glyphicon glyphicon-picture options"></span></li>
   </ul>
 </div>
 
@@ -52,4 +51,6 @@
 	</ul>
 </div>
 </div>
+
+
 <div id="profile"></div>

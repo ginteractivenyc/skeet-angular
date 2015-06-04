@@ -35,5 +35,31 @@ ul{
 }
 
 .addModule  li img{
-	max-width:200px;
+	max-width:150px;
+}
+
+.dropdown{
+    text-align: center;
+}
+
+.dropdown-menu{
+  position: relative;
+  margin:0 auto;
+  width:50%;
+  float:none;
+  overflow: auto;
+}
+
+.glyphicon-plus{
+  font-size:34px;
+}
+
+.options{
+  font-size:64px;
+}
+
+.dropdown-menu li{
+  float: left;
+  margin-left: 20%;
+  box-sizing: border-box;
 }

@@ -60,15 +60,26 @@ text-align: center;
   text-overflow: ellipsis;*/
 }
 
+#skeetSlider{
+  width: 100%;
+  margin: 0 auto;
+  overflow: hidden;
+  display: block; 
+}
 
-
-
+#skeetSlider img {
+  width: 100%; }
 
 
 
 /*Carousel Styles*/
 
 @media only screen and (min-width : 320px){
+#skeetSlider{
+max-width: 320px;
+margin:0 auto;
+}
+
 .carouselWrapper{
 	width: 320px;
 }
@@ -129,6 +140,10 @@ left: -2%;
 }
 
 @media only screen and (min-width : 640px){
+  #skeetSlider{
+max-width: 640px;
+margin:0 auto;
+}
 .carouselWrapper{
 	width:640px;
 }
@@ -173,6 +188,10 @@ left: -2%;
 
 
 @media only screen and (min-width : 960px){
+  #skeetSlider{
+max-width: 960px;
+margin:0 auto;
+}
 .carouselWrapper{
 	width:960px;
 }

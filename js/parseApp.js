@@ -31,6 +31,7 @@ skeetApp.config(['$routeProvider', function($routeProvider) {
 }]);
 
 skeetApp.controller('signupCtrl', function($scope, $window){
+
 $('.globalHeader').hide();
 var user = new Parse.User();
 var loginSubmit = document.getElementById('loginSubmit');
@@ -61,12 +62,26 @@ user.signUp(null, {
 });
 
 }).controller('loggedinCtrl', function($scope){
+
+  $('.dropdown-menu').find('li').click(function (e) {
+    e.stopPropagation();
+  });
     function readURL(input) {
         if (input.files && input.files[0]) {
             var reader = new FileReader();
             
             reader.onload = function (e) {
                 $('#blah').attr('src', e.target.result);
+        var currentUser = Parse.User.current();
+
+        var sendThis =  $('#blah').attr('src');
+       var parseFile = new Parse.File("mypic.jpg", {
+            base64: sendThis
+        });
+        //save soundcloud Name to parse
+        currentUser.set("profileimage",parseFile );
+        currentUser.save();
+
             }
             
             reader.readAsDataURL(input.files[0]);
@@ -78,7 +93,8 @@ user.signUp(null, {
         readURL(this);
     });
 
-$scope.addMusic = function(){
+$scope.addMusic = function($event){
+  var thisElement = angular.element(event.currentTarget);
   $('#addMusicBox').fadeIn();
 }
 
@@ -211,7 +227,7 @@ var instagramName = data.data[0].user.id;
 
         //$scope.homeMusic = data;
         //console.log(data.results[0])
-        
+        $scope.profileImage = data.results[0].profileimage.url;
         var soundcloudId = data.results[0].soundcloud;
         var youtubeId = data.results[0].youtube;
         var instagramId = data.results[0].instagram;
