@@ -90,12 +90,13 @@ $.ajax({
   dataType: 'jsonp',
   success: function(data){
 console.log(data.data[0].user.username);
+alert()
+
 var instagramName = data.data[0].user.id;
             var currentUser = Parse.User.current();
 
                currentUser.set("instagram", instagramName);
                 currentUser.save(); 
-
   },
   error: function(){
 

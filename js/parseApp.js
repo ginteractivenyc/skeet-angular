@@ -2,7 +2,7 @@ Parse.initialize("tzlVexuKShRsUHAGSV30qJYz28953tIOPSs0dl3z", "F1g9SlNa2FhcneKqj4
 
 SC.initialize({
   client_id: '0f993f2250c9e82a24acc020437d5da9',
-  redirect_uri: 'http://gregatria.com/skeet-angular/loginfiles/callback.html'
+  redirect_uri: 'http://localhost:8888/skeet-angular/loginfiles/callback.html'
 });
 
 
@@ -27,6 +27,7 @@ skeetApp.config(['$routeProvider', function($routeProvider) {
       templateUrl: 'views/music.html',
       controller:'musicCtrl'
     });
+
 }]);
 
 skeetApp.controller('signupCtrl', function($scope, $window){
@@ -139,7 +140,7 @@ function login()
 
 $scope.igLogin = function(){
 
-  var url = "https://api.instagram.com/oauth/authorize/?client_id=7380072fbc2f438994b747e10485357f&redirect_uri=http://localhost:8888/skeet-angular/&response_type=token&callback=retrieveToken"
+  var url = "https://api.instagram.com/oauth/authorize/?client_id=7380072fbc2f438994b747e10485357f&redirect_uri=http://localhost:8888/skeet-angular/login.html&response_type=token&callback=retrieveToken"
   location.replace(url)
 
 
@@ -148,7 +149,7 @@ $scope.igLogin = function(){
 var retrieveToken = setTimeout(function(){
 var myVar = self.location.toString();
 
-if(myVar === "http://localhost:8888/skeet-angular/"){
+if(myVar === "http://localhost:8888/skeet-angular/login.html"){
 
 }else{
 

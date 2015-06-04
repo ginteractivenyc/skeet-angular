@@ -2,7 +2,7 @@
 
 form{
 	  max-width: 500px;
-  margin: 100px auto;
+  margin: 20px auto;
 }
 form#uploadPhoto{
   margin-top: 100px;
@@ -10,6 +10,13 @@ form#uploadPhoto{
   max-width: 640px;
   margin: 0 auto;
 
+}
+
+#signuppage h1{
+  font-size: 95px;
+  font-weight: 100;
+  text-align: center;
+  margin-bottom: 0;
 }
 
 #blah{
