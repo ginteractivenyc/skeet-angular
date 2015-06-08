@@ -1,0 +1,244 @@
+html, body{
+  margin:0;
+}
+
+
+#skeetlogin{
+    font-family: 'Fjalla One', sans-serif;
+
+}
+
+h3{
+  text-transform: uppercase;
+  font-size: 25px;
+  font-weight: 300;
+  letter-spacing: -1px;
+  margin:0;
+}
+
+
+.globalHeader{
+    position: fixed;
+  top: 0;
+  left:0;
+  -webkit-backface-visibility: hidden;
+  -webkit-transform: translateZ(0);
+  overflow: hidden;
+  width: 100%;
+  font-family: 'Fjalla One', sans-serif;
+  border-bottom: 1px solid #c4c4c4;
+  height: 50px;
+  background: black;
+  z-index: 5000;
+}
+
+
+.carouselWrapperOuter{
+    padding-top: 25px;
+}
+.carouselWrapperOuter:nth-child(2n) {
+  background: rgba(221, 221, 221, 0.8);
+  width:100%;
+}
+
+.carouselWrapper{
+
+	margin: 0 auto;
+	position: relative;
+	padding-left: 20px;
+}
+
+.itemTitle, .itemTitle-rectangle{
+font-size: 14px;
+font-family: 'Raleway', sans-serif;
+margin-top:5px;
+display: block;
+float: left;
+text-align: center;
+ /*white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;*/
+}
+
+#skeetSlider{
+  width: 100%;
+  margin: 0 auto;
+  overflow: hidden;
+  display: block; 
+}
+
+#skeetSlider img {
+  width: 100%; }
+
+
+
+/*Carousel Styles*/
+
+@media only screen and (min-width : 320px){
+#skeetSlider{
+max-width: 320px;
+margin:0 auto;
+}
+
+.carouselWrapper{
+	width: 320px;
+}
+
+ul[rn-carousel] {
+  width: 300px;
+  height: 220px;
+  }
+
+ul[rn-carousel] > li.square{
+	width:150px;
+  overflow: hidden;
+}
+
+ul[rn-carousel] > li.rectangle{
+	width:300px;
+  overflow: hidden;
+
+}
+
+.squareThumb{
+  width: 130px;
+  height: 130px;
+  float: left;
+}
+.itemTitle{
+  width: 130px;
+}
+
+.rectangleThumb{
+  width: 280px;
+  height: 158px;
+  float: left;
+}
+
+.itemTitle-rectangle{
+  width: 280px;
+}
+
+.carouselWrapper img {
+	width:100%;
+}
+
+.rn-carousel-control.rn-carousel-control-next {
+right: 4%;
+  top: 35%;
+}
+
+.rn-carousel-control.rn-carousel-control-prev {
+left: -2%;
+  top: 35%;
+}
+
+.rectWrapper  .rn-carousel-control.rn-carousel-control-prev , .rectWrapper  .rn-carousel-control.rn-carousel-control-next{
+	top:37%;
+}
+
+}
+
+@media only screen and (min-width : 640px){
+  #skeetSlider{
+max-width: 640px;
+margin:0 auto;
+}
+.carouselWrapper{
+	width:640px;
+}
+
+ul[rn-carousel] > li.rectangle{
+	width:205px;
+}
+
+ul[rn-carousel] {
+  width: 580px;
+  }
+
+
+.itemTitle{
+  width: 130px;
+}
+
+.rectangleThumb{
+  width: 185px;
+  height: 104px;
+  float: left;
+}
+.itemTitle-rectangle{
+  width: 185px;
+}
+
+.rn-carousel-control.rn-carousel-control-next {
+right: 4%;
+  top: 35%;
+}
+
+.rn-carousel-control.rn-carousel-control-prev {
+left: -2%;
+  top: 35%;
+}
+
+.rectWrapper  .rn-carousel-control.rn-carousel-control-prev , .rectWrapper  .rn-carousel-control.rn-carousel-control-next{
+	top:28%;
+}
+
+}
+
+
+@media only screen and (min-width : 960px){
+  #skeetSlider{
+max-width: 960px;
+margin:0 auto;
+}
+.carouselWrapper{
+	width:960px;
+}
+
+ul[rn-carousel] {
+  width: 900px;
+  }
+
+ul[rn-carousel] > li.square{
+	width:180px;
+}
+ul[rn-carousel] > li.rectangle{
+	width:300px;
+}
+.squareThumb{
+  width: 160px;
+  height: 160px;
+  float: left;
+}
+
+.itemTitle{
+  width: 160px;
+}
+
+.rectangleThumb{
+  width: 280px;
+  height: 158px;
+  float: left;
+}
+
+.itemTitle-rectangle{
+  width: 280px;
+}
+
+.rn-carousel-control.rn-carousel-control-next {
+right: 4%;
+  top: 40%;
+}
+
+.rn-carousel-control.rn-carousel-control-prev {
+left: -2%;
+  top: 40%;
+}
+
+.rectWrapper  .rn-carousel-control.rn-carousel-control-prev , .rectWrapper  .rn-carousel-control.rn-carousel-control-next{
+	top:40%;
+}
+
+
+}

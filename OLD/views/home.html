@@ -1,0 +1,74 @@
+<div class="carouselWrapperOuter">
+<div class="carouselWrapper">
+	<h3>Music</h3>
+	<ul rn-carousel rn-carousel-controls  rn-carousel-duration="300" class="image">
+		<li ng-repeat="music in homeMusic" class="square" data-url="{{music.id}}" ng-click="musicClick()">
+			<div class="squareThumb"><img ng-src="{{music.artwork_url | artworkCheck}}"></div>
+			<div class="itemTitle">{{music.title}}</div>
+		</li>
+	</ul>
+</div>
+</div>
+
+<div class="carouselWrapperOuter">
+<div class="carouselWrapper rectWrapper">
+	<h3>Video</h3>
+	<ul rn-carousel rn-carousel-controls  rn-carousel-duration="300" class="image">
+		<li ng-repeat="video in homeVideo" class="rectangle" data-url="{{video['media$group']['yt$videoid']['$t']}}">
+			<div class="rectangleThumb"><img ng-src="http://img.youtube.com/vi/{{video['media$group']['yt$videoid']['$t']}}/maxresdefault.jpg"></div>
+			<div class="itemTitle-rectangle">{{video["media$group"]["media$title"]["$t"]}}</div>
+
+		</li>
+	</ul>
+</div>
+</div>
+
+<div class="carouselWrapperOuter">
+<div class="carouselWrapper">
+	<h3>Instagram</h3>
+	<ul rn-carousel rn-carousel-controls  rn-carousel-duration="300" class="image">
+		<li ng-repeat="item in homeIg" class="square" data-url="{{item.link}}">
+			<div class="squareThumb"><img ng-src="{{item.images.standard_resolution.url}}"></div>
+			<div class="itemTitle">#{{item.tags[0]}}</div>
+
+		</li>
+	</ul>
+</div>
+</div>
+
+
+<div class="carouselWrapperOuter">
+<div class="carouselWrapper">
+	<h3>Merch</h3>
+	<ul rn-carousel rn-carousel-controls  rn-carousel-duration="300" class="image">
+		<li ng-repeat="item in homeMerch" class="square">
+			<div class="squareThumb"><img ng-src="{{item.images[0].url}}"></div>
+			<div class="itemTitle">#{{item.name}}</div>
+
+		</li>
+	</ul>
+</div>
+</div>
+
+
+<div class="carouselWrapperOuter">
+<div class="carouselWrapper">
+	<h3>News</h3>
+	<ul rn-carousel rn-carousel-controls  rn-carousel-duration="300" class="image">
+		<li ng-repeat="item in homeNewsImg" class="square">
+			<div class="squareThumb"><img ng-src="{{item}}"></div>
+			<div class="itemTitle">{{newsTitle[$index].title}}</div>
+
+		</li>
+	</ul>
+</div>
+</div>
+
+  <!-- <div style="height: 305px;">
+   <carousel interval="myInterval">
+      <slide active="slide.active">
+    <div class="squareThumb" ng-repeat="music in homeMusic" ><img ng-src="{{music.artwork_url | artworkCheck}}"></div>
+
+      </slide>
+    </carousel>
+</div>-->

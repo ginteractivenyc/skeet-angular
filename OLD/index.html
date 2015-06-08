@@ -9,7 +9,6 @@
 		<link href='http://fonts.googleapis.com/css?family=Fjalla+One' rel='stylesheet' type='text/css'>
 		<link href='http://fonts.googleapis.com/css?family=Raleway:300' rel='stylesheet' type='text/css'>	
 		<link href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css" rel="stylesheet" type="text/css">	        
-        <link href="css/bootstrap-switch.min.css" rel="stylesheet">       
         <link href="css/angular-carousel.css" rel="stylesheet">
         <link href="css/skeet.css?v=2" rel="stylesheet">
         <link href="css/login.css" rel="stylesheet">
@@ -34,15 +33,12 @@
 		<script src="https://apis.google.com/js/client:platform.js" async defer></script>
 
 		<script type="text/javascript" src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
-        <script src="js/bootstrap-switch.min.js"></script>        
 		<script type="text/javascript" src="js/xml2json.min.js"></script>		
 		<script src="https://w.soundcloud.com/player/api.js" type="text/javascript"></script>
   		<script type="text/javascript" src="http://www.parsecdn.com/js/parse-1.4.0.min.js"></script>
  		<script src="http://connect.soundcloud.com/sdk.js"></script>		
 		<script type="text/javascript" src="js/services.js?v=2"></script>
 		<script type="text/javascript" src="js/parseApp.js"></script>
-
-
 <script type="text/javascript">
       (function() {
        var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
@@ -79,21 +75,12 @@ function loginCallback(result)
  
             str += "URL:" + resp['url'] + "<br>";
             str += "Email:" + email + "<br>";
-            //document.getElementById("profile").innerHTML = str;
+            document.getElementById("profile").innerHTML = str;
             var youtubeName = resp['displayName'];
                 var currentUser = Parse.User.current();
 
                currentUser.set("youtube",youtubeName );
-               currentUser.set("youtubeOn","on" );
-
-                currentUser.save(null, {
-                  success: function(successResult){
-                     $('input[name="youtube-checkbox"]').bootstrapSwitch('state', 'true');   
-                  },
-                  error: function(errorResult){
-
-                  }
-                });     
+                currentUser.save();     
 
         });
  

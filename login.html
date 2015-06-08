@@ -14,42 +14,6 @@
     </head>
     <body>
  	<div class="container-fluid">   	
-		<div class="row" id="skeetLogin">
-			<div class="col-sm-12">
-				<form>
-					<div class="form-group">
-						<label for="inputUsername">Username</label>
-						<input type="text" class="form-control" id="inputUsername" placeholder="Enter Username">
-					</div>
-					<div class="form-group">
-						<label for="inputEmail">E-mail</label>
-						<input type="email" class="form-control" id="inputEmail" placeholder="Enter E-mail">
-					</div>
-					<div class="form-group">
-						<label for="inputPassword">Password</label>
-						<input type="password" class="form-control" id="inputPassword" placeholder="Password">
-					</div>
-
-					<div  id="loginSubmit" class="btn btn-default">Submit</div>
-				</form>
-		    </div>
-		</div>
-
-
-		<div class="row" id="skeetLogin">
-			<div class="col-sm-12">
-					<div id="connectSoundCloud">Connect Your Soundcloud</div>
-			</div>
-
-			<div class="col-sm-12">
-				<input type="button"  value="Login" id="loginbtn" />
-				<input type="button"  value="Logout" id="logoutbtn" />
-				<div id="profile"></div>
-			</div>
-			<div class="col-sm-12">
-					<div id="connectIg">Connect Your instagram</div>
-			</div>
-		</div>
 
 
 	</div>
@@ -57,18 +21,54 @@
 
     	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
   		<script type="text/javascript" src="http://www.parsecdn.com/js/parse-1.4.0.min.js"></script>
- 		<script src="http://connect.soundcloud.com/sdk.js"></script>
- 		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular.min.js"></script> 
-		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular-resource.js"></script>
-		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular-route.js"></script>  
-		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular-touch.js"></script>  
-		<script type="text/javascript" src="js/login.js"></script>    
 <script type="text/javascript">
-      (function() {
-       var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
-       po.src = 'https://apis.google.com/js/client.js?onload=onLoadCallback';
-       var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
-     })();
+Parse.initialize("tzlVexuKShRsUHAGSV30qJYz28953tIOPSs0dl3z", "F1g9SlNa2FhcneKqj4AdowudvI7zkMXNZUsjtgJm");
+
+    var retrieveToken = setTimeout(function() {
+      var myVar = self.location.toString();
+
+        console.log(myVar)
+        var __cdata = myVar;
+        var tagIndex = __cdata.indexOf('access_token'); // Find where the img tag starts
+        var srcIndex = __cdata.substring(tagIndex).indexOf('=') + tagIndex; // Find where the src attribute starts
+        var urlStart = srcIndex + 1; // Find where the actual image URL starts; 5 for the length of 'src="'
+        var src = __cdata.substring(urlStart); // Extract just the URL
+        console.log(src)
+
+        $.ajax({
+          type: "get",
+          url: 'https://api.instagram.com/v1/users/self/media/recent?access_token=' + src,
+          dataType: 'jsonp',
+          success: function(data) {
+            console.log(data.data[0].user.username);
+            var instagramName = data.data[0].user.id;
+            var currentUser = Parse.User.current();
+             currentUser.set("instagramOn", "on");
+            currentUser.set("instagram", instagramName);
+            currentUser.save(null, {
+              success: function(successResult){
+                $('input[name="instagram-checkbox"]').bootstrapSwitch('state', 'true'); 
+              },
+              error: function(errorResult){
+
+              }
+            });
+
+          },
+          error: function() {
+
+          }
+        })
+
+
+      //alert(src)
+    }, 500);
+
+
 </script>
+
+
+
+
     </body>
 </html>

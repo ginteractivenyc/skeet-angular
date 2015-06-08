@@ -1,0 +1,56 @@
+<form id="uploadPhoto" runat="server">
+    <img id="blah" src="http://placehold.it/640x360" alt="your image" />
+    <input type='file' id="imgInp" />
+    
+</form>
+
+
+<div class="dropdown">
+  <span class="glyphicon glyphicon-plus" id="dLabel" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+
+  </span>
+  <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+   <li class="addMusic" ng-click="addMusic($event)"><span class="glyphicon glyphicon-volume-up options"></span></li>
+   <li class="addVideo" ng-click="addVideo()"><span class="glyphicon glyphicon-film options"></span></li>
+   <li class="addPhoto" ng-click="addPhoto()"><span class="glyphicon glyphicon-picture options"></span></li>
+  </ul>
+</div>
+
+
+<div class="carouselWrapperOuter addModule" id="addMusicBox">
+<div class="carouselWrapper">
+	<h3>Music</h3>
+	<ul>
+		<li ng-click="scLogin();">
+			<img src="img/soundcloud.jpg">
+		</li>
+	</ul>
+</div>
+</div>
+
+
+<div class="carouselWrapperOuter addModule" id="addVideoBox">
+<div class="carouselWrapper">
+	<h3>Video</h3>
+	<ul >
+		<li ng-click="ytLogin()">
+			<img src="img/YouTube-logo-dark.png">
+		</li>
+	</ul>
+</div>
+</div>
+
+
+<div class="carouselWrapperOuter addModule" id="addPhotoBox">
+<div class="carouselWrapper">
+	<h3>Photos</h3>
+	<ul >
+		<li ng-click="igLogin()">
+			<img src="img/igicon.png">
+		</li>
+	</ul>
+</div>
+</div>
+
+
+<div id="profile"></div>

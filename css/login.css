@@ -23,32 +23,35 @@ form#uploadPhoto{
 	max-width: 640px;
 }
 
-.addModule{
-	display:none;
-}
-ul{
-	padding:0;
-}
 
-.addModule  li{
- list-style: none;
-}
 
-.addModule  li img{
-	max-width:150px;
-}
-
-.dropdown{
-    text-align: center;
-}
-
-.dropdown-menu{
-  position: relative;
+.contentOptionsWrapper{
   margin:0 auto;
-  width:50%;
-  float:none;
+  max-width:600px;
+
+}
+
+ul#contentOptions{
+	padding:0;
   overflow: auto;
 }
+
+
+
+
+ul#contentOptions li{
+  list-style: none;
+  max-width: 140px;
+  width: 100%;
+  float: left;
+  margin-left: 50px;
+  box-sizing: border-box;
+}
+
+ul#contentOptions li img{
+  width:100%;
+}
+
 
 .glyphicon-plus{
   font-size:34px;
@@ -58,8 +61,13 @@ ul{
   font-size:64px;
 }
 
-.dropdown-menu li{
-  float: left;
-  margin-left: 20%;
-  box-sizing: border-box;
+
+.bootstrap-switch{
+    margin: 0 auto;
+    display: block;
+}
+
+.bootstrap-switch .bootstrap-switch-handle-on.bootstrap-switch-moduleon{
+  background: #FE4600;
+  color:#fff;
 }

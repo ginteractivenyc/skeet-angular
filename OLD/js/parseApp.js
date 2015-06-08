@@ -5,16 +5,17 @@ SC.initialize({
   redirect_uri: 'http://localhost:8888/skeet-angular/loginfiles/callback.html'
 });
 
+
 var nameHolderMain = [];
 var skeetApp = angular.module('skeetApp',  [ 'angular-carousel','ngRoute', 'ngResource', 'parseService']);
 
 skeetApp.config(['$routeProvider', function($routeProvider) {
-  $routeProvider.
+	$routeProvider.
     when('/signup',{
       templateUrl: 'views/signup.html',
       controller:'signupCtrl'
     }).  
-    when('/:nameHolder/loggedin',{
+    when('/loggedin',{
       templateUrl: 'views/loggedin.html',
       controller:'loggedinCtrl'
     }). 
@@ -49,6 +50,7 @@ user.signUp(null, {
    $('#skeetLogin').fadeOut();
  $window.location='#/loggedin';
 // initiate auth popup
+
     return false;
   },
   error: function(user, error) {
@@ -56,61 +58,10 @@ user.signUp(null, {
     alert("Error: " + error.code + " " + error.message);
   }
 });
-});
-}).controller('loggedinCtrl', function($scope, $location, $window, $routeParams){
-  
 
-
- var currentUser = Parse.User.current();
-
-
-
-// check if user exists
-
-var skeetUsers = Parse.Object.extend("User");
-var queryUsers = new Parse.Query(skeetUsers);
-queryUsers.equalTo("username", $routeParams.nameHolder);
-queryUsers.find({
-  success: function(results) {
-    if (results.length <= 0){
-     // alert('User Doesnt Exist');
-     $window.location='#/signup';
-    }
-    // Do something with the returned Parse.Object values
-      for (var i = 0; i < results.length; i++) {
-        var object = results[i];
-
-        console.log(object);
-
-        //check if soundcloud exists
-        if (object.attributes.soundcloudOn === "on") {
-          $('input[name="soundcloud-checkbox"]').bootstrapSwitch('state', 'true');
-        }
-        //check if youtube exists
-        if (object.attributes.youtubeOn  === "on") {
-          $('input[name="youtube-checkbox"]').bootstrapSwitch('state', 'true');
-        }
-        //check if instagram exists
-        if (object.attributes.instagramOn  === "on") {
-          $('input[name="instagram-checkbox"]').bootstrapSwitch('state', 'true');
-        }
-
-
-      }
-  },
-  error: function(error) {
-    alert("Error: " + error.code + " " + error.message);
-  }
 });
 
-
-
-
-$(".switcher").bootstrapSwitch({
-  size: 'mini',
-  state: false,
-  onColor: 'moduleon'
-});
+}).controller('loggedinCtrl', function($scope){
 
   $('.dropdown-menu').find('li').click(function (e) {
     e.stopPropagation();
@@ -136,10 +87,25 @@ $(".switcher").bootstrapSwitch({
             reader.readAsDataURL(input.files[0]);
         }
     }
+
     
-$("#imgInp").change(function(){
-    readURL(this);
-});
+    $("#imgInp").change(function(){
+        readURL(this);
+    });
+
+$scope.addMusic = function($event){
+  var thisElement = angular.element(event.currentTarget);
+  $('#addMusicBox').fadeIn();
+}
+
+$scope.addVideo = function(){
+  $('#addVideoBox').fadeIn();
+}
+
+
+$scope.addPhoto = function(){
+  $('#addPhotoBox').fadeIn();
+}
 
 
 //soundcloud login
@@ -155,27 +121,19 @@ SC.connect(function(){
 
         //save soundcloud Name to parse
         currentUser.set("soundcloud",soundcloudName );
-        currentUser.set("soundcloudOn", "On");
-        currentUser.save(null, {
-          success: function(successResult){
-            console.log(successResult) 
-             $('input[name="soundcloud-checkbox"]').bootstrapSwitch('state', 'true');            
-          },
-          error: function(errorResult){
-            console.log("There was an error")
-          }
-        });
+        currentUser.save();
 
       });
     });
 }
 
+
 //youtube login
 
 $scope.ytLogin = function() {
 
-
 login();
+
 function login() 
 {
 
@@ -192,48 +150,62 @@ function login()
 
 }
 
+
 //instagram login
 
-  $scope.igLogin = function() {
-    var url = "https://api.instagram.com/oauth/authorize/?client_id=7380072fbc2f438994b747e10485357f&redirect_uri=http://localhost:8888/skeet-angular/login.html&response_type=token&callback=retrieveToken"
-    location.replace(url)
-  console.log(url)
+
+$scope.igLogin = function(){
+
+  var url = "https://api.instagram.com/oauth/authorize/?client_id=7380072fbc2f438994b747e10485357f&redirect_uri=http://localhost:8888/skeet-angular/login.html&response_type=token&callback=retrieveToken"
+  location.replace(url)
+
+
+
+
+var retrieveToken = setTimeout(function(){
+var myVar = self.location.toString();
+
+if(myVar === "http://localhost:8888/skeet-angular/login.html"){
+
+}else{
+
+console.log(myVar)
+var __cdata = myVar;
+var tagIndex = __cdata.indexOf('access_token'); // Find where the img tag starts
+var srcIndex = __cdata.substring(tagIndex).indexOf('=') + tagIndex; // Find where the src attribute starts
+var urlStart = srcIndex + 1; // Find where the actual image URL starts; 5 for the length of 'src="'
+var src = __cdata.substring(urlStart); // Extract just the URL
+console.log(src)
+
+$.ajax({
+  type: "get",
+  url: 'https://api.instagram.com/v1/users/self/media/recent?access_token=' + src,
+  dataType: 'jsonp',
+  success: function(data){
+console.log(data.data[0].user.username);
+var instagramName = data.data[0].user.id;
+            var currentUser = Parse.User.current();
+
+               currentUser.set("instagram", instagramName);
+                currentUser.save(); 
+
+  },
+  error: function(){
 
   }
+})
 
 
-  //toggle soundcloud switch
-$('input[name="soundcloud-checkbox"]').on('switchChange.bootstrapSwitch', function(event, state) {
-      if (state === false){
-        currentUser.set("soundcloudOn", "off");
-        currentUser.save();
 
-      }
-
-      if (state === true){
-        currentUser.set("soundcloudOn", "on");
-        currentUser.save();
-
-      }
-
-});
+}
+//alert(src)
+}, 2500);
 
 
-  //toggle youtube switch
-$('input[name="youtube-checkbox"]').on('switchChange.bootstrapSwitch', function(event, state) {
-      if (state === false){
-        currentUser.set("youtubeOn", "off");
-        currentUser.save();
 
-      }
 
-      if (state === true){
-        currentUser.set("youtubeOn", "on");
-        currentUser.save();
 
-      }
-
-});
+}
 
 
 
@@ -246,22 +218,16 @@ $('input[name="youtube-checkbox"]').on('switchChange.bootstrapSwitch', function(
 
 
 }).controller('homeCtrl', function(parseService, $scope, $location, $http, $routeParams){
-   // get Music Items
-  
+	 // get Music Items
+   nameHolderMain = $routeParams.nameHolder.toString();
    console.log(nameHolderMain.toString())
   var parseServiceGet = function() {
 
-    parseService.get( {where: {username : $routeParams.nameHolder}}, function success(data) {
+    parseService.get( {where: {username : nameHolderMain}}, function success(data) {
 
         //$scope.homeMusic = data;
         //console.log(data.results[0])
-       
-
-        if (data.results[0].profileimage === undefined){
-          $scope.profileImage = 'http://placehold.it/640x360'
-        } else{
-           $scope.profileImage = data.results[0].profileimage.url;
-        }
+        $scope.profileImage = data.results[0].profileimage.url;
         var soundcloudId = data.results[0].soundcloud;
         var youtubeId = data.results[0].youtube;
         var instagramId = data.results[0].instagram;
@@ -312,10 +278,12 @@ var getVideos = function(){
        // $scope.homeVideo = data.feed.entry;
       //getInstagram();
 
+
       }).error(function() {
         //alert("error");
       });
 }
+
 
 var getInstagram = function(){
         $http.jsonp('https://api.instagram.com/v1/users/' + instagramId + '/media/recent?count=5&client_id=7380072fbc2f438994b747e10485357f&callback=JSON_CALLBACK').success(function(data) {
@@ -335,7 +303,9 @@ var getInstagram = function(){
         alert('there was an error')
       });
   }
-   parseServiceGet();
+parseServiceGet();
+
+
 
 });
 skeetApp.filter('artworkCheck', function () {
@@ -351,11 +321,3 @@ $('.rn-carousel-controls').each(function(){
 })
 }, 150);
 }
-
-
-
-
-
-
-
-
