@@ -60,7 +60,7 @@ user.signUp(null, {
 }).controller('loggedinCtrl', function($scope, $location, $window, $routeParams){
   
 
-
+//initiate parse user
  var currentUser = Parse.User.current();
 
 
