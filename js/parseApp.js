@@ -8,6 +8,7 @@ SC.initialize({
 var nameHolderMain = [];
 var skeetApp = angular.module('skeetApp',  [ 'angular-carousel','ngRoute', 'ngResource', 'parseService']);
 
+
 skeetApp.config(['$routeProvider', function($routeProvider) {
   $routeProvider.
     when('/signup',{
@@ -29,7 +30,9 @@ skeetApp.config(['$routeProvider', function($routeProvider) {
 
 }]);
 
-skeetApp.controller('signupCtrl', function($scope, $window){
+skeetApp.controller('signupCtrl', function($scope, $routeParams, $window){
+
+$scope.nameHolder = [];
 
 $('.globalHeader').hide();
 var user = new Parse.User();
@@ -45,9 +48,10 @@ user.set("password", userPass);
 user.set("email", userEmail);
 user.signUp(null, {
   success: function(user, $location) {
+    $scope.nameHolder.push(userName)
    // alert()// Hooray! Let them use the app now.
    $('#skeetLogin').fadeOut();
- $window.location='#/loggedin';
+ $window.location='#/' +  $scope.nameHolder + '/loggedin';
 // initiate auth popup
     return false;
   },
@@ -155,7 +159,7 @@ SC.connect(function(){
 
         //save soundcloud Name to parse
         currentUser.set("soundcloud",soundcloudName );
-        currentUser.set("soundcloudOn", "On");
+        currentUser.set("soundcloudOn", "on");
         currentUser.save(null, {
           success: function(successResult){
             console.log(successResult) 
@@ -211,9 +215,58 @@ $('input[name="soundcloud-checkbox"]').on('switchChange.bootstrapSwitch', functi
       }
 
       if (state === true){
-        currentUser.set("soundcloudOn", "on");
-        currentUser.save();
+        //currentUser.set("soundcloudOn", "on");
+        //currentUser.save();
+var skeetUsers = Parse.Object.extend("User");
+var queryUsers = new Parse.Query(skeetUsers);
+queryUsers.equalTo("username", $routeParams.nameHolder);
+queryUsers.find({
+  success: function(results) {
+    // Do something with the returned Parse.Object values
+      for (var i = 0; i < results.length; i++) {
+        var object = results[i];
+        var soundcloudName = object.attributes.soundcloud;
+        if (soundcloudName === undefined){
 
+ SC.connect(function(){
+      SC.get("/me", function(me){
+        var soundcloudName = me.username;
+        $("#username").text(soundcloudName);
+         console.log(soundcloudName);
+        $("#description").val(me.description);
+        var currentUser = Parse.User.current();
+
+        //save soundcloud Name to parse
+        currentUser.set("soundcloud",soundcloudName );
+        currentUser.set("soundcloudOn", "on");
+        currentUser.save(null, {
+          success: function(successResult){
+            console.log(successResult) 
+             $('input[name="soundcloud-checkbox"]').bootstrapSwitch('state', 'true');            
+          },
+          error: function(errorResult){
+            console.log("There was an error")
+             // $('input[name="soundcloud-checkbox"]').bootstrapSwitch('state', 'false');            
+           
+          }
+        });
+
+      });
+    });
+
+
+
+        }
+        else if (soundcloudName.length >=1){
+          currentUser.set("soundcloudOn", "on");
+        currentUser.save();
+        }
+
+      
+
+        }
+      }
+    });
       }
 
 });
