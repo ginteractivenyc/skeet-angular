@@ -19,6 +19,12 @@ form#uploadPhoto{
   margin-bottom: 0;
 }
 
+
+.signup{
+/*float:left;*/
+margin-right:10px;
+}
+
 #blah{
 	max-width: 640px;
 }

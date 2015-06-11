@@ -11,7 +11,7 @@ var skeetApp = angular.module('skeetApp',  [ 'angular-carousel','ngRoute', 'ngRe
 
 skeetApp.config(['$routeProvider', function($routeProvider) {
   $routeProvider.
-    when('/signup',{
+    when('/',{
       templateUrl: 'views/signup.html',
       controller:'signupCtrl'
     }).  
@@ -36,9 +36,9 @@ $scope.nameHolder = [];
 
 $('.globalHeader').hide();
 var user = new Parse.User();
-var loginSubmit = document.getElementById('loginSubmit');
+var signupSubmit = document.getElementById('signupSubmit');
 
-loginSubmit.addEventListener('click', function(){
+$scope.submit = function(){
 var userName = document.getElementById('inputUsername').value;
 var userPass = document.getElementById('inputPassword').value;
 var userEmail = document.getElementById('inputEmail').value;
@@ -53,14 +53,39 @@ user.signUp(null, {
    $('#skeetLogin').fadeOut();
  $window.location='#/' +  $scope.nameHolder + '/loggedin';
 // initiate auth popup
-    return false;
+    //return false;
   },
   error: function(user, error) {
     // Show the error message somewhere and let the user try again.
     alert("Error: " + error.code + " " + error.message);
   }
 });
+}
+
+$scope.login = function(){
+var userName = document.getElementById('loginUsername').value;
+var userPass = document.getElementById('loginPassword').value;
+Parse.User.logIn(userName, userPass, {
+  success: function(user) {
+$scope.nameHolder.push(userName)
+   // alert()// Hooray! Let them use the app now.
+   $('#skeetLogin').fadeOut();
+    $('#loginModal').modal('hide')
+ $('body').removeClass('modal-open');
+$('.modal-backdrop').remove();
+ $window.location='#/' +  $scope.nameHolder + '/loggedin';
+
+// initiate auth popup
+  // return false;    // Do stuff after successful login.
+  },
+  error: function(user, error) {
+    console.log(error)
+    // The login failed. Check error to see why.
+  }
 });
+
+}
+
 }).controller('loggedinCtrl', function($scope, $location, $window, $routeParams){
   
 
@@ -207,85 +232,113 @@ function login()
 
 
   //toggle soundcloud switch
-$('input[name="soundcloud-checkbox"]').on('switchChange.bootstrapSwitch', function(event, state) {
-      if (state === false){
-        currentUser.set("soundcloudOn", "off");
-        currentUser.save();
+  $('input[name="soundcloud-checkbox"]').on('switchChange.bootstrapSwitch', function(event, state) {
+    if (state === false) {
+      currentUser.set("soundcloudOn", "off");
+      currentUser.save();
 
-      }
+    }
 
-      if (state === true){
-        //currentUser.set("soundcloudOn", "on");
-        //currentUser.save();
-var skeetUsers = Parse.Object.extend("User");
-var queryUsers = new Parse.Query(skeetUsers);
-queryUsers.equalTo("username", $routeParams.nameHolder);
-queryUsers.find({
-  success: function(results) {
-    // Do something with the returned Parse.Object values
-      for (var i = 0; i < results.length; i++) {
-        var object = results[i];
-        var soundcloudName = object.attributes.soundcloud;
-        if (soundcloudName === undefined){
+    if (state === true) {
+      //currentUser.set("soundcloudOn", "on");
+      //currentUser.save();
+      var skeetUsers = Parse.Object.extend("User");
+      var queryUsers = new Parse.Query(skeetUsers);
+      queryUsers.equalTo("username", $routeParams.nameHolder);
+      queryUsers.find({
+        success: function(results) {
+          // Do something with the returned Parse.Object values
+          for (var i = 0; i < results.length; i++) {
+            var object = results[i];
+            var soundcloudName = object.attributes.soundcloud;
+            if (soundcloudName === undefined) {
 
- SC.connect(function(){
-      SC.get("/me", function(me){
-        var soundcloudName = me.username;
-        $("#username").text(soundcloudName);
-         console.log(soundcloudName);
-        $("#description").val(me.description);
-        var currentUser = Parse.User.current();
+              SC.connect(function() {
+                SC.get("/me", function(me) {
+                  var soundcloudName = me.username;
+                  $("#username").text(soundcloudName);
+                  console.log(soundcloudName);
+                  $("#description").val(me.description);
+                  var currentUser = Parse.User.current();
 
-        //save soundcloud Name to parse
-        currentUser.set("soundcloud",soundcloudName );
-        currentUser.set("soundcloudOn", "on");
-        currentUser.save(null, {
-          success: function(successResult){
-            console.log(successResult) 
-             $('input[name="soundcloud-checkbox"]').bootstrapSwitch('state', 'true');            
-          },
-          error: function(errorResult){
-            console.log("There was an error")
-             // $('input[name="soundcloud-checkbox"]').bootstrapSwitch('state', 'false');            
-           
+                  //save soundcloud Name to parse
+                  currentUser.set("soundcloud", soundcloudName);
+                  currentUser.set("soundcloudOn", "on");
+                  currentUser.save(null, {
+                    success: function(successResult) {
+                      console.log(successResult)
+                      $('input[name="soundcloud-checkbox"]').bootstrapSwitch('state', 'true');
+                    },
+                    error: function(errorResult) {
+                      console.log("There was an error")
+                     // $('input[name="soundcloud-checkbox"]').bootstrapSwitch('state', 'false');            
+
+                    }
+                  });
+
+                });
+              });
+
+
+            } else if (soundcloudName.length >= 1) {
+              currentUser.set("soundcloudOn", "on");
+              currentUser.save();
+            }
           }
-        });
-
+        }
       });
-    });
+    }
 
-
-
-        }
-        else if (soundcloudName.length >=1){
-          currentUser.set("soundcloudOn", "on");
-        currentUser.save();
-        }
-
-      
-
-        }
-      }
-    });
-      }
-
-});
+  });
 
 
   //toggle youtube switch
 $('input[name="youtube-checkbox"]').on('switchChange.bootstrapSwitch', function(event, state) {
-      if (state === false){
-        currentUser.set("youtubeOn", "off");
-        currentUser.save();
+    if (state === false) {
+      currentUser.set("youtubeOn", "off");
+      currentUser.save();
 
-      }
+    }
 
-      if (state === true){
-        currentUser.set("youtubeOn", "on");
-        currentUser.save();
+    if (state === true) {
+      //currentUser.set("soundcloudOn", "on");
+      //currentUser.save();
+      var skeetUsers = Parse.Object.extend("User");
+      var queryUsers = new Parse.Query(skeetUsers);
+      queryUsers.equalTo("username", $routeParams.nameHolder);
+      queryUsers.find({
+        success: function(results) {
+          // Do something with the returned Parse.Object values
+          for (var i = 0; i < results.length; i++) {
+            var object = results[i];
+            var youtubedName = object.attributes.youtube;
+            if (youtubedName === undefined) {
 
-      }
+                  login();
+                  function login() 
+                  {
 
+                    var myParams = {
+                      'clientid' : '468337602361-g8r9h81rem7usdpfsbi0l0k3h4p3du51.apps.googleusercontent.com',
+                      'cookiepolicy' : 'single_host_origin',
+                      'callback' : 'loginCallback',
+                      'approvalprompt':'force',
+                      'scope' : 'https://www.googleapis.com/auth/plus.login https://www.googleapis.com/auth/plus.profile.emails.read'
+                    };
+                    gapi.auth.signIn(myParams);
+                  }
+                }
+            
+                                
+           
+           else if (youtubedName.length >= 1) {
+              currentUser.set("youtubeOn", "on");
+              currentUser.save();
+            }
+          }
+     }
+      });
+    }
 });
 
 

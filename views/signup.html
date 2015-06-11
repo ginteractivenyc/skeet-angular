@@ -3,7 +3,7 @@
 			<div class="col-sm-12">
 			<h1>SKEET</h1>
 
-				<form>
+				<form ng-submit="submit()">
 					<div class="form-group">
 						<label for="inputUsername">Username</label>
 						<input type="text" class="form-control" id="inputUsername" placeholder="Enter Username">
@@ -17,8 +17,45 @@
 						<input type="password" class="form-control" id="inputPassword" placeholder="Password">
 					</div>
 
-					<div  id="loginSubmit" class="btn btn-default">Submit</div>
+					<button  class="btn btn-default signup" >Submit</button><!-- Button trigger modal -->
+					<button type="button" class="btn btn-default signup" data-toggle="modal" data-target="#loginModal">Login</button>
+				
 				</form>
+
+
+
+
+<!-- Modal -->
+<div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Skeet | Login</h4>
+      </div>
+      <div class="modal-body">
+				<form ng-submit="login()">
+					<div class="form-group">
+						<label for="inputUsername">Username</label>
+						<input type="text" class="form-control" id="loginUsername" placeholder="Enter Username">
+					</div>
+
+					<div class="form-group">
+						<label for="inputPassword">Password</label>
+						<input type="password" class="form-control" id="loginPassword" placeholder="Password">
+					</div>
+
+					<button  class="btn btn-default signup" >Login</button><!-- Button trigger modal -->				
+				</form>       
+
+
+
+      </div>
+
+    </div>
+  </div>
+</div>
+
 		    </div>
 		</div>
 
