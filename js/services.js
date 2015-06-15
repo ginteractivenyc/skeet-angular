@@ -9,58 +9,67 @@ angular.module('parseService', ['ngResource'])
 });
 
 
-//home Music
-angular.module('musicHomeService', ['ngResource'])
-.factory('musicHomeService', function($resource) {
-  return $resource('https://api.soundcloud.com/users/2306715/tracks.json?client_id=07b0e9b7e4ac9e8454b61d33eaba766b', {},        
-  	{ get: { method: "GET", isArray: true }});
 
+
+
+skeetApp.factory('skeetAppFactory', function($http){
+  var urlBase = 'https://api.parse.com';
+  var skeetAppFactory = {};
+
+
+
+  skeetAppFactory.storeUser = function(skeetUser){
+    return $http({
+      method: 'POST',
+      url: urlBase + '/1/classes/skeetusers',
+      data: skeetUser,
+      headers:  {'X-Parse-Application-Id':'tzlVexuKShRsUHAGSV30qJYz28953tIOPSs0dl3z', 'X-Parse-REST-API-Key':'tY4eHyUnom4FZC9xAypgXsquEauGFQErvqx2YZZQ', 'Content-type' : 'application/json'}
+    })
+  }
+
+
+
+
+  skeetAppFactory.getSoundcloudUser = function(query){
+    return $http({
+      method: 'GET',
+      url: urlBase + '/1/classes/skeetusers?where=' + query,
+      headers:  {'X-Parse-Application-Id':'tzlVexuKShRsUHAGSV30qJYz28953tIOPSs0dl3z', 'X-Parse-REST-API-Key':'tY4eHyUnom4FZC9xAypgXsquEauGFQErvqx2YZZQ', 'Content-type' : 'application/json'}
+      
+    })
+  }
+
+
+
+
+
+
+  skeetAppFactory.storeTwitterUser = function(twitterUser){
+    return $http({
+      method: 'POST',
+      url: urlBase + '/1/classes/skeetusers',
+      data: twitterUser
+    })
+  }
+
+
+  skeetAppFactory.storeSoundcloudUser = function(soundcloudUser){
+    return $http({
+      method: 'POST',
+      url: urlBase + '/1/classes/skeetusers',
+      data: soundcloudUser
+    })
+  }
+
+
+
+  return skeetAppFactory;
 });
 
-//home Video
-angular.module('videoHomeService', ['ngResource'])
-.factory('videoHomeService', function($resource) {
-  return $resource('https://gdata.youtube.com/feeds/api/users/bklynstickup/uploads?v=2&alt=json&orderby=published&max-results=5', {},        
-  	{ get: { method: "GET" }});
-
-});
 
 
-/*angular.module('instagramHomeService', ['ngResource']).service('instagramHomeService', function($http) {
-  return {
-    async: function() {
-      return $http.jsonp('https://api.instagram.com/v1/users/22132301/media/recent?count=5&client_id=7380072fbc2f438994b747e10485357f&callback=JSON_CALLBACK'); 
-    }
-  };
-});*/
 
-//home Instagram
-/*angular.module('instagramHomeService', ['ngResource'])
-.factory('instagramHomeService', function($resource) {
-  return $resource('https://api.instagram.com/v1/users/22132301/media/recent?count=5&client_id=7380072fbc2f438994b747e10485357f', {}, {
-      getJSONP: {
-        method: 'JSONP',
-        isArray: false ,
-        params: {
-          callback: 'JSON_CALLBACK'
-        }
-      }
-  });
-});*/
-// home IG
-angular.module('instagramHomeService', ['ngResource']).factory("instagramHomeService", function($resource) {
-  return $resource("https://api.instagram.com/v1/users/22132301/media/recent?count=5&client_id=7380072fbc2f438994b747e10485357f",
-    { callback: "JSON_CALLBACK" },
-    { get: { method: "JSONP", isArray: false }});
-});
 
-//home Merch
-angular.module('merchHomeService', ['ngResource'])
-.factory('merchHomeService', function($resource) {
-  return $resource('http://api.bigcartel.com/bklynstickup/products.json', {},        
-  	{ get: { method: "GET", isArray: true }});
-
-});
 
 
 angular.module('newsHomeService',[]).

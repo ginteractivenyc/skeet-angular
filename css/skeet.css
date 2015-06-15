@@ -25,7 +25,6 @@ h3{
   -webkit-transform: translateZ(0);
   overflow: hidden;
   width: 100%;
-  font-family: 'Fjalla One', sans-serif;
   border-bottom: 1px solid #c4c4c4;
   height: 50px;
   background: black;
@@ -33,13 +32,31 @@ h3{
 }
 
 
+#timeline{
+  display: none;
+  position: fixed;
+  top: 65px;
+  right: 0;
+  width: 300px;
+  height: 275px;
+  background: rgba(0, 0, 0, 0.8);
+  z-index: 100;
+  color: white;
+}
+
+
 .carouselWrapperOuter{
     padding-top: 25px;
 }
+
+
+
 .carouselWrapperOuter:nth-child(2n) {
   background: rgba(221, 221, 221, 0.8);
   width:100%;
 }
+
+
 
 .carouselWrapper{
 
@@ -188,10 +205,6 @@ left: -2%;
 
 
 @media only screen and (min-width : 960px){
-  #skeetSlider{
-max-width: 960px;
-margin:0 auto;
-}
 .carouselWrapper{
 	width:960px;
 }

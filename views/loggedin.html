@@ -1,26 +1,62 @@
+<div class="skeetWrapper">
+<form id="uploadLogo">
+  <label for="logoInp">Select Logo</label>
+    <img id="logoPlaceholder" src="http://placehold.it/200x50" alt="your image" />
+    <input type='file' id="logoInp" />   
+</form>
+
 <form id="uploadPhoto" runat="server">
-    <img id="blah" src="http://placehold.it/640x360" alt="your image" />
-    <input type='file' id="imgInp" />
-    
+    <label for="imgInp">Select Profile Image</label>
+
+    <img id="profilePlaceholder" src="http://placehold.it/640x360" alt="your image" />
+    <input type='file' id="imgInp" />   
 </form>
 
 <div class="contentOptionsWrapper">
   <ul id="contentOptions">
    <li>
    	<img ng-click="scLogin()" src="img/soundcloud.png">
-	<input type="checkbox"  class="switcher"  name="soundcloud-checkbox" checked>
+	<input type="checkbox"  class="switcher"  name="soundcloud-checkbox" checked />
    </li>
    <li >
    	<img ng-click="ytLogin()" src="img/YouTube-logo-full_color.png">
-	<input type="checkbox"  class="switcher"  name="youtube-checkbox" checked>   	
+	<input type="checkbox"  class="switcher"  name="youtube-checkbox" checked />   	
    </li>
-   <li >
+   <li>
    	<img ng-click="igLogin()" src="img/igicon.png">
-    <input type="checkbox" class="switcher"  name="instagram-checkbox" checked>   	
+    <input type="checkbox" class="switcher"  name="instagram-checkbox" checked />  
+   </li>
+   <li>
+    <img ng-click="twLogin()" src="img/twicon.png">
+    <input type="checkbox" class="switcher"  name="twitter-checkbox" checked />  
+
+
+      <!-- Twitter Modal -->
+      <div class="modal fade" id="twModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+              <h4 class="modal-title" id="myModalLabel">Enter a Twitter User</h4>
+            </div>
+            <div class="modal-body">
+              <div class="form-group">
+              <input id="twitterInput" type="text" class="form-control" />
+            </div>
+           <button type="button" class="btn btn-primary" id="twSubmit" ng-click="twSubmit()">Create Timeline</button>
+
+            </div>
+
+
+          </div>
+        </div>
+      </div>
+
+
    </li>
   </ul>
 </div>
 
 
-
 <div id="profile"></div>
+</div>

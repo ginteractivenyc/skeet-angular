@@ -30,7 +30,7 @@ skeetApp.config(['$routeProvider', function($routeProvider) {
 
 }]);
 
-skeetApp.controller('signupCtrl', function($scope, $routeParams, $window){
+skeetApp.controller('signupCtrl', function($scope, $routeParams, $window, skeetAppFactory){
 
 $scope.nameHolder = [];
 
@@ -48,7 +48,20 @@ user.set("password", userPass);
 user.set("email", userEmail);
 user.signUp(null, {
   success: function(user, $location) {
+
     $scope.nameHolder.push(userName)
+nameHolderMain.push(userName)
+var skeetUser = {
+    username:  $scope.nameHolder.toString()
+}
+
+      skeetAppFactory.storeUser(skeetUser).success(function(success){
+      console.log('success')
+
+      }).error(function(error){
+      console.log(error)
+      });  
+
    // alert()// Hooray! Let them use the app now.
    $('#skeetLogin').fadeOut();
  $window.location='#/' +  $scope.nameHolder + '/loggedin';
@@ -86,12 +99,10 @@ $('.modal-backdrop').remove();
 
 }
 
-}).controller('loggedinCtrl', function($scope, $location, $window, $routeParams){
-  
-
+}).controller('loggedinCtrl', function($scope, $location, $window, $routeParams, skeetAppFactory){
+console.log(nameHolderMain)
 //initiate parse user
  var currentUser = Parse.User.current();
-
 
 
 // check if user exists
@@ -110,6 +121,11 @@ queryUsers.find({
         var object = results[i];
 
         console.log(object);
+        $scope.username = object.attributes.username;
+        var userSpace = document.getElementsByClassName('globalHeader')[0];
+        var welcomeUser = '<span class="userSpace">' + $scope.username + '</span>';
+        userSpace.innerHTML = welcomeUser
+
 
         //check if soundcloud exists
         if (object.attributes.soundcloudOn === "on") {
@@ -182,6 +198,22 @@ SC.connect(function(){
         $("#description").val(me.description);
         var currentUser = Parse.User.current();
 
+
+
+
+var query = JSON.stringify({"username":"sean"});
+
+
+  skeetAppFactory.getSoundcloudUser(query).success(function(data){
+
+    console.log("success"+ data)
+
+
+
+  }).error(function(error){
+    console.log(error)
+  });
+
         //save soundcloud Name to parse
         currentUser.set("soundcloud",soundcloudName );
         currentUser.set("soundcloudOn", "on");
@@ -194,6 +226,11 @@ SC.connect(function(){
             console.log("There was an error")
           }
         });
+
+
+
+
+
 
       });
     });
@@ -343,6 +380,23 @@ $('input[name="youtube-checkbox"]').on('switchChange.bootstrapSwitch', function(
 
 
 
+$scope.twLogin = function(){
+    $('#twModal').modal('toggle');
+}
+
+var twitterUser = $('#twitterInput').val();
+
+$scope.twSubmit = function(){
+skeetAppFactory.storeTwitterUser(twitterUser).success(function(success){
+console.log('success')
+}).error(function(error){
+console.log(error)
+});
+
+
+}
+
+
 }).controller('indexCtrl', function($scope, $location){
   $scope.viewUser = function($event){
     //var nameHolder = angular.element($event.currentTarget).attr('data-user');
@@ -353,24 +407,45 @@ $('input[name="youtube-checkbox"]').on('switchChange.bootstrapSwitch', function(
 
 }).controller('homeCtrl', function(parseService, $scope, $location, $http, $routeParams){
    // get Music Items
-  
    console.log(nameHolderMain.toString())
   var parseServiceGet = function() {
 
     parseService.get( {where: {username : $routeParams.nameHolder}}, function success(data) {
 
-        //$scope.homeMusic = data;
-        //console.log(data.results[0])
-       
+       //$scope.homeMusic = data;
+        console.log(data.results[0])
+        var soundcloudId = data.results[0].soundcloud;
+        var youtubeId = data.results[0].youtube;
+        var instagramId = data.results[0].instagram;       
+        var twittername = data.results[0].twittername;       
+     
 
         if (data.results[0].profileimage === undefined){
           $scope.profileImage = 'http://placehold.it/640x360'
         } else{
            $scope.profileImage = data.results[0].profileimage.url;
         }
-        var soundcloudId = data.results[0].soundcloud;
-        var youtubeId = data.results[0].youtube;
-        var instagramId = data.results[0].instagram;
+
+
+        if (twittername === undefined){
+
+        }else{
+
+twttr.widgets.load();
+
+twttr.widgets.createTimeline('253171957271498752',
+  document.getElementById('timeline'),
+  {
+    width: '450',
+    height: '700',
+    screenName: twittername
+  }).then(function (el) {
+    console.log("Embedded a timeline.")
+  });
+
+
+
+        }
 
 //get music 
       $http({

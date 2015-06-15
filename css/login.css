@@ -1,16 +1,49 @@
 
 
-form{
-	  max-width: 500px;
-  margin: 20px auto;
+.skeetWrapper{
+  margin:0 auto;
+  max-width:640px;
 }
-form#uploadPhoto{
-  margin-top: 100px;
+
+label{
+  float:left;
+  clear:both;
+}
+form{
+	  max-width: 640px;
+    width:100%;
+    float:left;
+  margin-bottom: 30px;
+}
+
+ form#uploadLogo{
+  margin-top:60px;
+ }
+
+form#uploadPhoto, form#uploadLogo{
   width: 100%;
-  max-width: 640px;
-  margin: 0 auto;
 
 }
+
+#twModal{
+  margin-top:70px;
+}
+
+.form-group{
+  overflow:auto;
+}
+
+.userSpace{
+  color: #fff;
+  max-width: 640px;
+  margin: 0 auto;
+  width: 100%;
+  display: block;
+  font-size: 2.2rem;
+  font-weight:200;
+}
+
+
 
 #signuppage h1{
   font-size: 95px;
@@ -21,19 +54,32 @@ form#uploadPhoto{
 
 
 .signup{
-/*float:left;*/
-margin-right:10px;
+  float: left;
+  margin-right: 10px;
+  margin-top: 20px;
 }
 
-#blah{
+#profilePlaceholder{
 	max-width: 640px;
+  float:left;
+  clear: both;
+}
+#logoPlaceholder{
+  max-width: 200px;
+  float:left;
+  clear: both;
+}
+
+input{
+  float:left;
+  clear:both;
 }
 
 
 
 .contentOptionsWrapper{
-  margin:0 auto;
   max-width:600px;
+  float:left;
 
 }
 
@@ -43,20 +89,19 @@ ul#contentOptions{
 }
 
 
-
-
 ul#contentOptions li{
   list-style: none;
   max-width: 140px;
   width: 100%;
   float: left;
-  margin-left: 50px;
+  margin-left: 10px;
   box-sizing: border-box;
 }
 
 ul#contentOptions li img{
   width:100%;
 }
+
 
 
 .glyphicon-plus{
