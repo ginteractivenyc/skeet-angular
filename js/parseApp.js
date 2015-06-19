@@ -6,6 +6,8 @@ SC.initialize({
 });
 
 var nameHolderMain = [];
+var skeetUserId = [];
+var sessionToken = [];
 var skeetApp = angular.module('skeetApp',  [ 'angular-carousel','ngRoute', 'ngResource', 'parseService']);
 
 
@@ -80,7 +82,10 @@ var userName = document.getElementById('loginUsername').value;
 var userPass = document.getElementById('loginPassword').value;
 Parse.User.logIn(userName, userPass, {
   success: function(user) {
+    console.log(user);
+    skeetUserId.push(user.id)
 $scope.nameHolder.push(userName)
+
    // alert()// Hooray! Let them use the app now.
    $('#skeetLogin').fadeOut();
     $('#loginModal').modal('hide')
@@ -121,6 +126,8 @@ queryUsers.find({
         var object = results[i];
 
         console.log(object);
+        sessionToken.push(object._sessionToken);
+console.log(sessionToken);
         $scope.username = object.attributes.username;
         var userSpace = document.getElementsByClassName('globalHeader')[0];
         var welcomeUser = '<span class="userSpace">' + $scope.username + '</span>';
@@ -192,30 +199,34 @@ $("#imgInp").change(function(){
 $scope.scLogin = function(){
 SC.connect(function(){
       SC.get("/me", function(me){
-        var soundcloudName = me.username;
-        $("#username").text(soundcloudName);
-         console.log(soundcloudName);
+        $scope.soundcloudName = me.username;
+        $("#username").text($scope.soundcloudName);
         $("#description").val(me.description);
         var currentUser = Parse.User.current();
 
 
 
 
-var query = JSON.stringify({"username":"sean"});
+var objectid = 'F5soERDrjA'
+ /* skeetAppFactory.getSoundcloudUser(objectid).success(function(data){
+    console.log(data)
+  }).error(function(error){
+    console.log(error)
+  });*/
 
-
-  skeetAppFactory.getSoundcloudUser(query).success(function(data){
-
-    console.log("success"+ data)
-
-
-
+      var soundcloudUser = {
+        soundcloud: $scope.soundcloudName
+      }
+  skeetAppFactory.storeSoundcloudUser(objectid, soundcloudUser, sessionToken).success(function(data){
+    console.log(data)
   }).error(function(error){
     console.log(error)
   });
 
+  skeetUserId
+
         //save soundcloud Name to parse
-        currentUser.set("soundcloud",soundcloudName );
+      /*  currentUser.set("soundcloud", $scope.soundcloudName );
         currentUser.set("soundcloudOn", "on");
         currentUser.save(null, {
           success: function(successResult){
@@ -225,7 +236,7 @@ var query = JSON.stringify({"username":"sean"});
           error: function(errorResult){
             console.log("There was an error")
           }
-        });
+        });*/
 
 
 
