@@ -1,9 +1,13 @@
 Parse.initialize("tzlVexuKShRsUHAGSV30qJYz28953tIOPSs0dl3z", "F1g9SlNa2FhcneKqj4AdowudvI7zkMXNZUsjtgJm");
 
+//set up soundlouud credentials
 SC.initialize({
   client_id: '0f993f2250c9e82a24acc020437d5da9',
   redirect_uri: 'http://localhost:8888/skeet-angular/loginfiles/callback.html'
 });
+
+
+
 
 var nameHolderMain = [];
 var skeetUserId = [];
@@ -36,7 +40,6 @@ skeetApp.controller('signupCtrl', function($scope, $routeParams, $window, skeetA
 
 $scope.nameHolder = [];
 
-$('.globalHeader').hide();
 var user = new Parse.User();
 var signupSubmit = document.getElementById('signupSubmit');
 
@@ -127,7 +130,7 @@ queryUsers.find({
 
         console.log(object);
         sessionToken.push(object._sessionToken);
-console.log(sessionToken);
+         console.log(sessionToken);
         $scope.username = object.attributes.username;
         var userSpace = document.getElementsByClassName('globalHeader')[0];
         var welcomeUser = '<span class="userSpace">' + $scope.username + '</span>';
@@ -167,31 +170,38 @@ $(".switcher").bootstrapSwitch({
   $('.dropdown-menu').find('li').click(function (e) {
     e.stopPropagation();
   });
-    function readURL(input) {
-        if (input.files && input.files[0]) {
-            var reader = new FileReader();
-            
-            reader.onload = function (e) {
-                $('#blah').attr('src', e.target.result);
-        var currentUser = Parse.User.current();
 
-        var sendThis =  $('#blah').attr('src');
-       var parseFile = new Parse.File("mypic.jpg", {
-            base64: sendThis
-        });
-        //save soundcloud Name to parse
-        currentUser.set("profileimage",parseFile );
-        currentUser.save();
-
-            }
-            
-            reader.readAsDataURL(input.files[0]);
-        }
-    }
     
-$("#imgInp").change(function(){
-    readURL(this);
-});
+    $('#imgInp').bind("change", function(e) {
+      var files = e.target.files || e.dataTransfer.files;
+      // Our file var now holds the selected file
+      file = files[0];
+
+
+          skeetAppFactory.storeProfileImage(file).success(function(success){
+            console.log(success)
+              $('#profilePlaceholder').attr('src', success.url);
+                //store file in user class
+
+                var profileImage = {
+                  profileimage: success.url
+                }
+                    var currentUser = Parse.User.current();
+                      var objectid = currentUser.id
+                skeetAppFactory.assignProfileImage(objectid, profileImage, sessionToken).success(function(success){
+                  console.log(success);
+                }).error(function(){
+
+                });
+
+
+
+
+          }).error(function(error){
+            console.log(error)
+          });
+    });
+
 
 
 //soundcloud login
@@ -203,27 +213,18 @@ SC.connect(function(){
         $("#username").text($scope.soundcloudName);
         $("#description").val(me.description);
         var currentUser = Parse.User.current();
+       var objectid = currentUser.id
 
+        var soundcloudUser = {
+          soundcloud: $scope.soundcloudName
+        }
+        skeetAppFactory.storeSoundcloudUser(objectid, soundcloudUser, sessionToken).success(function(data) {
+          console.log(data)
+            $('input[name="soundcloud-checkbox"]').bootstrapSwitch('state', 'true');
+        }).error(function(error) {
+          console.log(error)
+        });
 
-
-
-var objectid = 'F5soERDrjA'
- /* skeetAppFactory.getSoundcloudUser(objectid).success(function(data){
-    console.log(data)
-  }).error(function(error){
-    console.log(error)
-  });*/
-
-      var soundcloudUser = {
-        soundcloud: $scope.soundcloudName
-      }
-  skeetAppFactory.storeSoundcloudUser(objectid, soundcloudUser, sessionToken).success(function(data){
-    console.log(data)
-  }).error(function(error){
-    console.log(error)
-  });
-
-  skeetUserId
 
         //save soundcloud Name to parse
       /*  currentUser.set("soundcloud", $scope.soundcloudName );
@@ -238,11 +239,6 @@ var objectid = 'F5soERDrjA'
           }
         });*/
 
-
-
-
-
-
       });
     });
 }
@@ -251,8 +247,8 @@ var objectid = 'F5soERDrjA'
 
 $scope.ytLogin = function() {
 
-
 login();
+
 function login() 
 {
 
@@ -264,6 +260,8 @@ function login()
     'scope' : 'https://www.googleapis.com/auth/plus.login https://www.googleapis.com/auth/plus.profile.emails.read'
   };
   gapi.auth.signIn(myParams);
+
+
 }
 
 
@@ -434,7 +432,7 @@ console.log(error)
         if (data.results[0].profileimage === undefined){
           $scope.profileImage = 'http://placehold.it/640x360'
         } else{
-           $scope.profileImage = data.results[0].profileimage.url;
+           $scope.profileImage = data.results[0].profileimage;
         }
 
 
@@ -544,6 +542,82 @@ $('.rn-carousel-controls').each(function(){
 }, 150);
 }
 
+
+
+
+
+//set up youtube
+function loginCallback(result)
+{
+   if(result['status']['signed_in'])
+    {
+        var request = gapi.client.plus.people.get(
+        {
+            'userId': 'me'
+        }); 
+        request.execute(function (resp)
+        {
+            var email = '';
+            if(resp['emails'])
+            {
+                for(i = 0; i < resp['emails'].length; i++)
+                {
+                    if(resp['emails'][i]['type'] == 'account')
+                    {
+                        email = resp['emails'][i]['value'];
+                    }
+                }
+            }
+ 
+            var str = "Name:" + resp['displayName'] + "<br>";
+            //str += "Image:" + resp['image']['url'] + "<br>";
+            //str += "<img src='" + resp['image']['url'] + "' /><br>";
+ 
+            str += "URL:" + resp['url'] + "<br>";
+            str += "Email:" + email + "<br>";
+            //document.getElementById("profile").innerHTML = str;
+                var youtubeName = resp['displayName'];
+                var currentUser = Parse.User.current();
+
+     
+//Perform Youtube function
+
+      var currentUser = Parse.User.current();
+      var objectid = currentUser.id
+
+      var youtubeUser = {
+        youtube: youtubeName
+      }
+
+    var urlBase = 'https://api.parse.com';
+              
+              $.ajax({
+                type: 'PUT',
+                url: urlBase + '/1/users/' + objectid,
+                data: JSON.stringify(youtubeUser),
+                headers: {
+                  'X-Parse-Application-Id': 'tzlVexuKShRsUHAGSV30qJYz28953tIOPSs0dl3z',
+                  'X-Parse-REST-API-Key': 'tY4eHyUnom4FZC9xAypgXsquEauGFQErvqx2YZZQ',
+                  "Content-Type": "application/json",
+                  "X-Parse-Session-Token": sessionToken
+                },
+                success: function(resultData) {
+                        console.log(resultData)
+                    $('input[name="youtube-checkbox"]').bootstrapSwitch('state', 'true');   
+                }
+              });
+
+        });
+ 
+    }  
+}
+
+
+function onLoadCallback()
+{
+    gapi.client.setApiKey('AIzaSyBZGeefjprHm8Zq6DkblpvNV0eQ65l2E84');
+    gapi.client.load('plus', 'v1',function(){});
+}
 
 
 

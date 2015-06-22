@@ -12,23 +12,37 @@ angular.module('parseService', ['ngResource'])
 
 
 
-skeetApp.factory('skeetAppFactory', function($http){
+skeetApp.factory('skeetAppFactory', [ '$rootScope', '$http', function($rootScope, $http){
   var urlBase = 'https://api.parse.com';
   var skeetAppFactory = {};
 
 
 
-  skeetAppFactory.storeUser = function(skeetUser){
+
+
+
+
+
+
+  skeetAppFactory.storeProfileImage = function(image){
     return $http({
       method: 'POST',
-      url: urlBase + '/1/classes/skeetusers',
-      data: skeetUser,
-      headers:  {'X-Parse-Application-Id':'tzlVexuKShRsUHAGSV30qJYz28953tIOPSs0dl3z', 'X-Parse-REST-API-Key':'tY4eHyUnom4FZC9xAypgXsquEauGFQErvqx2YZZQ', 'Content-type' : 'application/json'}
+      url: urlBase + '/1/files/pic.jpg',      
+      data: image,
+      headers:  {'X-Parse-Application-Id':'tzlVexuKShRsUHAGSV30qJYz28953tIOPSs0dl3z', 'X-Parse-REST-API-Key':'tY4eHyUnom4FZC9xAypgXsquEauGFQErvqx2YZZQ', 'Content-Type': 'image/jpeg'}
+
     })
   }
 
 
-
+  skeetAppFactory.assignProfileImage = function(objectid, profileImage, sessionToken){
+    return $http({
+      method: 'PUT',
+      url: urlBase + '/1/users/' + objectid,
+      data: profileImage,
+      headers: {'X-Parse-Application-Id':'tzlVexuKShRsUHAGSV30qJYz28953tIOPSs0dl3z', 'X-Parse-REST-API-Key':'tY4eHyUnom4FZC9xAypgXsquEauGFQErvqx2YZZQ', "Content-Type": "application/json", "X-Parse-Session-Token" : sessionToken}
+    })
+  }
 
   skeetAppFactory.getSoundcloudUser = function(objectid){
     return $http({
@@ -61,11 +75,25 @@ skeetApp.factory('skeetAppFactory', function($http){
       headers: {'X-Parse-Application-Id':'tzlVexuKShRsUHAGSV30qJYz28953tIOPSs0dl3z', 'X-Parse-REST-API-Key':'tY4eHyUnom4FZC9xAypgXsquEauGFQErvqx2YZZQ', "Content-Type": "application/json", "X-Parse-Session-Token" : sessionToken}
     })
   }
+// this service wont work due to google's excessive callback requirements, have to use regular jquery ajax method
+  skeetAppFactory.storeYouTubeUser = function(objectid, youtubeUser, sessionToken){
+    return $http({
+      method: 'PUT',
+      url: urlBase + '/1/users/' + objectid,
+      data: youtubeUser,
+      headers: {'X-Parse-Application-Id':'tzlVexuKShRsUHAGSV30qJYz28953tIOPSs0dl3z', 'X-Parse-REST-API-Key':'tY4eHyUnom4FZC9xAypgXsquEauGFQErvqx2YZZQ', "Content-Type": "application/json", "X-Parse-Session-Token" : sessionToken}
+    })
+  }
+
+
+
 
 
 
   return skeetAppFactory;
-});
+}]);
+
+
 
 
 
