@@ -18,7 +18,14 @@ skeetApp.factory('skeetAppFactory', [ '$rootScope', '$http', function($rootScope
 
 
 
-
+ skeetAppFactory.storeUser = function(userObject){
+     return $http({
+      method: 'POST',
+      url: urlBase + '/1/users',      
+      data: userObject,
+      headers:  {'X-Parse-Application-Id':'tzlVexuKShRsUHAGSV30qJYz28953tIOPSs0dl3z', 'X-Parse-REST-API-Key':'tY4eHyUnom4FZC9xAypgXsquEauGFQErvqx2YZZQ', 'Content-Type': 'application/json'}
+    }) 
+ }
 
 
 

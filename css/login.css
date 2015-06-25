@@ -33,6 +33,16 @@ form#uploadPhoto, form#uploadLogo{
   margin-top:70px;
 }
 
+
+#loginModal{
+  margin-top:60px;
+}
+
+.modal-content{
+    overflow: auto;
+
+}
+
 .form-group{
   overflow:auto;
 }
