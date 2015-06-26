@@ -11,7 +11,6 @@ SC.initialize({
 
 var nameHolderMain = [];
 var skeetUserId = [];
-var sessionToken = [];
 var skeetApp = angular.module('skeetApp',  [ 'angular-carousel','ngRoute', 'ngResource', 'parseService']);
 
 

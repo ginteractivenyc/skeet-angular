@@ -17,101 +17,140 @@ var skeetUser = {
     password: userPass,
     email:userEmail
 }
-
 //signup user
+    skeetAppFactory.storeUser(skeetUser).success(function(success) {
+      console.log(success)
+      skeetUserId.push(success.objectId)
+      $('#skeetLogin').fadeOut();
+      $window.location = '#/' + $scope.nameHolder + '/loggedin';
+          memcachejs.set("objectid", success.objectId );
+          memcachejs.set("sessionToken", success.sessionToken);
+    }).error(function(error) {
+      console.log(error)
+    });
 
-skeetAppFactory.storeUser(skeetUser).success(function(success) {
-
-  console.log(success)
-skeetUserId.push(success.objectId)
-
-  $('#skeetLogin').fadeOut();
-  $window.location = '#/' + $scope.nameHolder + '/loggedin';
-
-}).error(function(error) {
-  console.log(error)
-});
-
-}
-
-$scope.login = function(){
-var userName = document.getElementById('loginUsername').value;
-var userPass = document.getElementById('loginPassword').value;
-Parse.User.logIn(userName, userPass, {
-  success: function(user) {
-    console.log(user);
-    skeetUserId.push(user.id)
-$scope.nameHolder.push(userName)
-
-   // alert()// Hooray! Let them use the app now.
-   $('#skeetLogin').fadeOut();
-    $('#loginModal').modal('hide')
- $('body').removeClass('modal-open');
-$('.modal-backdrop').remove();
- $window.location='#/' +  $scope.nameHolder + '/loggedin';
-
-// initiate auth popup
-  // return false;    // Do stuff after successful login.
-  },
-  error: function(user, error) {
-    console.log(error)
-    // The login failed. Check error to see why.
   }
-});
 
-}
+  $scope.login = function() {
+    var userName = document.getElementById('loginUsername').value;
+    var userPass = document.getElementById('loginPassword').value;
+    Parse.User.logIn(userName, userPass, {
+      success: function(user) {
+        console.log(user);
+        skeetUserId.push(user.id)
+        $scope.nameHolder.push(userName)
 
+        // alert()// Hooray! Let them use the app now.
+        $('#skeetLogin').fadeOut();
+        $('#loginModal').modal('hide')
+        $('body').removeClass('modal-open');
+        $('.modal-backdrop').remove();
+        $window.location = '#/' + $scope.nameHolder + '/loggedin';
+
+        // initiate auth popup
+        // return false;    // Do stuff after successful login.
+      },
+      error: function(user, error) {
+        console.log(error)
+          // The login failed. Check error to see why.
+      }
+    });
+
+  }
 }).controller('loggedinCtrl', function($scope, $location, $window, $routeParams, skeetAppFactory){
 console.log(nameHolderMain)
-//initiate parse user
- var currentUser = Parse.User.current();
 
 
-// check if user exists
+function storeSoundCloudUser(){
+SC.connect(function(){
+      SC.get("/me", function(me){
+        $scope.soundcloudName = me.username;
+        $("#username").text($scope.soundcloudName);
+        $("#description").val(me.description);
 
-var skeetUsers = Parse.Object.extend("User");
-var queryUsers = new Parse.Query(skeetUsers);
-queryUsers.equalTo("username", $routeParams.nameHolder);
-queryUsers.find({
-  success: function(results) {
-    if (results.length <= 0){
-     // alert('User Doesnt Exist');
-     $window.location='#/signup';
+        var objectid = memcachejs.get("objectid");
+        var sessionToken = memcachejs.get("sessionToken");
+        var soundcloudUser = {
+          soundcloud: $scope.soundcloudName
+        }
+        skeetAppFactory.storeSoundcloudUser(objectid, soundcloudUser, sessionToken).success(function(data) {
+          console.log(data)
+            $('input[name="soundcloud-checkbox"]').bootstrapSwitch('state', 'true');
+        }).error(function(error) {
+          console.log(error)
+        });
+
+      });
+    });
+}
+
+
+//switch functions
+  function soundcloudSwitchOn(state, onoff) {
+    var objectid = memcachejs.get("objectid");
+    var sessionToken = memcachejs.get("sessionToken");
+
+    var soundCloudSwitch = {
+      soundcloudOn: onoff
     }
-    // Do something with the returned Parse.Object values
-      for (var i = 0; i < results.length; i++) {
-        var object = results[i];
+    skeetAppFactory.soundcloudSwitchOn(objectid, soundCloudSwitch, sessionToken).success(function(success) {
+      console.log("Switch " + success)
+      $('input[name="soundcloud-checkbox"]').bootstrapSwitch('state', state);
 
-        console.log(object);
-        sessionToken.push(object._sessionToken);
-         console.log(sessionToken);
-        $scope.username = object.attributes.username;
-        var userSpace = document.getElementsByClassName('globalHeader')[0];
-        var welcomeUser = '<span class="userSpace">' + $scope.username + '</span>';
-        userSpace.innerHTML = welcomeUser
+    }).error(function(error) {
+      console.log(error);
+    });
 
-
-        //check if soundcloud exists
-        if (object.attributes.soundcloudOn === "on") {
-          $('input[name="soundcloud-checkbox"]').bootstrapSwitch('state', 'true');
-        }
-        //check if youtube exists
-        if (object.attributes.youtubeOn  === "on") {
-          $('input[name="youtube-checkbox"]').bootstrapSwitch('state', 'true');
-        }
-        //check if instagram exists
-        if (object.attributes.instagramOn  === "on") {
-          $('input[name="instagram-checkbox"]').bootstrapSwitch('state', 'true');
-        }
-
-
-      }
-  },
-  error: function(error) {
-    alert("Error: " + error.code + " " + error.message);
   }
-});
 
+  function youtubeSwitchOn(state, onoff) {
+    var objectid = memcachejs.get("objectid");
+    var sessionToken = memcachejs.get("sessionToken");
+
+    var youTubeSwitch = {
+      youtubeOn: onoff
+    }
+    skeetAppFactory.youtubeSwitchOn(objectid, youTubeSwitch, sessionToken).success(function(success) {
+      console.log("Switch " + success)
+      $('input[name="youtube-checkbox"]').bootstrapSwitch('state', state);
+
+    }).error(function(error) {
+      console.log(error);
+    });
+
+  }
+
+
+    //Switch Check: Soundcloud
+     var objectid = memcachejs.get("objectid");
+
+      skeetAppFactory.getSoundcloudUser(objectid).success(function(success) {
+        console.log(success);
+        var soundcloudOnOff = success.soundcloudOn;
+        if (soundcloudOnOff === "on") {
+          soundcloudSwitchOn(true, "on");
+
+        } else if (soundcloudOnOff === "off") {
+          soundcloudSwitchOn(false, "off");
+        }
+      }).error(function(error) {
+        console.log(error)
+      });
+
+    //Switch Check: Youtube
+
+        skeetAppFactory.getYoutubeUser(objectid).success(function(success) {
+        console.log(success);
+        var youtubeOnOff = success.youtubeOn;
+        if (youtubeOnOff === "on") {
+          youtubeSwitchOn(true, "on");
+
+        } else if (youtubeOnOff === "off") {
+          youtubeSwitchOn(false, "off");
+        }
+      }).error(function(error) {
+        console.log(error)
+      }); 
 
 
 
@@ -156,45 +195,10 @@ $(".switcher").bootstrapSwitch({
           });
     });
 
-
-
 //soundcloud login
 
 $scope.scLogin = function(){
-SC.connect(function(){
-      SC.get("/me", function(me){
-        $scope.soundcloudName = me.username;
-        $("#username").text($scope.soundcloudName);
-        $("#description").val(me.description);
-        var currentUser = Parse.User.current();
-       var objectid = skeetUserId;
-
-        var soundcloudUser = {
-          soundcloud: $scope.soundcloudName
-        }
-        skeetAppFactory.storeSoundcloudUser(objectid, soundcloudUser, sessionToken).success(function(data) {
-          console.log(data)
-            $('input[name="soundcloud-checkbox"]').bootstrapSwitch('state', 'true');
-        }).error(function(error) {
-          console.log(error)
-        });
-
-
-        //save soundcloud Name to parse
-      /*  currentUser.set("soundcloud", $scope.soundcloudName );
-        currentUser.set("soundcloudOn", "on");
-        currentUser.save(null, {
-          success: function(successResult){
-            console.log(successResult) 
-             $('input[name="soundcloud-checkbox"]').bootstrapSwitch('state', 'true');            
-          },
-          error: function(errorResult){
-            console.log("There was an error")
-          }
-        });*/
-
-      });
-    });
+storeSoundCloudUser();
 }
 
 //youtube login
@@ -218,7 +222,6 @@ function login()
 
 }
 
-
 }
 
 //instagram login
@@ -233,113 +236,60 @@ function login()
 
   //toggle soundcloud switch
   $('input[name="soundcloud-checkbox"]').on('switchChange.bootstrapSwitch', function(event, state) {
+        var objectid = memcachejs.get("objectid");
+        var sessionToken = memcachejs.get("sessionToken");   
     if (state === false) {
-      currentUser.set("soundcloudOn", "off");
-      currentUser.save();
+         soundcloudSwitchOn(false, "off");
 
     }
 
     if (state === true) {
-      //currentUser.set("soundcloudOn", "on");
-      //currentUser.save();
-      var skeetUsers = Parse.Object.extend("User");
-      var queryUsers = new Parse.Query(skeetUsers);
-      queryUsers.equalTo("username", $routeParams.nameHolder);
-      queryUsers.find({
-        success: function(results) {
-          // Do something with the returned Parse.Object values
-          for (var i = 0; i < results.length; i++) {
-            var object = results[i];
-            var soundcloudName = object.attributes.soundcloud;
-            if (soundcloudName === undefined) {
 
-              SC.connect(function() {
-                SC.get("/me", function(me) {
-                  var soundcloudName = me.username;
-                  $("#username").text(soundcloudName);
-                  console.log(soundcloudName);
-                  $("#description").val(me.description);
-                  var currentUser = Parse.User.current();
-
-                  //save soundcloud Name to parse
-                  currentUser.set("soundcloud", soundcloudName);
-                  currentUser.set("soundcloudOn", "on");
-                  currentUser.save(null, {
-                    success: function(successResult) {
-                      console.log(successResult)
-                      $('input[name="soundcloud-checkbox"]').bootstrapSwitch('state', 'true');
-                    },
-                    error: function(errorResult) {
-                      console.log("There was an error")
-                     // $('input[name="soundcloud-checkbox"]').bootstrapSwitch('state', 'false');            
-
-                    }
-                  });
-
-                });
-              });
-
-
-            } else if (soundcloudName.length >= 1) {
-              currentUser.set("soundcloudOn", "on");
-              currentUser.save();
-            }
-          }
+      skeetAppFactory.getSoundcloudUser(objectid).success(function(success) {
+        console.log(success);
+        var soundcloudName = success.soundcloud;
+        if (soundcloudName === undefined) {
+          storeSoundcloudUser();
+        } else if (soundcloudName.length >= 1) {
+          soundcloudSwitchOn(true, "on");
         }
+      }).error(function(error) {
+        console.log(error)
       });
-    }
+
+      }
 
   });
 
 
   //toggle youtube switch
-$('input[name="youtube-checkbox"]').on('switchChange.bootstrapSwitch', function(event, state) {
+  $('input[name="youtube-checkbox"]').on('switchChange.bootstrapSwitch', function(event, state) {
+        var objectid = memcachejs.get("objectid");
+        var sessionToken = memcachejs.get("sessionToken");   
     if (state === false) {
-      currentUser.set("youtubeOn", "off");
-      currentUser.save();
+         youtubeSwitchOn(false, "off");
 
     }
 
     if (state === true) {
-      //currentUser.set("soundcloudOn", "on");
-      //currentUser.save();
-      var skeetUsers = Parse.Object.extend("User");
-      var queryUsers = new Parse.Query(skeetUsers);
-      queryUsers.equalTo("username", $routeParams.nameHolder);
-      queryUsers.find({
-        success: function(results) {
-          // Do something with the returned Parse.Object values
-          for (var i = 0; i < results.length; i++) {
-            var object = results[i];
-            var youtubedName = object.attributes.youtube;
-            if (youtubedName === undefined) {
 
-                  login();
-                  function login() 
-                  {
-
-                    var myParams = {
-                      'clientid' : '468337602361-g8r9h81rem7usdpfsbi0l0k3h4p3du51.apps.googleusercontent.com',
-                      'cookiepolicy' : 'single_host_origin',
-                      'callback' : 'loginCallback',
-                      'approvalprompt':'force',
-                      'scope' : 'https://www.googleapis.com/auth/plus.login https://www.googleapis.com/auth/plus.profile.emails.read'
-                    };
-                    gapi.auth.signIn(myParams);
-                  }
-                }
-            
-                                
-           
-           else if (youtubedName.length >= 1) {
-              currentUser.set("youtubeOn", "on");
-              currentUser.save();
-            }
-          }
-     }
+      skeetAppFactory.getYoutubeUser(objectid).success(function(success) {
+        console.log(success);
+        var youtubeName = success.youtube;
+        if (youtubeName === undefined) {
+          storeYouTubeUser();
+        } else if (youtubeName.length >= 1) {
+          youtubeSwitchOn(true, "on");
+        }
+      }).error(function(error) {
+        console.log(error)
       });
-    }
-});
+
+      }
+
+  });
+
+
 
 
 
@@ -485,7 +435,17 @@ var getInstagram = function(){
   }
    parseServiceGet();
 
+
+
+
 });
+
+
+
+
+
+
+
 skeetApp.filter('artworkCheck', function () {
 
     return function (value) {
@@ -535,13 +495,8 @@ function loginCallback(result)
             str += "Email:" + email + "<br>";
             //document.getElementById("profile").innerHTML = str;
                 var youtubeName = resp['displayName'];
-                var currentUser = Parse.User.current();
-
-     
-//Perform Youtube function
-
-      var currentUser = Parse.User.current();
-      var objectid = currentUser.id
+      var objectid =memcachejs.get("objectid");
+      var sessionToken =memcachejs.get("sessionToken");
 
       var youtubeUser = {
         youtube: youtubeName
@@ -576,4 +531,7 @@ function onLoadCallback()
     gapi.client.setApiKey('AIzaSyBZGeefjprHm8Zq6DkblpvNV0eQ65l2E84');
     gapi.client.load('plus', 'v1',function(){});
 }
+
+
+
 

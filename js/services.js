@@ -10,13 +10,37 @@ angular.module('parseService', ['ngResource'])
 
 
 
-
-
 skeetApp.factory('skeetAppFactory', [ '$rootScope', '$http', function($rootScope, $http){
+
   var urlBase = 'https://api.parse.com';
   var skeetAppFactory = {};
 
 
+
+
+
+//GET 
+  skeetAppFactory.getSoundcloudUser = function(objectid){
+    return $http({
+      method: 'GET',
+      url: urlBase + '/1/users/' + objectid,
+      headers:  {'X-Parse-Application-Id':'tzlVexuKShRsUHAGSV30qJYz28953tIOPSs0dl3z', 'X-Parse-REST-API-Key':'tY4eHyUnom4FZC9xAypgXsquEauGFQErvqx2YZZQ', 'Content-type' : 'application/json'}
+      
+    })
+  }
+
+
+   skeetAppFactory.getYoutubeUser = function(objectid){
+    return $http({
+      method: 'GET',
+      url: urlBase + '/1/users/' + objectid,
+      headers:  {'X-Parse-Application-Id':'tzlVexuKShRsUHAGSV30qJYz28953tIOPSs0dl3z', 'X-Parse-REST-API-Key':'tY4eHyUnom4FZC9xAypgXsquEauGFQErvqx2YZZQ', 'Content-type' : 'application/json'}
+      
+    })
+  } 
+
+
+//POST
 
  skeetAppFactory.storeUser = function(userObject){
      return $http({
@@ -26,9 +50,6 @@ skeetApp.factory('skeetAppFactory', [ '$rootScope', '$http', function($rootScope
       headers:  {'X-Parse-Application-Id':'tzlVexuKShRsUHAGSV30qJYz28953tIOPSs0dl3z', 'X-Parse-REST-API-Key':'tY4eHyUnom4FZC9xAypgXsquEauGFQErvqx2YZZQ', 'Content-Type': 'application/json'}
     }) 
  }
-
-
-
 
 
   skeetAppFactory.storeProfileImage = function(image){
@@ -42,7 +63,17 @@ skeetApp.factory('skeetAppFactory', [ '$rootScope', '$http', function($rootScope
   }
 
 
-  skeetAppFactory.assignProfileImage = function(objectid, profileImage, sessionToken){
+  skeetAppFactory.storeTwitterUser = function(twitterUser){
+    return $http({
+      method: 'POST',
+      url: urlBase + '/1/classes/skeetusers',
+      data: twitterUser
+    })
+  }
+
+
+//PUT
+    skeetAppFactory.assignProfileImage = function(objectid, profileImage, sessionToken){
     return $http({
       method: 'PUT',
       url: urlBase + '/1/users/' + objectid,
@@ -51,27 +82,6 @@ skeetApp.factory('skeetAppFactory', [ '$rootScope', '$http', function($rootScope
     })
   }
 
-  skeetAppFactory.getSoundcloudUser = function(objectid){
-    return $http({
-      method: 'GET',
-      url: urlBase + '/1/users/' + objectid,
-      headers:  {'X-Parse-Application-Id':'tzlVexuKShRsUHAGSV30qJYz28953tIOPSs0dl3z', 'X-Parse-REST-API-Key':'tY4eHyUnom4FZC9xAypgXsquEauGFQErvqx2YZZQ', 'Content-type' : 'application/json'}
-      
-    })
-  }
-
-
-
-
-
-
-  skeetAppFactory.storeTwitterUser = function(twitterUser){
-    return $http({
-      method: 'POST',
-      url: urlBase + '/1/classes/skeetusers',
-      data: twitterUser
-    })
-  }
 
 
   skeetAppFactory.storeSoundcloudUser = function(objectid, soundcloudUser, sessionToken){
@@ -82,6 +92,29 @@ skeetApp.factory('skeetAppFactory', [ '$rootScope', '$http', function($rootScope
       headers: {'X-Parse-Application-Id':'tzlVexuKShRsUHAGSV30qJYz28953tIOPSs0dl3z', 'X-Parse-REST-API-Key':'tY4eHyUnom4FZC9xAypgXsquEauGFQErvqx2YZZQ', "Content-Type": "application/json", "X-Parse-Session-Token" : sessionToken}
     })
   }
+
+
+
+
+  skeetAppFactory.soundcloudSwitchOn = function(objectid, soundCloudSwitch, sessionToken){
+    return $http({
+      method: 'PUT',
+      url: urlBase + '/1/users/' + objectid,
+      data: soundCloudSwitch,
+      headers: {'X-Parse-Application-Id':'tzlVexuKShRsUHAGSV30qJYz28953tIOPSs0dl3z', 'X-Parse-REST-API-Key':'tY4eHyUnom4FZC9xAypgXsquEauGFQErvqx2YZZQ', "Content-Type": "application/json", "X-Parse-Session-Token" : sessionToken}
+    })
+  }
+    skeetAppFactory.youtubeSwitchOn = function(objectid, youTubeSwitch, sessionToken){
+    return $http({
+      method: 'PUT',
+      url: urlBase + '/1/users/' + objectid,
+      data: youTubeSwitch,
+      headers: {'X-Parse-Application-Id':'tzlVexuKShRsUHAGSV30qJYz28953tIOPSs0dl3z', 'X-Parse-REST-API-Key':'tY4eHyUnom4FZC9xAypgXsquEauGFQErvqx2YZZQ', "Content-Type": "application/json", "X-Parse-Session-Token" : sessionToken}
+    })
+  }
+
+
+
 // this service wont work due to google's excessive callback requirements, have to use regular jquery ajax method
   skeetAppFactory.storeYouTubeUser = function(objectid, youtubeUser, sessionToken){
     return $http({
@@ -93,11 +126,9 @@ skeetApp.factory('skeetAppFactory', [ '$rootScope', '$http', function($rootScope
   }
 
 
-
-
-
-
   return skeetAppFactory;
+
+
 }]);
 
 
