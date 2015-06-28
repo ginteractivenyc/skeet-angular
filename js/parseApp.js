@@ -11,8 +11,7 @@ SC.initialize({
 
 var nameHolderMain = [];
 var skeetUserId = [];
-var skeetApp = angular.module('skeetApp',  [ 'angular-carousel','ngRoute', 'ngResource', 'parseService']);
-
+var skeetApp = angular.module('skeetApp',  [ 'angular-carousel','ngRoute', 'ngResource']);
 
 skeetApp.config(['$routeProvider', function($routeProvider) {
   $routeProvider.
@@ -26,16 +25,30 @@ skeetApp.config(['$routeProvider', function($routeProvider) {
     }). 
     when('/:nameHolder', {
       templateUrl: 'views/userpage.html',
-      controller: 'homeCtrl'
-  }).
-    when('/music',{
-      templateUrl: 'views/music.html',
-      controller:'musicCtrl'
+      controller: 'userViewCtrl'
+  }).when('/:nameHolder/music/track/:musicItem',{
+      templateUrl: 'views/musicpage.html',
+      controller:'tracksCtrl'
+    }).when('/:nameHolder/music/playlist/:musicItem',{
+      templateUrl: 'views/musicpage.html',
+      controller:'playlistsCtrl'
     });
-
 }]);
 
 
+skeetApp.run(['$route', '$rootScope', '$location', function ($route, $rootScope, $location) {
+    var original = $location.path;
+    $location.path = function (path, reload) {
+        if (reload === false) {
+            var lastRoute = $route.current;
+            var un = $rootScope.$on('$locationChangeSuccess', function () {
+                $route.current = lastRoute;
+                un();
+            });
+        }
+        return original.apply($location, [path]);
+    };
+}])
 
 
 

@@ -1,12 +1,12 @@
 
-angular.module('parseService', ['ngResource'])
+/*angular.module('parseService', ['ngResource'])
 .factory('parseService', function($resource, $location) {
   return $resource('https://api.parse.com/1/users/', {},        
     { get: { method: "GET", isArray: false,   params: {
        where:'',
     }, headers:  {'X-Parse-Application-Id':'tzlVexuKShRsUHAGSV30qJYz28953tIOPSs0dl3z', 'X-Parse-REST-API-Key':'tY4eHyUnom4FZC9xAypgXsquEauGFQErvqx2YZZQ'} }});
 
-});
+});*/
 
 
 
@@ -17,9 +17,17 @@ skeetApp.factory('skeetAppFactory', [ '$rootScope', '$http', function($rootScope
 
 
 
-
-
 //GET 
+
+  skeetAppFactory.getParseUser = function(whereParams){
+    return $http({
+      method: 'GET',
+      url: urlBase + '/1/users/',
+      headers:  {'X-Parse-Application-Id':'tzlVexuKShRsUHAGSV30qJYz28953tIOPSs0dl3z', 'X-Parse-REST-API-Key':'tY4eHyUnom4FZC9xAypgXsquEauGFQErvqx2YZZQ', 'Content-type' : 'application/json'},
+      params: whereParams
+    })
+  }
+
   skeetAppFactory.getSoundcloudUser = function(objectid){
     return $http({
       method: 'GET',
