@@ -9,18 +9,46 @@
 <div id="skeetSlider" >
 	<img ng-src="{{profileImage}}" class="profileimage">
 	<div id="contentWrapBox" class="contentBox initial">
+	
+	<!--tracks player-->	
+	<div  ng-show="tracksiframe == 'true'">
 		<img src="http://bklynstickup.com/img/close.png" class="closeBtn" ng-click="closeContentBox()">
 		<img src="{{artworkUrl}}" class="artwork">
 		  <div class="artistDetails">
 		  	<span class="artistName">{{artistName}}</span> - <span class="trackTitle">{{trackTitle}}</span>
 		  </div>
+		 
 		<!--<iframe  ng-show="tracksiframe == 'true'" width="120%" height="220" class="sc tracks" scrolling="no" frameborder="no" src="{{musicTrack}}"></iframe>
 		<iframe  ng-show="playlistsiframe == 'true'" width="100%" height="320" class="sc playlists" scrolling="no" frameborder="no" src="{{musicPlaylist}}"></iframe>-->
 		<div class="controlBoard">
-			<div ng-click="playSound($event)" class="playbtn controls"><span class="glyphicon glyphicon-play"></span></div>
-			<div ng-click="pauseSound($event)" class="controls"><span class="glyphicon glyphicon-pause"></span></div>
+			<div ng-show="playbutton == 'true'" ng-click="playSound($event)" class="playbtn controls"><span class="glyphicon glyphicon-play"></span></div>
+			<div ng-show="resumebutton == 'true'" ng-click="resumeSound($event)" class="playbtn controls"><span class="glyphicon glyphicon-play"></span></div>
+			<div ng-show="pausebutton == 'true'"  ng-click="pauseSound($event)" class="controls"><span class="glyphicon glyphicon-pause"></span></div>
 			<div ng-click="stopSound($event)" class="controls"><span class="glyphicon glyphicon-stop"></span></div>
 		</div>
+	</div>
+
+
+	<!--playlist  player-->	
+	<div  ng-show="playlistsiframe == 'true'">
+		<img src="http://bklynstickup.com/img/close.png" class="closeBtn" ng-click="closeContentBox()">
+		<img src="{{artworkUrl}}" class="artwork">
+		  <div class="artistDetails">
+		  	<span class="artistName">{{artistName}}</span> - <span class="trackTitle">{{trackTitle}}</span>
+		  </div>
+		  <ul class="trackList">
+		  		<li ng-repeat="tracks in playlistTracks" data-url="{{tracks.id}}" ng-click="playTrack($event)">{{tracks.title}}</li>
+		  </ul>
+		 
+		<!--<iframe  ng-show="tracksiframe == 'true'" width="120%" height="220" class="sc tracks" scrolling="no" frameborder="no" src="{{musicTrack}}"></iframe>
+		<iframe  ng-show="playlistsiframe == 'true'" width="100%" height="320" class="sc playlists" scrolling="no" frameborder="no" src="{{musicPlaylist}}"></iframe>-->
+		<div class="controlBoard">
+			<div ng-show="playbutton == 'true'" ng-click="playSound($event)" class="playbtn controls"><span class="glyphicon glyphicon-play"></span></div>
+			<div ng-show="resumebutton == 'true'" ng-click="resumeSound($event)" class="playbtn controls"><span class="glyphicon glyphicon-play"></span></div>
+			<div ng-show="pausebutton == 'true'"  ng-click="pauseSound($event)" class="controls"><span class="glyphicon glyphicon-pause"></span></div>
+			<div ng-click="stopSound($event)" class="controls"><span class="glyphicon glyphicon-stop"></span></div>
+		</div>
+	</div>
 
 	</div>
 </div>

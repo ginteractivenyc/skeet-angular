@@ -150,7 +150,7 @@ iframe{
   float: left;
   color: #ffffff;
   margin-left: 20px;
-  font-size: 30px;
+  font-size: 24px;
   max-width: 400px;
 }
 
@@ -168,14 +168,31 @@ iframe{
 .controls{
   float:left;
   margin-right:10px;
+  color: #c4c4c4;
 }
 .glyphicon{
-    color: #fff;
   font-size: 4rem;
 }
 
-.activeControl{
-  color:#595858;
+
+
+ul.trackList{
+  color: #585858;
+  font-size:16px;
+  height:100px;
+  overflow: auto;
+  padding-left:20px;
+  padding-top:10px;
+  width: 300px;
+}
+
+ul.trackList li{
+  margin-bottom:6px;
+  list-style: none;
+}
+
+.activeTrack{
+  color:#ffffff;
 }
 /*Carousel Styles*/
 
