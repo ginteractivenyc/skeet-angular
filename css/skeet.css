@@ -1,10 +1,15 @@
 html, body{
   margin:0;
+      font-family: 'Fjalla One', sans-serif;
+      font-weight: 200;
+
 } 
 
-#skeetlogin{
-    font-family: 'Fjalla One', sans-serif;
-
+h2{
+  color: #ffffff;
+  margin-top: 10px;
+  font-size: 26px;
+  text-transform: uppercase;
 }
 
 h3{
@@ -17,17 +22,17 @@ h3{
 
 
 .globalHeader{
-    position: fixed;
+position: fixed;
   top: 0;
-  left:0;
+  left: 0;
   -webkit-backface-visibility: hidden;
   -webkit-transform: translateZ(0);
   overflow: hidden;
   width: 100%;
-  border-bottom: 1px solid #c4c4c4;
+  /* border-bottom: 1px solid #c4c4c4; */
   height: 50px;
   background: black;
-  z-index: 5000;
+  z-index: 99999999;
 }
 
 
@@ -66,7 +71,6 @@ h3{
 
 .itemTitle, .itemTitle-rectangle{
 font-size: 14px;
-font-family: 'Raleway', sans-serif;
 margin-top:5px;
 display: block;
 float: left;
@@ -102,10 +106,81 @@ text-align: center;
 iframe{
   margin-bottom: 30px;
 }
+
+.skeetOuterWrapper{
+    position: fixed;
+  z-index: 999999;
+  width: 100%;
+  top: 30px;
+}
+
+.marginOne{
+  margin-top: 330px;
+}
+.marginTwo {
+  margin-top: 460px;
+}
+
+.marginThree {
+  margin-top: 520px;
+}
+
+
+#skeetHeader{
+  max-width: 880px;
+  width: 100%;
+  margin: 0 auto;
+}
+
+.profileimage{
+  display: none;
+}
+
+.contentBox{
+  overflow: auto;
+  margin-bottom: 30px;
+}
+
+
+.artwork{
+  max-width: 200px;
+  float:left;
+}
+.artistDetails{
+  float: left;
+  color: #ffffff;
+  margin-left: 20px;
+  font-size: 30px;
+  max-width: 400px;
+}
+
+
+.trackTitle{
+  
+  color: #c4c4c4;
+}
+.controlBoard{
+  margin-left:20px;
+  margin-top:10px;
+  float:left;
+}
+
+.controls{
+  float:left;
+  margin-right:10px;
+}
+.glyphicon{
+    color: #fff;
+  font-size: 4rem;
+}
+
+.activeControl{
+  color:#595858;
+}
 /*Carousel Styles*/
 
 @media only screen and (min-width : 320px){
-#skeetSlider{
+#skeetSlider, #skeetHeader{
 max-width: 320px;
 margin:0 auto;
 }
@@ -170,7 +245,7 @@ left: -2%;
 }
 
 @media only screen and (min-width : 640px){
-  #skeetSlider{
+  #skeetSlider, #skeetHeader{
 max-width: 640px;
 margin:0 auto;
 }
@@ -218,6 +293,9 @@ left: -2%;
 
 
 @media only screen and (min-width : 960px){
+  #skeetHeader{
+max-width: 900px;
+  }
 .carouselWrapper{
 	width:960px;
 }

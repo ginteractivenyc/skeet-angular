@@ -6,7 +6,7 @@
 		<title></title>
 		<meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1.0" >
-		<link href='http://fonts.googleapis.com/css?family=Raleway:300' rel='stylesheet' type='text/css'>	
+		<link href='http://fonts.googleapis.com/css?family=Fjalla+One' rel='stylesheet' type='text/css'>
 		<link href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css" rel="stylesheet" type="text/css">	        
         <link href="css/bootstrap-switch.min.css" rel="stylesheet">       
         <link href="css/angular-carousel.css" rel="stylesheet">
@@ -17,7 +17,11 @@
     </head>
     <body>
     	<!--global nav-->
-    	<div class="globalHeader"></div>
+    	<div class="globalHeader">
+
+    		<div id="skeetHeader" ng-controller="usernameCtrl"><h2 ng-click="goHome()">{{userName}}</h2></div>
+
+    	</div>
     	<!--global contentBox-->
 		
       <ng-view></ng-view>

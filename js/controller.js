@@ -297,6 +297,7 @@ console.log(error)
 
 }).controller('userViewCtrl', function( $scope, $location, $http, $routeParams, skeetAppFactory){
    // get Music Items
+
    console.log(nameHolderMain.toString())
   var parseServiceGet = function() {
 
@@ -363,6 +364,7 @@ if (soundcloudOn === "on"){
           method: 'GET',
           url: 'https://www.googleapis.com/youtube/v3/playlistItems?part=snippet&maxResults=50&playlistId=' + youtubeId.toString() + '&key=AIzaSyBZGeefjprHm8Zq6DkblpvNV0eQ65l2E84'
         }).success(function(data) {
+          console.log(data)
           // With the data succesfully returned, call our callback
           $scope.homeVideo = data.items;
           getInstagram();
@@ -393,36 +395,116 @@ var getInstagram = function(){
       });
   };
 
-          $scope.trackOpen  = function($event){
-          var trackId = angular.element(event.currentTarget).attr('data-url');
-                $location.path( $routeParams.nameHolder + '/music/track/' + trackId );
+  $scope.trackOpen = function($event) {
+    var trackId = angular.element(event.currentTarget).attr('data-url');
+    $location.path($routeParams.nameHolder + '/music/track/' + trackId);
+  }
 
-          
-        }
+  $scope.videoOpen = function($event) {
+    var videoId = angular.element(event.currentTarget).attr('data-url');
+    $location.path($routeParams.nameHolder + '/video/' + videoId);
+  }
+
+
    parseServiceGet();
 
 }).controller('tracksCtrl', function($scope, $routeParams, $sce, skeetAppFactory, $http, $location) {
-  $scope.tracksiframe = "true"
-  var baseUrl = 'https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/' + $routeParams.musicItem + '&auto_play=true';
-  $('.skeetOuterWrapper').addClass('playing');
+// stream track id 293
+SC.stream("/tracks/" + $routeParams.musicItem, function(sound){
+  sound.play();
+    $('.playbtn').find('span').addClass('activeControl');
 
-  $scope.musicTrack = $sce.trustAsResourceUrl(baseUrl);
-      skeetAppFactory.getParseUser({
-        where: {
-          username: $routeParams.nameHolder
-        }
-      }).success(function(success) {
-        console.log(success)
-        var soundcloudId = success.results[0].soundcloud;
-
-        //$('#' + yourcookie).hide();
-        /*var baseUrl = 'https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/' + $routeParams.musicItem + '&auto_play=true';
-        $scope.musicTrack = $sce.trustAsResourceUrl(baseUrl);
-          $scope.tracksiframe = 'true';*/
 
         $http({
           method: 'GET',
-          url: 'https://api.soundcloud.com/users/' + soundcloudId + '/tracks.json?client_id=07b0e9b7e4ac9e8454b61d33eaba766b'
+          url: 'https://api.soundcloud.com/tracks/' +$routeParams.musicItem + '?client_id=07b0e9b7e4ac9e8454b61d33eaba766b'
+        }).success(function(data) {
+          console.log(data)
+          var artworkurl = data.artwork_url;
+          $scope.artworkUrl =  artworkurl.replace('large', 't300x300');
+          $scope.artistName = data.user.username;
+          $scope.trackTitle = data.title;
+          $scope.musicTracks = data;
+
+
+        }).error(function() {
+          alert("error");
+        });
+
+$scope.stopSound = function($event){
+  angular.element(event.currentTarget).find('span').addClass('activeControl');
+    angular.element(event.currentTarget).siblings().find('span').removeClass('activeControl');
+
+  sound.stop();
+}
+$scope.pauseSound = function($event){
+    angular.element(event.currentTarget).find('span').addClass('activeControl');
+    angular.element(event.currentTarget).siblings().find('span').removeClass('activeControl');
+
+  sound.pause();
+}
+$scope.playSound = function($event){
+    angular.element(event.currentTarget).find('span').addClass('activeControl');
+    angular.element(event.currentTarget).siblings().find('span').removeClass('activeControl');
+
+  sound.play();
+}
+
+
+
+        $scope.trackPlay = function($event){
+            sound.stop()
+          var trackId = angular.element(event.currentTarget).attr('data-url');
+                $location.path( $routeParams.nameHolder + '/music/track/' + trackId, false );
+
+SC.stream("/tracks/" + trackId, function(sound){
+  sound.play();
+    $('.playbtn').find('span').addClass('activeControl');
+
+
+        $http({
+          method: 'GET',
+          url: 'https://api.soundcloud.com/tracks/' +trackId + '?client_id=07b0e9b7e4ac9e8454b61d33eaba766b'
+        }).success(function(data) {
+          console.log(data)
+          var artworkurl = data.artwork_url;
+          $scope.artworkUrl =  artworkurl.replace('large', 't300x300');
+          $scope.artistName = data.user.username;
+          $scope.trackTitle = data.title;
+          $scope.musicTracks = data;
+
+
+        }).error(function() {
+          alert("error");
+        });
+
+$scope.stopSound = function($event){
+  angular.element(event.currentTarget).find('span').addClass('activeControl');
+    angular.element(event.currentTarget).siblings().find('span').removeClass('activeControl');
+
+  sound.stop();
+}
+$scope.pauseSound = function($event){
+    angular.element(event.currentTarget).find('span').addClass('activeControl');
+    angular.element(event.currentTarget).siblings().find('span').removeClass('activeControl');
+
+  sound.pause();
+}
+$scope.playSound = function($event){
+    angular.element(event.currentTarget).find('span').addClass('activeControl');
+    angular.element(event.currentTarget).siblings().find('span').removeClass('activeControl');
+
+  sound.play();
+}
+
+});
+
+
+        setTimeout(function(){
+
+        $http({
+          method: 'GET',
+          url: 'https://api.soundcloud.com/users/' + $routeParams.nameHolder + '/tracks.json?client_id=07b0e9b7e4ac9e8454b61d33eaba766b'
         }).success(function(data) {
           // With the data succesfully returned, call our callback
           //console.log(data)
@@ -431,6 +513,37 @@ var getInstagram = function(){
         }).error(function() {
           alert("error");
         });
+
+        }, 1000);
+
+                // $scope.tracksiframe = "true"
+                  //$scope.playlistsiframe = "false" 
+            //var baseUrl = 'https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/' + trackId + '&auto_play=true';
+
+       // $scope.musicTrack = $sce.trustAsResourceUrl(baseUrl);
+                // $('.marginOne').removeClass('marginTwo')      
+      
+        }
+
+
+});
+  //$scope.tracksiframe = "true"
+  //var baseUrl = 'https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/' + $routeParams.musicItem + '&auto_play=true';
+  $('.skeetOuterWrapper').addClass('playing');
+
+  //$scope.musicTrack = $sce.trustAsResourceUrl(baseUrl);
+      skeetAppFactory.getParseUser({
+        where: {
+          username: $routeParams.nameHolder
+        }
+      }).success(function(success) {
+        console.log(success)
+        var soundcloudId = success.results[0].soundcloud;
+        $scope.profileImage = success.results[0].profileimage;
+        //$('#' + yourcookie).hide();
+        /*var baseUrl = 'https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/' + $routeParams.musicItem + '&auto_play=true';
+        $scope.musicTrack = $sce.trustAsResourceUrl(baseUrl);
+          $scope.tracksiframe = 'true';*/
 
         $http({
           method: 'GET',
@@ -446,6 +559,25 @@ var getInstagram = function(){
           alert("error");
         });
 
+
+        setTimeout(function(){
+
+        $http({
+          method: 'GET',
+          url: 'https://api.soundcloud.com/users/' + soundcloudId + '/tracks.json?client_id=07b0e9b7e4ac9e8454b61d33eaba766b'
+        }).success(function(data) {
+          // With the data succesfully returned, call our callback
+          //console.log(data)
+          $scope.musicTracks = data;
+
+        }).error(function() {
+          alert("error");
+        });
+
+        }, 1000);
+
+
+
         $scope.playlistPlay = function($event){
           var playlistId = angular.element(event.currentTarget).attr('data-url');
                 $location.path( $routeParams.nameHolder + '/music/playlist/' + playlistId, false );
@@ -453,19 +585,11 @@ var getInstagram = function(){
                   $scope.playlistsiframe = "true" 
             var baseUrl = 'https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/playlists/' + playlistId + '&auto_play=true';
 
-        $scope.musicPlaylist = $sce.trustAsResourceUrl(baseUrl);      
+        $scope.musicPlaylist = $sce.trustAsResourceUrl(baseUrl);
+         $('.marginOne').addClass('marginTwo')      
         }
 
 
-        $scope.trackPlay = function($event){
-          var trackId = angular.element(event.currentTarget).attr('data-url');
-                $location.path( $routeParams.nameHolder + '/music/track/' + trackId, false );
-                 $scope.tracksiframe = "true"
-                  $scope.playlistsiframe = "false" 
-            var baseUrl = 'https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/' + trackId + '&auto_play=true';
-
-        $scope.musicTrack = $sce.trustAsResourceUrl(baseUrl);      
-        }
 
 
 
@@ -474,10 +598,22 @@ var getInstagram = function(){
 
       });
 
+$scope.closeContentBox = function(){
+         $('.contentBox').slideUp(350, function() {
+          $('#skeetSlider img').fadeIn(800);
+            $('iframe').remove();
+            $('#skeetOuterWrapper').delay(100).slideDown(350);
+            $('#skeetOuterWrapper').addClass('closed');
+           // $('.activeitemvideo').removeClass('activeitemvideo');
+        });
+
+}
+
 }).controller('playlistsCtrl', function($scope, $routeParams, $sce, skeetAppFactory, $http, $location) {
   $scope.tracksiframe = "false"
     $scope.playlistsiframe = "true"
   $('.skeetOuterWrapper').addClass('playing');
+  $('.marginOne').addClass('marginTwo');
 
   var baseUrl = 'https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/playlists/' + $routeParams.musicItem + '&auto_play=true';
 
@@ -526,6 +662,107 @@ var getInstagram = function(){
                   $scope.playlistsiframe = "true" 
             var baseUrl = 'https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/playlists/' + playlistId + '&auto_play=true';
 
+        $scope.musicPlaylist = $sce.trustAsResourceUrl(baseUrl);   
+          $('.marginOne').addClass('marginTwo')   
+        }
+
+
+        $scope.trackPlay = function($event){
+          var trackId = angular.element(event.currentTarget).attr('data-url');
+                $location.path( $routeParams.nameHolder + '/music/track/' + trackId, false );
+                 $scope.tracksiframe = "true"
+                  $scope.playlistsiframe = "false" 
+            var baseUrl = 'https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/' + trackId + '&auto_play=true';
+
+        $scope.musicTrack = $sce.trustAsResourceUrl(baseUrl);
+                $('.marginOne').removeClass('marginTwo');
+        }
+
+
+      }).error(function(error) {
+
+      });
+
+}).controller('videoCtrl', function($scope, $routeParams, $sce, skeetAppFactory, $http, $location) {
+ // $('#skeetHeader h2').html($scope.userName);
+    $scope.videoiframe = "true";
+  $('.skeetOuterWrapper').addClass('playing');
+
+  var baseUrl = 'https://www.youtube.com/embed/' +  $routeParams.videoItem  + '?autoplay=1';
+
+  $scope.videoUrl = $sce.trustAsResourceUrl(baseUrl);
+  
+      skeetAppFactory.getParseUser({
+        where: {
+          username: $routeParams.nameHolder
+        }
+      }).success(function(success) {
+        console.log(success)
+        var youtubeId = success.results[0].youtube;
+      var youtubechannelId = success.results[0].youtubechannel;
+
+//get All Videos
+        $http({
+          method: 'GET',
+          url: 'https://www.googleapis.com/youtube/v3/playlistItems?part=snippet&maxResults=50&playlistId=' + youtubeId.toString() + '&key=AIzaSyBZGeefjprHm8Zq6DkblpvNV0eQ65l2E84'
+        }).success(function(data) {
+          console.log(data)
+          // With the data succesfully returned, call our callback
+          $scope.homeVideo = data.items;
+         
+          $('.rn-carousel-controls').each(function(){
+              $(this).insertAfter($(this).parent('ul.carouselholder'));
+          });
+
+        }).error(function() {
+          //alert("error");
+        });
+
+    //get Top rated
+        $http({
+          method: 'GET',
+          url: 'https://www.googleapis.com/youtube/v3/search?order=rating&part=snippet&maxResults=50&channelId=' + youtubechannelId.toString() + '&key=AIzaSyBZGeefjprHm8Zq6DkblpvNV0eQ65l2E84'
+        }).success(function(data) {
+          console.log(data)
+          // With the data succesfully returned, call our callback
+          $scope.topRated = data.items;
+         
+          $('.rn-carousel-controls').each(function(){
+              $(this).insertAfter($(this).parent('ul.carouselholder'));
+          });
+
+        }).error(function() {
+          //alert("error");
+        });
+
+
+    //get Most Viewed
+        $http({
+          method: 'GET',
+          url: 'https://www.googleapis.com/youtube/v3/search?order=viewCount&part=snippet&maxResults=50&channelId=' + youtubechannelId.toString() + '&key=AIzaSyBZGeefjprHm8Zq6DkblpvNV0eQ65l2E84'
+        }).success(function(data) {
+          console.log(data)
+          // With the data succesfully returned, call our callback
+          $scope.mostViewed = data.items;
+         
+          $('.rn-carousel-controls').each(function(){
+              $(this).insertAfter($(this).parent('ul.carouselholder'));
+          });
+
+        }).error(function() {
+          //alert("error");
+        });
+
+
+
+
+        $scope.playlistPlay = function($event){
+          var playlistId = angular.element(event.currentTarget).attr('data-url');
+                $location.path( $routeParams.nameHolder + '/music/playlist/' + playlistId, false );
+                 $scope.tracksiframe = "false"
+                  $scope.playlistsiframe = "true" 
+            var baseUrl = 'https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/playlists/' + playlistId + '&auto_play=true';
+
         $scope.musicPlaylist = $sce.trustAsResourceUrl(baseUrl);      
         }
 
@@ -545,11 +782,39 @@ var getInstagram = function(){
 
       });
 
+}).controller('usernameCtrl', function($scope,$location, $routeParams){
+  setTimeout(function() {
+        $scope.$watch(function() {
+          return $location.path();
+        }, function(value) {
+          console.log(value);
+          $scope.userName = $routeParams.nameHolder;
+
+        });
+
+  }, 100);
+
+  $scope.goHome = function(){
+    $location.path('/' + $routeParams.nameHolder)
+  }
 });
 
 
 
 
+/*skeetApp.directive('userName', ['$routeParams', function ($routeParams, $location) {
+    return {
+      restrict: 'A',
+      link: function($scope, element, attrs) {
+          setTimeout(function(){
+          $(element).html($routeParams.nameHolder)
+      
+
+          }, 100)
+
+      }
+    }
+  }]);*/
 
 
 
@@ -628,12 +893,14 @@ function requestUserUploadsPlaylistId() {
   request.execute(function(response) {
     console.log(response.items[0].contentDetails.relatedPlaylists.uploads)
     var youtubeid = response.items[0].contentDetails.relatedPlaylists.uploads;
-
+    var youtubechannelid = response.items[0].id;
+console.log(youtubechannelid)
       var objectid =memcachejs.get("objectid");
       var sessionToken =memcachejs.get("sessionToken");
 
       var youtubeUser = {
-        youtube: youtubeid
+        youtube: youtubeid,
+        youtubechannel : youtubechannelid
       }
 
     var urlBase = 'https://api.parse.com';

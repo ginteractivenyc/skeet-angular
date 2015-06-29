@@ -18,20 +18,21 @@ skeetApp.config(['$routeProvider', function($routeProvider) {
     when('/',{
       templateUrl: 'views/signup.html',
       controller:'signupCtrl'
-    }).  
-    when('/:nameHolder/loggedin',{
+    }).when('/:nameHolder/loggedin',{
       templateUrl: 'views/loggedin.html',
       controller:'loggedinCtrl'
-    }). 
-    when('/:nameHolder', {
+    }).when('/:nameHolder', {
       templateUrl: 'views/userpage.html',
       controller: 'userViewCtrl'
-  }).when('/:nameHolder/music/track/:musicItem',{
+    }).when('/:nameHolder/music/track/:musicItem',{
       templateUrl: 'views/musicpage.html',
       controller:'tracksCtrl'
     }).when('/:nameHolder/music/playlist/:musicItem',{
       templateUrl: 'views/musicpage.html',
       controller:'playlistsCtrl'
+    }).when('/:nameHolder/video/:videoItem',{
+      templateUrl: 'views/videopage.html',
+      controller:'videoCtrl'      
     });
 }]);
 
