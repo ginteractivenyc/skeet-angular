@@ -1,0 +1,66 @@
+
+<div id="userPage">
+
+
+<!-- twitter-->
+<div id="timeline"></div>
+
+<div class="skeetOuterWrapper">
+<div id="skeetSlider" >
+	<img ng-src="{{profileImage}}">
+	<div id="contentWrapBox" class="contentBox initial">
+		<img src="http://bklynstickup.com/img/close.png" class="closeBtn">
+		<iframe  ng-show="videoiframe == 'true'" width="700" height="394" class="sc tracks" scrolling="no" frameborder="no" src="{{videoUrl}}"></iframe>
+	</div>
+</div>
+</div>
+
+
+<!-- videos-->
+<div class="carouselWrapperOuter marginThree">
+<div class="carouselWrapper rectWrapper">
+	<h3>Videos</h3>
+	<ul rn-carousel rn-carousel-controls  rn-carousel-duration="300" class="image carouselholder">
+		<li ng-repeat="video in homeVideo"  class="rectangle" data-url="{{video.snippet.resourceId.videoId}}" ng-click="videoOpen()">
+			<div class="rectangleThumb"><img ng-src="{{video.snippet.thumbnails.medium.url}}"></div>
+			<div class="itemTitle-rectangle">{{video.snippet.title}}</div>
+
+		</li>
+	</ul>
+</div>
+</div>
+
+
+<!--top rated-->
+<div class="carouselWrapperOuter">
+<div class="carouselWrapper rectWrapper">
+	<h3>Top Rated</h3>
+	<ul rn-carousel rn-carousel-controls  rn-carousel-duration="300" class="image carouselholder">
+		<li ng-repeat="video in topRated"  class="rectangle" data-url="{{video.snippet.resourceId.videoId}}" ng-click="videoOpen()">
+			<div class="rectangleThumb"><img ng-src="{{video.snippet.thumbnails.medium.url}}"></div>
+			<div class="itemTitle-rectangle">{{video.snippet.title}}</div>
+
+		</li>
+	</ul>
+</div>
+</div>
+
+
+<!--Most Viewd-->
+<div class="carouselWrapperOuter">
+<div class="carouselWrapper rectWrapper">
+	<h3>Most Viewed</h3>
+	<ul rn-carousel rn-carousel-controls  rn-carousel-duration="300" class="image carouselholder">
+		<li ng-repeat="video in mostViewed"  class="rectangle" data-url="{{video.snippet.resourceId.videoId}}" ng-click="videoOpen()">
+			<div class="rectangleThumb"><img ng-src="{{video.snippet.thumbnails.medium.url}}"></div>
+			<div class="itemTitle-rectangle">{{video.snippet.title}}</div>
+
+		</li>
+	</ul>
+</div>
+</div>
+
+
+
+
+</div>
