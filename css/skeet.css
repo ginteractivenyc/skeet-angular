@@ -267,11 +267,11 @@ left: -2%;
 /*player stuff*/
 
 .artistDetails {
-float: left;
+  float: left;
   color: #ffffff;
   margin-left: 40px;
   font-size: 16px;
-  max-width: 400px;
+  max-width: 200px;
   padding-top: 7px;
 }
 .artwork{
@@ -314,6 +314,10 @@ ul.trackList li {
   text-transform: lowercase;
   border-bottom: 1px solid #777777;
   padding-bottom: 7px;
+}
+
+#welp{
+display:none;
 }
 
 }
@@ -378,15 +382,21 @@ left: -2%;
 .artistDetails {
   margin-left: 60px;
   font-size: 18px;
+  max-width:100%;
 }
 ul.trackList li {
   font-size: 14px;
   }
 
-  .waveform{
-  width: 70%!important;
-  margin-left: 15px;
-  }
+#playlistwave, #trackwave{
+width: 75%;
+height: 50px;
+float:left;
+margin-left: 15px;
+margin-top: 20px;
+display:block;
+}
+
 }
 
 
