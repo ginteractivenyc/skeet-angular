@@ -118,7 +118,7 @@ iframe{
   margin-top: 330px;
 }
 .marginTwo {
-  margin-top: 460px;
+  margin-top: 360px;
 }
 
 .marginThree {
@@ -137,20 +137,25 @@ iframe{
 }
 
 .contentBox{
-  overflow: auto;
   margin-bottom: 30px;
 }
+
+
 
 
 .artwork{
   max-width: 200px;
   float:left;
 }
+
+.musicInfo{
+  float:left;
+}
 .artistDetails{
   float: left;
   color: #ffffff;
   margin-left: 20px;
-  font-size: 24px;
+  font-size: 18px;
   max-width: 400px;
 }
 
@@ -159,36 +164,33 @@ iframe{
   
   color: #c4c4c4;
 }
-.controlBoard{
-  margin-left:20px;
-  margin-top:10px;
-  float:left;
-}
+
 
 .controls{
-  float:left;
-  margin-right:10px;
   color: #c4c4c4;
 }
 .glyphicon{
-  font-size: 4rem;
+  font-size: 3rem;
 }
 
 
 
 ul.trackList{
-  color: #585858;
-  font-size:16px;
-  height:100px;
+color: #585858;
+  font-size: 16px;
+  height: 120px;
   overflow: auto;
-  padding-left:20px;
-  padding-top:10px;
-  width: 300px;
+  padding-left: 20px;
+  padding-top: 10px;
+  width: 380px;
 }
 
 ul.trackList li{
-  margin-bottom:6px;
+margin-bottom: 6px;
   list-style: none;
+  font-family: arial;
+  font-size: 14px;
+  text-transform: lowercase;
 }
 
 .activeTrack{
@@ -259,6 +261,61 @@ left: -2%;
 	top:37%;
 }
 
+
+
+
+/*player stuff*/
+
+.artistDetails {
+float: left;
+  color: #ffffff;
+  margin-left: 40px;
+  font-size: 16px;
+  max-width: 400px;
+  padding-top: 7px;
+}
+.artwork{
+  max-width: 60px;
+  float:left;
+}
+
+  .musicInfo{
+  float: left;
+  width: 100%;
+  position: relative;
+    margin-bottom: 30px;
+}
+.controlBoard {
+  /* margin-left: 20px; */
+  /* margin-top: 10px; */
+  /* float: right; */
+  position: absolute;
+  left: 65px;
+}
+
+ul.trackList {
+  color: #585858;
+  font-size: 16px;
+  height: 70px;
+  overflow-y: auto;
+  /* padding-left: 20px; */
+  margin-top: 10px;
+  width: 100%;
+  float: left;
+  padding: 0;
+  clear: both;
+}
+
+ul.trackList li {
+  margin-bottom: 4px;
+  list-style: none;
+  font-family: arial;
+  font-size: 12px;
+  text-transform: lowercase;
+  border-bottom: 1px solid #777777;
+  padding-bottom: 7px;
+}
+
 }
 
 @media only screen and (min-width : 640px){
@@ -306,6 +363,30 @@ left: -2%;
 	top:28%;
 }
 
+/*player Controls*/
+.controlBoard {
+  left: 150px;
+  top: 10px;
+}
+.artwork {
+  max-width: 140px;
+}
+.glyphicon{
+  font-size: 4rem;
+}
+
+.artistDetails {
+  margin-left: 60px;
+  font-size: 18px;
+}
+ul.trackList li {
+  font-size: 14px;
+  }
+
+  .waveform{
+  width: 70%!important;
+  margin-left: 15px;
+  }
 }
 
 
