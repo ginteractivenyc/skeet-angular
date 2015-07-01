@@ -409,34 +409,11 @@ if (soundcloudOn === "on"){
    parseServiceGet();
 
 }).controller('tracksCtrl', function($scope, $routeParams, $sce, skeetAppFactory, $http, $location) {
-          $scope.tracksiframe = "true";
-          $scope.playlistsiframe = "false";
-          $scope.pausebutton = "true";
 
-
-          //initial track play
-
-          SC.stream("/tracks/" + $routeParams.musicItem, function(sound) {
-            sound.play();
-
-            $http({
-              method: 'GET',
-              url: 'https://api.soundcloud.com/tracks/' + $routeParams.musicItem + '?client_id=07b0e9b7e4ac9e8454b61d33eaba766b'
-            }).success(function(data) {
-              console.log(data)
-              var artworkurl = data.artwork_url;
-              $scope.artworkUrl = artworkurl.replace('large', 't300x300');
-              $scope.artistName = data.user.username;
-              $scope.trackTitle = data.title;
-              $scope.musicTracks = data;
-
-
-            }).error(function() {
-              alert("error");
-            });
-
-            $scope.stopSound = function($event) {
-              $scope.playbutton = "true";
+            $scope.tracksiframe = "true";
+            $scope.playlistsiframe = "false";
+              $scope.pausebutton = "true";
+             $scope.stopSound = function($event) {
               $scope.resumebutton = "false";
               $scope.pausebutton = "false";
               soundManager.stopAll();
@@ -444,80 +421,63 @@ if (soundcloudOn === "on"){
             $scope.pauseSound = function($event) {
 
               soundManager.pauseAll();
-              $scope.playbutton = "false";
               $scope.resumebutton = "true";
               $scope.pausebutton = "false";
             }
             $scope.resumeSound = function($event) {
               soundManager.resumeAll();
-              $scope.playbutton = "false";
               $scope.resumebutton = "false";
               $scope.pausebutton = "true";
             }
 
-            $scope.playSound = function($event) {
-              sound.play();
-              $scope.playbutton = "false";
-              $scope.resumebutton = "false";
-              $scope.pausebutton = "true";
-            }
 
-            // plays track from TRACKS row
-            $scope.trackPlay = function($event) {
-              $scope.tracksiframe = "true";
-              $scope.playlistsiframe = "false";
-              $scope.playlistTracks = '';
-              soundManager.stopAll();
-              var trackId = angular.element(event.currentTarget).attr('data-url');
-              $location.path($routeParams.nameHolder + '/music/track/' + trackId, false);
+//load playlist tracks
 
-              SC.stream("/tracks/" + trackId, function(sound) {
-                sound.play();
+        $http({
+          method: 'GET',
+          url: 'https://api.soundcloud.com/tracks/' + $routeParams.musicItem  + '.json?client_id=07b0e9b7e4ac9e8454b61d33eaba766b'
+        }).success(function(data) {
+          console.log(data)
+          var artworkurl = data.artwork_url;
+          $scope.artworkUrl =  artworkurl.replace('large', 't300x300');
+          $scope.artistName = data.user.username;
+          $scope.trackTitle = data.title;
 
-                //update scope
-                $scope.playSound = function($event) {
-                  sound.play();
-                  $scope.playbutton = "false";
-                  $scope.resumebutton = "false";
-                  $scope.pausebutton = "true";
-                }
-
-                //reloads tracks row
-                setTimeout(function(){
-
-                    $http({
-                      method: 'GET',
-                      url: 'https://api.soundcloud.com/users/' + $routeParams.nameHolder + '/tracks.json?client_id=07b0e9b7e4ac9e8454b61d33eaba766b'
-                    }).success(function(data) {
-                      $scope.musicTracks = data;
-                    }).error(function() {
-                      alert("error");
-                    });
-                }, 300);
-
-                $http({
-                  method: 'GET',
-                  url: 'https://api.soundcloud.com/tracks/' + trackId + '?client_id=07b0e9b7e4ac9e8454b61d33eaba766b'
-                }).success(function(data) {
-                  console.log(data)
-                  var artworkurl = data.artwork_url;
-                  $scope.artworkUrl = artworkurl.replace('large', 't300x300');
-                  $scope.artistName = data.user.username;
-                  $scope.trackTitle = data.title;
-                  $scope.musicTracks = data;
-
-                }).error(function() {
-                  alert("error");
-                });
-
-              });
+          
+          $scope.playlistTracks = data.tracks;         
+           $scope.firstTrack = data.id;
+          $scope.waveForm = data.waveform_url;
 
 
-            }
+          SC.get("/tracks/" + $scope.firstTrack, function(track){
+            var waveform = new Waveform({
+              container: document.getElementById("trackwave"),
+              innerColor: "#333"
+            });
+
+            waveform.dataFromSoundCloudTrack(track);
+            var streamOptions = waveform.optionsForSyncedStream();
+
+            SC.stream(track.uri, streamOptions, function(stream){
+              window.exampleStream = stream;
+                window.exampleStream.play();
 
 
-          });
+            });
+        });
+
+
+        }).error(function() {
+          alert("error");
+        });
+
+
+
+
   $('.skeetOuterWrapper').addClass('playing');
+  $('.marginOne').addClass('marginTwo');
+
+
       skeetAppFactory.getParseUser({
         where: {
           username: $routeParams.nameHolder
@@ -525,41 +485,46 @@ if (soundcloudOn === "on"){
       }).success(function(success) {
         console.log(success)
         var soundcloudId = success.results[0].soundcloud;
-        $scope.profileImage = success.results[0].profileimage;
 
 
-            $http({
-              method: 'GET',
-              url: 'https://api.soundcloud.com/users/' + soundcloudId + '/playlists.json?client_id=07b0e9b7e4ac9e8454b61d33eaba766b'
-            }).success(function(data) {
-              $scope.musicPlaylists = data;
-              $('.rn-carousel-controls').each(function() {
-                $(this).insertAfter($(this).parent('ul.carouselholder'));
-              });
-            }).error(function() {
-              alert("error");
-            });
 
+        $http({
+          method: 'GET',
+          url: 'https://api.soundcloud.com/users/' + soundcloudId + '/tracks.json?client_id=07b0e9b7e4ac9e8454b61d33eaba766b'
+        }).success(function(data) {
+          // With the data succesfully returned, call our callback
+          //console.log(data)
+          $scope.musicTracks = data;
 
-            setTimeout(function() {
-              $http({
-                method: 'GET',
-                url: 'https://api.soundcloud.com/users/' + soundcloudId + '/tracks.json?client_id=07b0e9b7e4ac9e8454b61d33eaba766b'
-              }).success(function(data) {
-                $scope.musicTracks = data;
-              }).error(function() {
-                alert("error");
-              });
-            }, 2000);
+        }).error(function() {
+          alert("error");
+        });
 
-              // play a playlist item from tracks view
+        $http({
+          method: 'GET',
+          url: 'https://api.soundcloud.com/users/' + soundcloudId + '/playlists.json?client_id=07b0e9b7e4ac9e8454b61d33eaba766b'
+        }).success(function(data) {
+          // With the data succesfully returned, call our callback
+          //console.log(data)
+          $scope.musicPlaylists = data;
+
+        }).error(function() {
+          alert("error");
+        });
+
+                // play a playlist item from tracks row
             $scope.playlistPlay = function($event) {
-
-              soundManager.stopAll();
+                  soundManager.stopAll();
+                  $scope.resumebutton = "false";
+                  $scope.pausebutton = "true";
+                          
+              document.getElementById('playlistwave').innerHTML = '';
+             
               var playlistId = angular.element(event.currentTarget).attr('data-url');
               $location.path($routeParams.nameHolder + '/music/playlist/' + playlistId, false);
               $scope.tracksiframe = "false";
               $scope.playlistsiframe = "true";
+
               $http({
                 method: 'GET',
                 url: 'https://api.soundcloud.com/playlists/' + playlistId + '.json?client_id=07b0e9b7e4ac9e8454b61d33eaba766b'
@@ -572,41 +537,33 @@ if (soundcloudOn === "on"){
 
                 $scope.playlistTracks = data.tracks;
                 $scope.firstTrack = data.tracks[0].id;
+                $scope.waveForm = data.tracks[0].waveform_url;
 
-                SC.stream("/tracks/" + $scope.firstTrack, function(sound) {
-                  sound.play();
-                $scope.playbutton = "false";
-              $scope.resumebutton = "false";
-              $scope.pausebutton = "true";
+          SC.get("/tracks/" + $scope.firstTrack, function(track){
+            var waveform = new Waveform({
+              container: document.getElementById("playlistwave"),
+              innerColor: "#333"
+            });
+
+            waveform.dataFromSoundCloudTrack(track);
+            var streamOptions = waveform.optionsForSyncedStream();
+            SC.stream(track.uri, streamOptions, function(stream){
+              window.exampleStream = stream;
+                  window.exampleStream.play()
+
                   setTimeout(function() {
                     $('.trackList li:first-child').addClass('activeTrack');
+              $scope.resumeSound = function($event) {
+
+                window.exampleStream.resume();
+                $scope.resumebutton = "false";
+                $scope.pausebutton = "true";
+              }
                   }, 20)
 
 
-                  $scope.pauseSound = function($event) {
-
-                    soundManager.pauseAll();
-                    $scope.playbutton = "false";
-                    $scope.resumebutton = "true";
-                    $scope.pausebutton = "false";
-                  }
-                  $scope.resumeSound = function($event) {
-                    soundManager.resumeAll();
-                    $scope.playbutton = "false";
-                    $scope.resumebutton = "false";
-                    $scope.pausebutton = "true";
-                  }
-
-                  $scope.playSound = function($event) {
-                    sound.play();
-                    $scope.playbutton = "false";
-                    $scope.resumebutton = "false";
-                    $scope.pausebutton = "true";
-                  }
-
-
-
                 });
+            });
 
 
               }).error(function() {
@@ -614,22 +571,73 @@ if (soundcloudOn === "on"){
               });
             }
 
+
+
+
+
+            // plays track from TRACKS row
+            $scope.trackPlay = function($event) {
+                  soundManager.stopAll();
+                  $scope.resumebutton = "false";
+                  $scope.pausebutton = "true";
+                          
+              document.getElementById('trackwave').innerHTML = '';
+             
+              var trackId = angular.element(event.currentTarget).attr('data-url');
+              $location.path($routeParams.nameHolder + '/music/track/' + trackId, false);
+              $scope.tracksiframe = "true";
+              $scope.playlistsiframe = "false";
+
+              $http({
+                method: 'GET',
+                url: 'https://api.soundcloud.com/tracks/' + trackId + '.json?client_id=07b0e9b7e4ac9e8454b61d33eaba766b'
+              }).success(function(data) {
+                console.log(data)
+                var artworkurl = data.artwork_url;
+                $scope.artworkUrl = artworkurl.replace('large', 't300x300');
+                $scope.artistName = data.user.username;
+                $scope.trackTitle = data.title;
+
+                $scope.playlistTracks = data;
+                $scope.firstTrack = data.id;
+                $scope.waveForm = data.waveform_url;
+
+          SC.get("/tracks/" + $scope.firstTrack, function(track){
+            var waveform = new Waveform({
+              container: document.getElementById("trackwave"),
+              innerColor: "#333"
+            });
+
+            waveform.dataFromSoundCloudTrack(track);
+            var streamOptions = waveform.optionsForSyncedStream();
+            SC.stream(track.uri, streamOptions, function(stream){
+              window.exampleStream = stream;
+                  window.exampleStream.play()
+
+                  setTimeout(function() {
+                    $('.trackList li:first-child').addClass('activeTrack');
+              $scope.resumeSound = function($event) {
+
+                window.exampleStream.resume();
+                $scope.resumebutton = "false";
+                $scope.pausebutton = "true";
+              }
+                  }, 20)
+
+
+                });
+            });
+
+
+              }).error(function() {
+                alert("error");
+              });
+            }
+
+
       }).error(function(error) {
 
       });
-
-   
-//close content box
-        $scope.closeContentBox = function() {
-          $('.contentBox').slideUp(350, function() {
-            $('#skeetSlider img').fadeIn(800);
-            $('iframe').remove();
-            $('#skeetOuterWrapper').delay(100).slideDown(350);
-            $('#skeetOuterWrapper').addClass('closed');
-            // $('.activeitemvideo').removeClass('activeitemvideo');
-          });
-
-        }
 
 }).controller('playlistsCtrl', function($scope, $routeParams, $sce, skeetAppFactory, $http, $location) {
 
@@ -680,6 +688,7 @@ if (soundcloudOn === "on"){
 
             waveform.dataFromSoundCloudTrack(track);
             var streamOptions = waveform.optionsForSyncedStream();
+
             SC.stream(track.uri, streamOptions, function(stream){
               window.exampleStream = stream;
                 window.exampleStream.play()
@@ -695,16 +704,30 @@ if (soundcloudOn === "on"){
         });
             // play playlist track
             $scope.playTrack = function($event){
+                 angular.element(event.currentTarget).siblings().removeClass('activeTrack');
+                 angular.element(event.currentTarget).addClass('activeTrack');              
+              $scope.resumebutton = "false";
+              $scope.pausebutton = "true";
+              document.getElementById("playlistwave").innerHTML = "";
               $scope.playlisttrack = angular.element(event.currentTarget).attr('data-url');
               soundManager.stopAll()
-              SC.stream("/tracks/" + $scope.playlisttrack, function(sound){
-                sound.play();
-                 angular.element(event.currentTarget).siblings().removeClass('activeTrack');
-                 angular.element(event.currentTarget).addClass('activeTrack');
-                 angular.element(event.currentTarget).parent().parent().find('span').removeClass('activeControl');
-                angular.element(event.currentTarget).parent().parent().find('.playbtn').find('span').addClass('activeControl');
+
+          SC.get("/tracks/" + $scope.playlisttrack, function(track){
+            var waveform = new Waveform({
+              container: document.getElementById("playlistwave"),
+              innerColor: "#333"
+            });
+
+            waveform.dataFromSoundCloudTrack(track);
+            var streamOptions = waveform.optionsForSyncedStream();
+            
+            SC.stream(track.uri, streamOptions, function(stream){
+              window.exampleStream = stream;
+                window.exampleStream.play()
+                
           
-              });              
+              }); 
+              });             
             }
 
 
