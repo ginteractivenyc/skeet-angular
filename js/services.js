@@ -17,6 +17,17 @@ skeetApp.factory('skeetAppFactory', [ '$rootScope', '$http', function($rootScope
 
 
 
+//login user
+  skeetAppFactory.loginParseUser = function(loginObject){
+    return $http({
+      method: 'GET',
+      url: urlBase + '/1/login/',
+      headers:  {'X-Parse-Application-Id':'tzlVexuKShRsUHAGSV30qJYz28953tIOPSs0dl3z', 'X-Parse-REST-API-Key':'tY4eHyUnom4FZC9xAypgXsquEauGFQErvqx2YZZQ', 'Content-type' : 'application/x-www-form-urlencoded'},
+      params: loginObject
+    })
+  }
+
+
 //GET 
 
   skeetAppFactory.getParseUser = function(whereParams){

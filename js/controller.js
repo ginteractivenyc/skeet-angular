@@ -32,7 +32,7 @@ var skeetUser = {
   }
 
   $scope.login = function() {
-    var userName = document.getElementById('loginUsername').value;
+   /* var userName = document.getElementById('loginUsername').value;
     var userPass = document.getElementById('loginPassword').value;
     Parse.User.logIn(userName, userPass, {
       success: function(user) {
@@ -54,9 +54,36 @@ var skeetUser = {
         console.log(error)
           // The login failed. Check error to see why.
       }
+    });*/
+var userName = document.getElementById('loginUsername').value;
+    var userPass = document.getElementById('loginPassword').value;
+    console.log(userName + userPass)
+
+    var skeetUser = {
+    username:  userName,
+    password: userPass
+}
+//signup user
+    skeetAppFactory.loginParseUser(skeetUser).success(function(success) {
+      console.log(success)
+      skeetUserId.push(success.objectId)
+          memcachejs.set("objectid", success.objectId );
+          memcachejs.set("sessionToken", success.sessionToken);      
+        $('#skeetLogin').fadeOut();
+        $('#loginModal').modal('hide')
+        $('body').removeClass('modal-open');
+        $('.modal-backdrop').remove();
+      $window.location = '#/' + userName + '/loggedin';
+
+    }).error(function(error) {
+      console.log(error)
     });
 
+
+
   }
+
+
 }).controller('loggedinCtrl', function($scope, $location, $window, $routeParams, skeetAppFactory){
 console.log(nameHolderMain)
 
@@ -467,6 +494,36 @@ if (soundcloudOn === "on"){
         });
 
 
+
+            // play playlist track
+            $scope.playTrack = function($event){
+                 angular.element(event.currentTarget).siblings().removeClass('activeTrack');
+                 angular.element(event.currentTarget).addClass('activeTrack');              
+              $scope.resumebutton = "false";
+              $scope.pausebutton = "true";
+              document.getElementById("playlistwave").innerHTML = "";
+              $scope.playlisttrack = angular.element(event.currentTarget).attr('data-url');
+              soundManager.stopAll()
+
+          SC.get("/tracks/" + $scope.playlisttrack, function(track){
+            var waveform = new Waveform({
+              container: document.getElementById("playlistwave"),
+              innerColor: "#333"
+            });
+
+            waveform.dataFromSoundCloudTrack(track);
+            var streamOptions = waveform.optionsForSyncedStream();
+            
+            SC.stream(track.uri, streamOptions, function(stream){
+              window.exampleStream = stream;
+                window.exampleStream.play()
+                
+          
+              }); 
+              });             
+            }
+
+
         }).error(function() {
           alert("error");
         });
@@ -697,8 +754,6 @@ if (soundcloudOn === "on"){
               $('.trackList li:first-child').addClass('activeTrack');
               $('.playbtn').find('span').addClass('activeControl');
              }, 20)
-
-
 
             });
         });
