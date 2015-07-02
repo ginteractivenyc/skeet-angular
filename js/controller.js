@@ -374,7 +374,7 @@ if (soundcloudOn === "on"){
 
       $http({
         method: 'GET',
-        url: 'https://api.soundcloud.com/users/' + soundcloudId +'/tracks.json?client_id=07b0e9b7e4ac9e8454b61d33eaba766b'
+        url: 'https://api.soundcloud.com/users/' + soundcloudId +'/tracks.json?client_id=0f993f2250c9e82a24acc020437d5da9'
       }).success(function(data) {
         // With the data succesfully returned, call our callback
         //console.log(data)
@@ -462,7 +462,7 @@ if (soundcloudOn === "on"){
 
         $http({
           method: 'GET',
-          url: 'https://api.soundcloud.com/tracks/' + $routeParams.musicItem  + '.json?client_id=07b0e9b7e4ac9e8454b61d33eaba766b'
+          url: 'https://api.soundcloud.com/tracks/' + $routeParams.musicItem  + '.json?client_id=0f993f2250c9e82a24acc020437d5da9'
         }).success(function(data) {
           console.log(data)
           var artworkurl = data.artwork_url;
@@ -547,7 +547,7 @@ if (soundcloudOn === "on"){
 
         $http({
           method: 'GET',
-          url: 'https://api.soundcloud.com/users/' + soundcloudId + '/tracks.json?client_id=07b0e9b7e4ac9e8454b61d33eaba766b'
+          url: 'https://api.soundcloud.com/users/' + soundcloudId + '/tracks.json?client_id=0f993f2250c9e82a24acc020437d5da9'
         }).success(function(data) {
           // With the data succesfully returned, call our callback
           //console.log(data)
@@ -559,7 +559,7 @@ if (soundcloudOn === "on"){
 
         $http({
           method: 'GET',
-          url: 'https://api.soundcloud.com/users/' + soundcloudId + '/playlists.json?client_id=07b0e9b7e4ac9e8454b61d33eaba766b'
+          url: 'https://api.soundcloud.com/users/' + soundcloudId + '/playlists.json?client_id=0f993f2250c9e82a24acc020437d5da9'
         }).success(function(data) {
           // With the data succesfully returned, call our callback
           //console.log(data)
@@ -584,7 +584,7 @@ if (soundcloudOn === "on"){
 
               $http({
                 method: 'GET',
-                url: 'https://api.soundcloud.com/playlists/' + playlistId + '.json?client_id=07b0e9b7e4ac9e8454b61d33eaba766b'
+                url: 'https://api.soundcloud.com/playlists/' + playlistId + '.json?client_id=0f993f2250c9e82a24acc020437d5da9'
               }).success(function(data) {
                 console.log(data)
                 var artworkurl = data.artwork_url;
@@ -647,7 +647,7 @@ if (soundcloudOn === "on"){
 
               $http({
                 method: 'GET',
-                url: 'https://api.soundcloud.com/tracks/' + trackId + '.json?client_id=07b0e9b7e4ac9e8454b61d33eaba766b'
+                url: 'https://api.soundcloud.com/tracks/' + trackId + '.json?client_id=0f993f2250c9e82a24acc020437d5da9'
               }).success(function(data) {
                 console.log(data)
                 var artworkurl = data.artwork_url;
@@ -723,7 +723,7 @@ if (soundcloudOn === "on"){
 
         $http({
           method: 'GET',
-          url: 'https://api.soundcloud.com/playlists/' + $routeParams.musicItem  + '.json?client_id=07b0e9b7e4ac9e8454b61d33eaba766b'
+          url: 'https://api.soundcloud.com/playlists/' + $routeParams.musicItem  + '.json?client_id=0f993f2250c9e82a24acc020437d5da9'
         }).success(function(data) {
           console.log(data)
           var artworkurl = data.artwork_url;
@@ -809,7 +809,7 @@ if (soundcloudOn === "on"){
 
         $http({
           method: 'GET',
-          url: 'https://api.soundcloud.com/users/' + soundcloudId + '/tracks.json?client_id=07b0e9b7e4ac9e8454b61d33eaba766b'
+          url: 'https://api.soundcloud.com/users/' + soundcloudId + '/tracks.json?client_id=0f993f2250c9e82a24acc020437d5da9'
         }).success(function(data) {
           // With the data succesfully returned, call our callback
           //console.log(data)
@@ -821,7 +821,7 @@ if (soundcloudOn === "on"){
 
         $http({
           method: 'GET',
-          url: 'https://api.soundcloud.com/users/' + soundcloudId + '/playlists.json?client_id=07b0e9b7e4ac9e8454b61d33eaba766b'
+          url: 'https://api.soundcloud.com/users/' + soundcloudId + '/playlists.json?client_id=0f993f2250c9e82a24acc020437d5da9'
         }).success(function(data) {
           // With the data succesfully returned, call our callback
           //console.log(data)
@@ -846,7 +846,7 @@ if (soundcloudOn === "on"){
 
               $http({
                 method: 'GET',
-                url: 'https://api.soundcloud.com/playlists/' + playlistId + '.json?client_id=07b0e9b7e4ac9e8454b61d33eaba766b'
+                url: 'https://api.soundcloud.com/playlists/' + playlistId + '.json?client_id=0f993f2250c9e82a24acc020437d5da9'
               }).success(function(data) {
                 console.log(data)
                 var artworkurl = data.artwork_url;
@@ -909,7 +909,7 @@ if (soundcloudOn === "on"){
 
               $http({
                 method: 'GET',
-                url: 'https://api.soundcloud.com/tracks/' + trackId + '.json?client_id=07b0e9b7e4ac9e8454b61d33eaba766b'
+                url: 'https://api.soundcloud.com/tracks/' + trackId + '.json?client_id=0f993f2250c9e82a24acc020437d5da9'
               }).success(function(data) {
                 console.log(data)
                 var artworkurl = data.artwork_url;
