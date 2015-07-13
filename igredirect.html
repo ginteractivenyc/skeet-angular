@@ -1,0 +1,103 @@
+
+<!DOCTYPE html>
+<html ng-app="">
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE-edge">
+		<title></title>
+		<meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" >
+    </head>
+    <body>
+    	<h3>Initalizing Instagram Account</h3>
+
+	 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+  		<script type="text/javascript" src="http://www.parsecdn.com/js/parse-1.4.0.min.js"></script>
+<script type="text/javascript">
+       Parse.initialize("tzlVexuKShRsUHAGSV30qJYz28953tIOPSs0dl3z", "F1g9SlNa2FhcneKqj4AdowudvI7zkMXNZUsjtgJm");
+
+      var retrieveToken = setTimeout(function() {
+      var myVar = self.location.toString();
+
+        console.log(myVar)
+        var __cdata = myVar;
+        var tagIndex = __cdata.indexOf('access_token'); // Find where the img tag starts
+        var srcIndex = __cdata.substring(tagIndex).indexOf('=') + tagIndex; // Find where the src attribute starts
+        var urlStart = srcIndex + 1; // Find where the actual image URL starts; 5 for the length of 'src="'
+        var src = __cdata.substring(urlStart); // Extract just the URL
+        console.log(src)
+
+
+        var objectid = localStorage.getItem("objectid");
+        var sessionToken = localStorage.getItem("sessionToken");   
+
+$.ajax({
+  type: "get",
+  url: 'https://api.instagram.com/v1/users/self/media/recent?access_token=' + src,
+  dataType: 'jsonp',
+  success: function(data) {
+    console.log(data.data[0].user.username);
+    var instagramName = data.data[0].user.id;
+
+
+    var igUser = {
+      "instagram": instagramName
+    }
+
+    $.ajax({
+      method: 'PUT',
+      url: "https://api.parse.com/1/users/" + objectid,
+      data: JSON.stringify(igUser),
+      headers: {'X-Parse-Application-Id':'tzlVexuKShRsUHAGSV30qJYz28953tIOPSs0dl3z', 'X-Parse-REST-API-Key':'tY4eHyUnom4FZC9xAypgXsquEauGFQErvqx2YZZQ', 'Content-Type': 'application/json', 'X-Parse-Session-Token' : sessionToken
+      },
+      success: function(success) {
+        console.log(success)
+
+      var igUserOn = {
+      "instagramOn": "on"
+    }      
+
+			    $.ajax({
+			      method: 'PUT',
+			      url: "https://api.parse.com/1/users/" + objectid,
+			      data: JSON.stringify(igUserOn),
+			      headers: {'X-Parse-Application-Id':'tzlVexuKShRsUHAGSV30qJYz28953tIOPSs0dl3z', 'X-Parse-REST-API-Key':'tY4eHyUnom4FZC9xAypgXsquEauGFQErvqx2YZZQ', 'Content-Type': 'application/json', 'X-Parse-Session-Token' : sessionToken
+			      },
+			      success: function(success) {
+			        console.log(success)			        
+			        location.replace('http://localhost:8888/skeet-angular/#/' + localStorage.getItem('skeetUser') +  '/loggedin')
+			      },
+			      error: function(error) {
+			      	console.log(error)
+
+			      }
+
+			    });
+
+
+      },
+      error: function(error) {
+      	console.log(error)
+
+      }
+
+    });
+  },
+
+  error: function() {
+
+  }
+})
+
+
+
+
+      //alert(src)
+    }, 500);
+
+
+</script>
+
+
+    </body>
+</html>

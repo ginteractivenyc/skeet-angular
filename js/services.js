@@ -59,6 +59,17 @@ skeetApp.factory('skeetAppFactory', [ '$rootScope', '$http', function($rootScope
   } 
 
 
+   skeetAppFactory.getIGUser = function(objectid){
+    return $http({
+      method: 'GET',
+      url: urlBase + '/1/users/' + objectid,
+      headers:  {'X-Parse-Application-Id':'tzlVexuKShRsUHAGSV30qJYz28953tIOPSs0dl3z', 'X-Parse-REST-API-Key':'tY4eHyUnom4FZC9xAypgXsquEauGFQErvqx2YZZQ', 'Content-type' : 'application/json'}
+      
+    })
+  } 
+
+
+
 //POST
 
  skeetAppFactory.storeUser = function(userObject){
@@ -81,14 +92,6 @@ skeetApp.factory('skeetAppFactory', [ '$rootScope', '$http', function($rootScope
     })
   }
 
-
-  skeetAppFactory.storeTwitterUser = function(twitterUser){
-    return $http({
-      method: 'POST',
-      url: urlBase + '/1/classes/skeetusers',
-      data: twitterUser
-    })
-  }
 
 
 //PUT
@@ -132,6 +135,16 @@ skeetApp.factory('skeetAppFactory', [ '$rootScope', '$http', function($rootScope
     })
   }
 
+    skeetAppFactory.instagramSwitchOn = function(objectid, instagramSwitch, sessionToken){
+    return $http({
+      method: 'PUT',
+      url: urlBase + '/1/users/' + objectid,
+      data: instagramSwitch,
+      headers: {'X-Parse-Application-Id':'tzlVexuKShRsUHAGSV30qJYz28953tIOPSs0dl3z', 'X-Parse-REST-API-Key':'tY4eHyUnom4FZC9xAypgXsquEauGFQErvqx2YZZQ', "Content-Type": "application/json", "X-Parse-Session-Token" : sessionToken}
+    })
+  }
+
+
 
 
 // this service wont work due to google's excessive callback requirements, have to use regular jquery ajax method
@@ -149,7 +162,6 @@ skeetApp.factory('skeetAppFactory', [ '$rootScope', '$http', function($rootScope
 
 
 }]);
-
 
 
 
@@ -181,3 +193,10 @@ angular.module('newsHomeService',[]).
            }
        }
     }]);
+
+
+
+
+
+
+

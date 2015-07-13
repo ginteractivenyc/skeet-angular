@@ -129,10 +129,11 @@ ul#contentOptions li img{
 
 .bootstrap-switch{
     margin: 0 auto;
-    display: block;
+    display:none;
 }
 
 .bootstrap-switch .bootstrap-switch-handle-on.bootstrap-switch-moduleon{
   background: #FE4600;
   color:#fff;
 }
+

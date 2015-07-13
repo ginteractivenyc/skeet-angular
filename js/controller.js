@@ -55,7 +55,7 @@ var skeetUser = {
           // The login failed. Check error to see why.
       }
     });*/
-var userName = document.getElementById('loginUsername').value;
+   var userName = document.getElementById('loginUsername').value;
     var userPass = document.getElementById('loginPassword').value;
     console.log(userName + userPass)
 
@@ -68,7 +68,8 @@ var userName = document.getElementById('loginUsername').value;
       console.log(success)
       skeetUserId.push(success.objectId)
           memcachejs.set("objectid", success.objectId );
-          memcachejs.set("sessionToken", success.sessionToken);      
+          memcachejs.set("sessionToken", success.sessionToken); 
+          memcachejs.set("skeetUser", userName);        
         $('#skeetLogin').fadeOut();
         $('#loginModal').modal('hide')
         $('body').removeClass('modal-open');
@@ -87,6 +88,22 @@ var userName = document.getElementById('loginUsername').value;
 }).controller('loggedinCtrl', function($scope, $location, $window, $routeParams, skeetAppFactory){
 console.log(nameHolderMain)
 
+//first check for IG name
+    var objectid = memcachejs.get("objectid");
+
+      skeetAppFactory.getIGUser(objectid).success(function(success) {
+        console.log(success);
+        var instagramOn = success.instagramOn;
+        if (instagramOn === "off") {
+           instagramSwitchOn(false, "off");       
+        } else if (instagramOn === "on") {
+          instagramSwitchOn(true, "on");
+        }
+      }).error(function(error) {
+        console.log(error)
+      });
+
+
 
 function storeSoundCloudUser(){
 SC.connect(function(){
@@ -103,6 +120,9 @@ SC.connect(function(){
         skeetAppFactory.storeSoundcloudUser(objectid, soundcloudUser, sessionToken).success(function(data) {
           console.log(data)
             $('input[name="soundcloud-checkbox"]').bootstrapSwitch('state', 'true');
+            soundcloudSwitchOn(true, "on");
+
+
         }).error(function(error) {
           console.log(error)
         });
@@ -111,6 +131,20 @@ SC.connect(function(){
     });
 }
 
+function storeYouTubeUser(){
+    gapi.auth.authorize({
+        client_id: OAUTH2_CLIENT_ID,
+        scope: OAUTH2_SCOPES,
+        immediate: false
+        }, handleAuthResult);
+}
+
+
+
+
+function storeInstagramUser(){
+$window.open('https://instagram.com/oauth/authorize/?client_id=7380072fbc2f438994b747e10485357f&redirect_uri=http://localhost:8888/skeet-angular/igredirect.html&response_type=token');
+}
 
 //switch functions
   function soundcloudSwitchOn(state, onoff) {
@@ -122,6 +156,8 @@ SC.connect(function(){
     }
     skeetAppFactory.soundcloudSwitchOn(objectid, soundCloudSwitch, sessionToken).success(function(success) {
       console.log("Switch " + success)
+      $('.soundcloudSwitch').find('.bootstrap-switch').fadeIn(350)
+
       $('input[name="soundcloud-checkbox"]').bootstrapSwitch('state', state);
 
     }).error(function(error) {
@@ -139,6 +175,7 @@ SC.connect(function(){
     }
     skeetAppFactory.youtubeSwitchOn(objectid, youTubeSwitch, sessionToken).success(function(success) {
       console.log("Switch " + success)
+      $('.youtubeSwitch').find('.bootstrap-switch').fadeIn(350)
       $('input[name="youtube-checkbox"]').bootstrapSwitch('state', state);
 
     }).error(function(error) {
@@ -146,6 +183,28 @@ SC.connect(function(){
     });
 
   }
+
+  function instagramSwitchOn(state, onoff) {
+    var objectid = memcachejs.get("objectid");
+    var sessionToken = memcachejs.get("sessionToken");
+
+    var instagramSwitch = {
+      instagramOn: onoff
+    }
+    skeetAppFactory.instagramSwitchOn(objectid, instagramSwitch, sessionToken).success(function(success) {
+      console.log("Switch " + success)
+
+      $('.instagramSwitch').find('.bootstrap-switch').fadeIn(350)
+
+      $('input[name="instagram-checkbox"]').show().bootstrapSwitch('state', state);
+
+    }).error(function(error) {
+      console.log(error);
+    });
+
+  }
+
+
 
 
     //Switch Check: Soundcloud
@@ -225,7 +284,7 @@ $(".switcher").bootstrapSwitch({
 
 //ig login
 $scope.igLogin = function(){
-alert()
+$window.open('https://instagram.com/oauth/authorize/?client_id=7380072fbc2f438994b747e10485357f&redirect_uri=http://localhost:8888/skeet-angular/igredirect.html&response_type=token');
 }
 
 //soundcloud login
@@ -259,9 +318,8 @@ $scope.ytLogin = function(){
       skeetAppFactory.getSoundcloudUser(objectid).success(function(success) {
         console.log(success);
         var soundcloudName = success.soundcloud;
-        if (soundcloudName === undefined) {
-          storeSoundcloudUser();
-        } else if (soundcloudName.length >= 1) {
+       
+        if (soundcloudName.length >= 1) {
           soundcloudSwitchOn(true, "on");
         }
       }).error(function(error) {
@@ -279,18 +337,44 @@ $scope.ytLogin = function(){
         var sessionToken = memcachejs.get("sessionToken");   
     if (state === false) {
          youtubeSwitchOn(false, "off");
+       
+    }
+
+    if (state === true) {
+     
+      skeetAppFactory.getYoutubeUser(objectid).success(function(success) {
+        console.log(success);
+        var youtubeName = success.youtube;
+         if (youtubeName.length >= 1) {
+          youtubeSwitchOn(true, "on");
+        }
+      }).error(function(error) {
+        console.log(error)
+      });
+
+      }
+
+  });
+
+
+
+  //toggle instagram switch
+  $('input[name="instagram-checkbox"]').on('switchChange.bootstrapSwitch', function(event, state) {
+        var objectid = memcachejs.get("objectid");
+        var sessionToken = memcachejs.get("sessionToken");   
+    if (state === false) {
+         instagramSwitchOn(false, "off");
 
     }
 
     if (state === true) {
 
-      skeetAppFactory.getYoutubeUser(objectid).success(function(success) {
+
+      skeetAppFactory.getIGUser(objectid).success(function(success) {
         console.log(success);
-        var youtubeName = success.youtube;
-        if (youtubeName === undefined) {
-          storeYouTubeUser();
-        } else if (youtubeName.length >= 1) {
-          youtubeSwitchOn(true, "on");
+        var instagramName = success.instagram;
+        if (instagramName.length >= 1) {
+          instagramSwitchOn(true, "on");
         }
       }).error(function(error) {
         console.log(error)
@@ -348,7 +432,10 @@ console.log(error)
        
         var youtubeId = success.results[0].youtube;
          var youtubeOn = success.results[0].youtubeOn;
-        var instagramId = success.results[0].instagram;       
+        var instagramId = success.results[0].instagram; 
+         var instagramOn = success.results[0].instagramOn;
+
+
         var twittername = success.results[0].twittername;       
      
         if (success.results[0].profileimage === undefined){
@@ -401,7 +488,7 @@ if (soundcloudOn === "on"){
           console.log(data)
           // With the data succesfully returned, call our callback
           $scope.homeVideo = data.items;
-          getInstagram();
+         //getInstagram();
           $('.rn-carousel-controls').each(function(){
               $(this).insertAfter($(this).parent('ul.carouselholder'));
           });
@@ -412,8 +499,8 @@ if (soundcloudOn === "on"){
 
       }
 
+      if (instagramOn === "on") {
 
-      var getInstagram = function() {
         $http.jsonp('https://api.instagram.com/v1/users/' + instagramId + '/media/recent?count=5&client_id=7380072fbc2f438994b747e10485357f&callback=JSON_CALLBACK').success(function(data) {
           // With the data succesfully returned, call our callback
           console.log(data)
@@ -421,6 +508,9 @@ if (soundcloudOn === "on"){
         }).error(function() {
           // alert("error");
         });
+ 
+
+
       }
 
 
@@ -1160,36 +1250,60 @@ function requestUserUploadsPlaylistId() {
     console.log(response.items[0].contentDetails.relatedPlaylists.uploads)
     var youtubeid = response.items[0].contentDetails.relatedPlaylists.uploads;
     var youtubechannelid = response.items[0].id;
-console.log(youtubechannelid)
-      var objectid =memcachejs.get("objectid");
-      var sessionToken =memcachejs.get("sessionToken");
+    console.log(youtubechannelid)
+    var objectid = memcachejs.get("objectid");
+    var sessionToken = memcachejs.get("sessionToken");
 
-      var youtubeUser = {
-        youtube: youtubeid,
-        youtubechannel : youtubechannelid
-      }
+    var youtubeUser = {
+      youtube: youtubeid,
+      youtubechannel: youtubechannelid
+    }
 
     var urlBase = 'https://api.parse.com';
-              
-              $.ajax({
-                type: 'PUT',
-                url: urlBase + '/1/users/' + objectid,
-                data: JSON.stringify(youtubeUser),
-                headers: {
-                  'X-Parse-Application-Id': 'tzlVexuKShRsUHAGSV30qJYz28953tIOPSs0dl3z',
-                  'X-Parse-REST-API-Key': 'tY4eHyUnom4FZC9xAypgXsquEauGFQErvqx2YZZQ',
-                  "Content-Type": "application/json",
-                  "X-Parse-Session-Token": sessionToken
-                },
-                success: function(resultData) {
-                        console.log(resultData)
-                    $('input[name="youtube-checkbox"]').bootstrapSwitch('state', 'true');   
-                }
-              });
+
+    $.ajax({
+      type: 'PUT',
+      url: urlBase + '/1/users/' + objectid,
+      data: JSON.stringify(youtubeUser),
+      headers: {
+        'X-Parse-Application-Id': 'tzlVexuKShRsUHAGSV30qJYz28953tIOPSs0dl3z',
+        'X-Parse-REST-API-Key': 'tY4eHyUnom4FZC9xAypgXsquEauGFQErvqx2YZZQ',
+        "Content-Type": "application/json",
+        "X-Parse-Session-Token": sessionToken
+      },
+      success: function(resultData) {
+        console.log(resultData)
+        $('input[name="youtube-checkbox"]').bootstrapSwitch('state', 'true');
+
+        var objectid = memcachejs.get("objectid");
+        var sessionToken = memcachejs.get("sessionToken");
+
+        var youTubeSwitch = {
+          youtubeOn: 'on'
+        }
 
 
+        $.ajax({
+          method: 'PUT',
+          url:'https://api.parse.com/1/users/' + objectid,
+          data: JSON.stringify(youTubeSwitch),
+          headers: {
+            'X-Parse-Application-Id': 'tzlVexuKShRsUHAGSV30qJYz28953tIOPSs0dl3z',
+            'X-Parse-REST-API-Key': 'tY4eHyUnom4FZC9xAypgXsquEauGFQErvqx2YZZQ',
+            "Content-Type": "application/json",
+            "X-Parse-Session-Token": sessionToken
+          },
+          success: function() {
+            $('input[name="youtube-checkbox"]').bootstrapSwitch('state', true);
 
+          },
+          error: function() {
 
+          }
+        });
+
+      }
+    });
 
   });
 }
