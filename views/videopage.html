@@ -36,7 +36,7 @@
 <div class="carouselWrapper rectWrapper">
 	<h3>Top Rated</h3>
 	<ul rn-carousel rn-carousel-controls  rn-carousel-duration="300" class="image carouselholder">
-		<li ng-repeat="video in topRated"  class="rectangle" data-url="{{video.snippet.resourceId.videoId}}" ng-click="videoOpen()">
+		<li ng-repeat="video in topRated"  class="rectangle" data-url="{{video.id.videoId}}" ng-click="videoOpen()">
 			<div class="rectangleThumb"><img ng-src="{{video.snippet.thumbnails.medium.url}}"></div>
 			<div class="itemTitle-rectangle">{{video.snippet.title}}</div>
 
@@ -51,7 +51,7 @@
 <div class="carouselWrapper rectWrapper">
 	<h3>Most Viewed</h3>
 	<ul rn-carousel rn-carousel-controls  rn-carousel-duration="300" class="image carouselholder">
-		<li ng-repeat="video in mostViewed"  class="rectangle" data-url="{{video.snippet.resourceId.videoId}}" ng-click="videoOpen()">
+		<li ng-repeat="video in mostViewed"  class="rectangle" data-url="{{video.id.videoId}}" ng-click="videoOpen()">
 			<div class="rectangleThumb"><img ng-src="{{video.snippet.thumbnails.medium.url}}"></div>
 			<div class="itemTitle-rectangle">{{video.snippet.title}}</div>
 

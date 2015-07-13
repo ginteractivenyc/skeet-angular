@@ -222,12 +222,19 @@ $(".switcher").bootstrapSwitch({
           });
     });
 
+
+//ig login
+$scope.igLogin = function(){
+alert()
+}
+
 //soundcloud login
 
 $scope.scLogin = function(){
 storeSoundCloudUser();
 }
 
+//yt login
 $scope.ytLogin = function(){
   gapi.auth.authorize({
         client_id: OAUTH2_CLIENT_ID,
@@ -998,6 +1005,7 @@ if (soundcloudOn === "on"){
           method: 'GET',
           url: 'https://www.googleapis.com/youtube/v3/search?order=rating&part=snippet&maxResults=50&channelId=' + youtubechannelId.toString() + '&key=AIzaSyBZGeefjprHm8Zq6DkblpvNV0eQ65l2E84'
         }).success(function(data) {
+          console.log("TOPRATED")
           console.log(data)
           // With the data succesfully returned, call our callback
           $scope.topRated = data.items;
@@ -1029,28 +1037,10 @@ if (soundcloudOn === "on"){
         });
 
 
-
-
-        $scope.playlistPlay = function($event){
-          var playlistId = angular.element(event.currentTarget).attr('data-url');
-                $location.path( $routeParams.nameHolder + '/music/playlist/' + playlistId, false );
-                 $scope.tracksiframe = "false"
-                  $scope.playlistsiframe = "true" 
-            var baseUrl = 'https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/playlists/' + playlistId + '&auto_play=true';
-
-        $scope.musicPlaylist = $sce.trustAsResourceUrl(baseUrl);      
-        }
-
-
-        $scope.trackPlay = function($event){
-          var trackId = angular.element(event.currentTarget).attr('data-url');
-                $location.path( $routeParams.nameHolder + '/music/track/' + trackId, false );
-                 $scope.tracksiframe = "true"
-                  $scope.playlistsiframe = "false" 
-            var baseUrl = 'https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/' + trackId + '&auto_play=true';
-
-        $scope.musicTrack = $sce.trustAsResourceUrl(baseUrl);      
-        }
+    $scope.videoOpen = function($event) {
+      var videoId = angular.element(event.currentTarget).attr('data-url');
+      $location.path($routeParams.nameHolder + '/video/' + videoId);
+    }
 
 
       }).error(function(error) {
@@ -1071,6 +1061,7 @@ if (soundcloudOn === "on"){
 
   $scope.goHome = function(){
     $location.path('/' + $routeParams.nameHolder)
+    soundManager.stopAll();
   }
 });
 
