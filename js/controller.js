@@ -20,11 +20,14 @@ var skeetUser = {
 //signup user
     skeetAppFactory.storeUser(skeetUser).success(function(success) {
       console.log(success)
-      skeetUserId.push(success.objectId)
-      $('#skeetLogin').fadeOut();
-      $window.location = '#/' + $scope.nameHolder + '/loggedin';
           memcachejs.set("objectid", success.objectId );
-          memcachejs.set("sessionToken", success.sessionToken);
+          memcachejs.set("sessionToken", success.sessionToken);   
+          memcachejs.set("skeetUser", userName);        
+            skeetUserId.push(success.objectId)
+      $('#skeetLogin').fadeOut();
+
+      $window.location = '#/' + $scope.nameHolder + '/loggedin';
+
     }).error(function(error) {
       console.log(error)
     });
@@ -86,7 +89,7 @@ var skeetUser = {
 
 
 }).controller('loggedinCtrl', function($scope, $location, $window, $routeParams, skeetAppFactory){
-console.log(nameHolderMain)
+          $('#loggedUser').html($routeParams.nameHolder);
 
 //first check for IG name
     var objectid = memcachejs.get("objectid");
@@ -415,8 +418,8 @@ console.log(error)
 
 }).controller('userViewCtrl', function( $scope, $location, $http, $routeParams, skeetAppFactory){
    // get Music Items
+          $('#loggedUser').html($routeParams.nameHolder);
 
-   console.log(nameHolderMain.toString())
   var parseServiceGet = function() {
 
       skeetAppFactory.getParseUser({
@@ -1143,7 +1146,7 @@ if (soundcloudOn === "on"){
           return $location.path();
         }, function(value) {
           console.log(value);
-          $scope.userName = $routeParams.nameHolder;
+          //$scope.userName = $routeParams.nameHolder;
 
         });
 
