@@ -991,9 +991,6 @@ if (soundcloudOn === "on"){
             }
 
 
-
-
-
             // plays track from TRACKS row
             $scope.trackPlay = function($event) {
                   soundManager.stopAll();
@@ -1156,6 +1153,25 @@ if (soundcloudOn === "on"){
     $location.path('/' + $routeParams.nameHolder)
     soundManager.stopAll();
   }
+}).controller('discoveryCtrl', function($scope,$location, $routeParams,skeetAppFactory){
+
+    skeetAppFactory.getParseUser().success(function(success){
+      console.log(success)
+        $scope.allusers = success.results;
+setTimeout(function(){
+var list = document.getElementsByClassName('discoveryBuckets');
+
+for (var i = 0; i < list.length; i++) {
+  var src = list[i].getAttribute('data-background');
+  list[i].style.backgroundImage="url('" + src + "')";
+}
+}, 1000)
+   
+
+}).error(function(){
+
+    });
+
 });
 
 

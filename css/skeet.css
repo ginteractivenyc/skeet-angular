@@ -1,6 +1,6 @@
 html, body{
   margin:0;
-      font-family: 'Fjalla One', sans-serif;
+      font-family: 'Raleway', sans-serif;
       font-weight: 200;
 
 } 
@@ -196,6 +196,31 @@ margin-bottom: 6px;
 .activeTrack{
   color:#ffffff;
 }
+
+
+#discoveryPage{
+  margin-top:50px;
+}
+.discoveryBuckets{
+    /*background: #c4c4c4;*/
+    min-height:200px;
+    margin-top: 1px;
+    background-size: cover;
+    background-position: 0 0; 
+    background-repeat: no-repeat;
+}
+
+.discoveryBucketsOverlay{
+position: absolute;
+bottom:0;
+left:0;
+width: 100%;
+background: rgba(0,0,0,0.7);
+color: #fff;
+padding:3%;
+
+}
+
 /*Carousel Styles*/
 
 @media only screen and (min-width : 320px){

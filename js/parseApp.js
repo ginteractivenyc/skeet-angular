@@ -18,6 +18,9 @@ skeetApp.config(['$routeProvider', function($routeProvider) {
     when('/',{
       templateUrl: 'views/signup.html',
       controller:'signupCtrl'
+    }).when('/discovery',{
+      templateUrl: 'views/discovery.html',
+      controller:'discoveryCtrl'      
     }).when('/:nameHolder/loggedin',{
       templateUrl: 'views/loggedin.html',
       controller:'loggedinCtrl'
