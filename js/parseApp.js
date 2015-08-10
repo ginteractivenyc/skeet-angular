@@ -60,16 +60,16 @@ skeetApp.run(['$route', '$rootScope', '$location', function ($route, $rootScope,
 
 
 //go Home
-skeetApp.directive('goHome', ['$location',  function(location){
+skeetApp.directive('goHome', ['$location', '$routeParams',  function(location,  $routeParams){
        return {
         
             link: function($scope, $elm) {
                 $scope.$location = location;
                  $elm.on('click', function() {
-                       soundManager.stopAll();
+                      // soundManager.stopAll();
 
                   $scope.$apply(function(){
-                      location.path('/' + $elm.html().toLowerCase() );
+                      location.path('/' + $routeParams.nameHolder );
 
                   })
                   });

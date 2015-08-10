@@ -4,13 +4,13 @@
 	<div class="row">
 
      <div ng-repeat="item in followers" class="discoveryBuckets col-sm-4"  ng-click="openUser()" data-username="{{item.follower}}">
-     	<img class="discoveryBg" src="{{item.profileimage}}" />
+     	<img class="discoveryBg" ng-src="{{item.profileimage}}" />
      	<div class="discoveryBucketsOverlay">
      		{{item.follower}}
      		<div class="activeWrapper">
-     			<div ng-if="item.soundcloudOn == 'on' " class="activeEndpPoints"><img  src="img/soundcloud.png"/></div>
-     			<div ng-if="item.youtubeOn == 'on' " class="activeEndpPoints"><img src="img/youtube-active.png"/></div>
-     			<div ng-if="item.instagramOn == 'on' " class="activeEndpPoints"><img  src="img/igicon.png"/></div>
+     			<div ng-if="item.soundcloudOn == 'on' " class="activeEndpPoints"><img  ng-src="img/soundcloud.png"/></div>
+     			<div ng-if="item.youtubeOn == 'on' " class="activeEndpPoints"><img ng-src="img/youtube-active.png"/></div>
+     			<div ng-if="item.instagramOn == 'on' " class="activeEndpPoints"><img  ng-src="img/igicon.png"/></div>
 
      		</div>
 

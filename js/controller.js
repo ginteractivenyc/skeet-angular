@@ -1,5 +1,7 @@
 skeetApp.controller('signupCtrl', function($scope, $routeParams, $window, skeetAppFactory){
 
+angular.element('.globalHeader').hide();
+
 $scope.nameHolder = [];
 
 var user = new Parse.User();
@@ -58,7 +60,7 @@ var skeetUser = {
           // The login failed. Check error to see why.
       }
     });*/
-   var userName = document.getElementById('loginUsername').value;
+   var userName = document.getElementById('loginUsername').value.toLowerCase();
     var userPass = document.getElementById('loginPassword').value;
     console.log(userName + userPass)
 
@@ -91,6 +93,7 @@ var skeetUser = {
 
 
 }).controller('loggedinCtrl', function($scope, $location, $window, $routeParams, skeetAppFactory){
+  angular.element('.globalHeader').show();
           $('#loggedUser').html($routeParams.nameHolder);
 
 //first check for IG name
@@ -421,6 +424,8 @@ console.log(error)
 }).controller('userViewCtrl', function( $scope, $location, $http, $routeParams, skeetAppFactory){
    // get Music Items
   $('#loggedUser').html($routeParams.nameHolder);
+angular.element('.followersCount').show();
+angular.element('#followBtn').show();
 
   
   var parseServiceGet = function() {
@@ -1183,7 +1188,8 @@ if (soundcloudOn === "on"){
   }
 }).controller('discoveryCtrl', function($scope,$location, $routeParams,skeetAppFactory){
  $('#loggedUser').html("Discovery");
-
+angular.element('.followersCount').hide();
+angular.element('#followBtn').hide();
     skeetAppFactory.getParseUser().success(function(success){
       console.log(success)
         $scope.allusers = success.results;
@@ -1212,6 +1218,12 @@ if (soundcloudOn === "on"){
 }).controller('followersCtrl', function($scope,$location, $routeParams,skeetAppFactory){
 
 //get Followers
+angular.element('.followersCount').hide();
+angular.element('#followBtn').hide();
+angular.element("#loggedUser").html($routeParams.nameHolder);
+  angular.element('#loggedUser').append("<span style='font-weight:100; font-size:20px;'>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;Followers</span>");
+
+
 
     var getFollowFrom = $routeParams.nameHolder;
 
@@ -1222,13 +1234,17 @@ if (soundcloudOn === "on"){
     }).success(function(success) {
       $scope.followers = success.results;
 
+
     }).error(function(error) {
 
     });
 
+    $scope.openUser = function(){
+      var thisUser = angular.element(event.currentTarget).attr('data-username');
+        $location.path('/' + thisUser);
+    }
+
 });
-
-
 
 
 /*skeetApp.directive('userName', ['$routeParams', function ($routeParams, $location) {
@@ -1244,7 +1260,6 @@ if (soundcloudOn === "on"){
       }
     }
   }]);*/
-
 
 
 skeetApp.filter('artworkCheck', function () {
