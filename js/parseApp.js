@@ -36,6 +36,9 @@ skeetApp.config(['$routeProvider', function($routeProvider) {
     }).when('/:nameHolder/video/:videoItem',{
       templateUrl: 'views/videopage.html',
       controller:'videoCtrl'      
+    }).when('/:nameHolder/followers', {
+      templateUrl: 'views/followers.html',
+      controller: 'followersCtrl'
     });
 }]);
 
@@ -52,6 +55,74 @@ skeetApp.run(['$route', '$rootScope', '$location', function ($route, $rootScope,
         }
         return original.apply($location, [path]);
     };
+}])
+
+
+
+//go Home
+skeetApp.directive('goHome', ['$location',  function(location){
+       return {
+        
+            link: function($scope, $elm) {
+                $scope.$location = location;
+                 $elm.on('click', function() {
+                       soundManager.stopAll();
+
+                  $scope.$apply(function(){
+                      location.path('/' + $elm.html().toLowerCase() );
+
+                  })
+                  });
+               }
+             }
+}]);
+
+
+
+//go Followers
+//go Home
+skeetApp.directive('goFollowers', ['$location',  function(location){
+       return {
+        
+            link: function($scope, $elm) {
+                $scope.$location = location;
+                 $elm.on('click', function() {
+                     var viewFollowersOf = $('#loggedUser').text().toString();
+                  $scope.$apply(function(){
+                      location.path('/' + viewFollowersOf + '/followers' );
+
+                  })
+                  });
+               }
+             }
+}]);
+
+skeetApp.directive('followBtn', ['$compile', 'skeetAppFactory',  function($compile, skeetAppFactory){
+    return {
+      link: function($scope, $elm){
+        $elm.on('click', function(){
+
+              var objectid = memcachejs.get("objectid");
+              var sessionToken = memcachejs.get("sessionToken");
+              var userToFollow = $('#loggedUser').text().toString();
+              var follower = memcachejs.get("skeetUser");
+              var getFollowImage =   memcachejs.get("profileimage");
+
+              var followUser = {
+                artist: userToFollow,
+                follower: follower,
+                profileimage: getFollowImage
+              }
+
+           skeetAppFactory.storeFollower(followUser, sessionToken).success(function(success){
+            console.log(success);
+
+           }).error(function(error){
+
+           });
+        });
+      }
+    }
 }])
 
 

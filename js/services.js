@@ -70,6 +70,17 @@ skeetApp.factory('skeetAppFactory', [ '$rootScope', '$http', function($rootScope
 
 
 
+  skeetAppFactory.getFollower = function(getFollowers){
+    return $http({
+      method: 'GET',
+      url: urlBase + '/1/classes/followers/' ,
+      headers: {'X-Parse-Application-Id':'tzlVexuKShRsUHAGSV30qJYz28953tIOPSs0dl3z', 'X-Parse-REST-API-Key':'tY4eHyUnom4FZC9xAypgXsquEauGFQErvqx2YZZQ', "Content-Type": "application/json"},
+       params: getFollowers
+    })
+  }
+
+
+
 //POST
 
  skeetAppFactory.storeUser = function(userObject){
@@ -153,6 +164,16 @@ skeetApp.factory('skeetAppFactory', [ '$rootScope', '$http', function($rootScope
       method: 'PUT',
       url: urlBase + '/1/users/' + objectid,
       data: youtubeUser,
+      headers: {'X-Parse-Application-Id':'tzlVexuKShRsUHAGSV30qJYz28953tIOPSs0dl3z', 'X-Parse-REST-API-Key':'tY4eHyUnom4FZC9xAypgXsquEauGFQErvqx2YZZQ', "Content-Type": "application/json", "X-Parse-Session-Token" : sessionToken}
+    })
+  }
+
+
+  skeetAppFactory.storeFollower = function(followUser, sessionToken){
+    return $http({
+      method: 'POST',
+      url: urlBase + '/1/classes/followers/',
+      data: followUser,
       headers: {'X-Parse-Application-Id':'tzlVexuKShRsUHAGSV30qJYz28953tIOPSs0dl3z', 'X-Parse-REST-API-Key':'tY4eHyUnom4FZC9xAypgXsquEauGFQErvqx2YZZQ', "Content-Type": "application/json", "X-Parse-Session-Token" : sessionToken}
     })
   }

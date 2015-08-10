@@ -3,10 +3,10 @@
 
 	<div class="row">
 
-     <div ng-repeat="item in allusers" class="discoveryBuckets col-sm-4"  ng-click="openUser()" data-username="{{item.username}}">
+     <div ng-repeat="item in followers" class="discoveryBuckets col-sm-4"  ng-click="openUser()" data-username="{{item.follower}}">
      	<img class="discoveryBg" src="{{item.profileimage}}" />
      	<div class="discoveryBucketsOverlay">
-     		{{item.username}}
+     		{{item.follower}}
      		<div class="activeWrapper">
      			<div ng-if="item.soundcloudOn == 'on' " class="activeEndpPoints"><img  src="img/soundcloud.png"/></div>
      			<div ng-if="item.youtubeOn == 'on' " class="activeEndpPoints"><img src="img/youtube-active.png"/></div>

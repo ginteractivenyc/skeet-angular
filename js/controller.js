@@ -6,7 +6,7 @@ var user = new Parse.User();
 var signupSubmit = document.getElementById('signupSubmit');
 
 $scope.submit = function(){
-var userName = document.getElementById('inputUsername').value;
+var userName = document.getElementById('inputUsername').value.toLowerCase();
 var userPass = document.getElementById('inputPassword').value;
 var userEmail = document.getElementById('inputEmail').value;
    $scope.nameHolder.push(userName)
@@ -69,10 +69,12 @@ var skeetUser = {
 //signup user
     skeetAppFactory.loginParseUser(skeetUser).success(function(success) {
       console.log(success)
+      angular.element('#followBtn').attr('data-profileimage', success.profileimage);
       skeetUserId.push(success.objectId)
           memcachejs.set("objectid", success.objectId );
           memcachejs.set("sessionToken", success.sessionToken); 
-          memcachejs.set("skeetUser", userName);        
+          memcachejs.set("skeetUser", userName); 
+          memcachejs.set("profileimage", success.profileimage);       
         $('#skeetLogin').fadeOut();
         $('#loginModal').modal('hide')
         $('body').removeClass('modal-open');
@@ -418,8 +420,9 @@ console.log(error)
 
 }).controller('userViewCtrl', function( $scope, $location, $http, $routeParams, skeetAppFactory){
    // get Music Items
-          $('#loggedUser').html($routeParams.nameHolder);
+  $('#loggedUser').html($routeParams.nameHolder);
 
+  
   var parseServiceGet = function() {
 
       skeetAppFactory.getParseUser({
@@ -520,7 +523,32 @@ if (soundcloudOn === "on"){
       }).error(function(error){
           console.log(error)
       });
+  
+//get Followers
+
+    var getFollowFrom = $('#loggedUser').text().toString();
+
+    skeetAppFactory.getFollower({
+      where: {
+        artist: getFollowFrom
+      }
+    }).success(function(success) {
+      console.log(success.results.length)
+
+      var followCount = success.results.length;
+      angular.element('#followcount').html(followCount);
+    }).error(function(error) {
+
+    });
+
+
+
   };
+
+
+
+
+
 
   $scope.trackOpen = function($event) {
     var trackId = angular.element(event.currentTarget).attr('data-url');
@@ -1154,21 +1182,47 @@ if (soundcloudOn === "on"){
     soundManager.stopAll();
   }
 }).controller('discoveryCtrl', function($scope,$location, $routeParams,skeetAppFactory){
+ $('#loggedUser').html("Discovery");
 
     skeetAppFactory.getParseUser().success(function(success){
       console.log(success)
         $scope.allusers = success.results;
-setTimeout(function(){
-var list = document.getElementsByClassName('discoveryBuckets');
+        
 
-for (var i = 0; i < list.length; i++) {
-  var src = list[i].getAttribute('data-background');
-  list[i].style.backgroundImage="url('" + src + "')";
-}
-}, 1000)
+
+    /*setTimeout(function() {
+      var list = document.getElementsByClassName('discoveryBuckets');
+
+      for (var i = 0; i < list.length; i++) {
+        var src = list[i].getAttribute('data-background');
+        list[i].style.backgroundImage = "url('" + src + "')";
+      }
+    }, 1000)*/
    
 
+    $scope.openUser = function(){
+      var thisUser = angular.element(event.currentTarget).attr('data-username');
+        $location.path('/' + thisUser);
+    }
+
 }).error(function(){
+
+});
+
+}).controller('followersCtrl', function($scope,$location, $routeParams,skeetAppFactory){
+
+//get Followers
+
+    var getFollowFrom = $routeParams.nameHolder;
+
+    skeetAppFactory.getFollower({
+      where: {
+        artist: getFollowFrom
+      }
+    }).success(function(success) {
+      $scope.followers = success.results;
+
+    }).error(function(error) {
 
     });
 

@@ -172,7 +172,49 @@ iframe{
 .glyphicon{
   font-size: 3rem;
 }
+.activeWrapper{
+position: absolute;
+    right: 10px;
+    top: 9px;
+}
 
+.activeEndpPoints{
+    width: 25px;
+    height:25px;
+    float: left;
+    position: relative;
+    border-radius: 100%;
+    overflow: hidden;
+        margin-left: 5px;
+}
+.activeEndpPoints img{
+      width: 100%;
+}
+
+#followBtn{
+    color: #000;
+    position: absolute;
+    right: 20px;
+    top: 6px;
+    z-index: 9999999999;
+    font-size: 17px;
+    border-radius: 20px;
+}
+
+#followcount{
+    font-size: 28px;
+    line-height: 28px;
+        color: #fff;
+}
+.followersCount{
+color: #c4c4c4;
+    position: absolute;
+    right: 120px;
+    top: 3px;
+    z-index: 9999999999;
+    font-size: 11px;
+    text-align: center;
+}
 
 
 ul.trackList{
@@ -202,20 +244,26 @@ margin-bottom: 6px;
   margin-top:50px;
 }
 .discoveryBuckets{
-    /*background: #c4c4c4;*/
-    min-height:200px;
-    margin-top: 1px;
-    background-size: cover;
-    background-position: 0 0; 
-    background-repeat: no-repeat;
+    height: 200px;
+    position: relative;
+    overflow: hidden;
+
 }
+
+.discoveryBg{
+    width: 110%;
+    position: absolute;
+    left:0;
+    top:-20px;
+}
+
 
 .discoveryBucketsOverlay{
 position: absolute;
 bottom:0;
 left:0;
 width: 100%;
-background: rgba(0,0,0,0.7);
+background: rgba(0,0,0,0.77);
 color: #fff;
 padding:3%;
 
@@ -407,7 +455,8 @@ left: -2%;
 .artistDetails {
   margin-left: 60px;
   font-size: 18px;
-  max-width:100%;
+    width: 100%;
+    max-width: 400px;
 }
 ul.trackList li {
   font-size: 14px;
