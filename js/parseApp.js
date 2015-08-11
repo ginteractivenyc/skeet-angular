@@ -102,11 +102,12 @@ skeetApp.directive('followBtn', ['$compile', 'skeetAppFactory',  function($compi
       link: function($scope, $elm){
         $elm.on('click', function(){
 
-              var objectid = memcachejs.get("objectid");
-              var sessionToken = memcachejs.get("sessionToken");
+              var objectid = localStorage.getItem("objectid");
+              var sessionToken = localStorage.getItem("sessionToken");
               var userToFollow = $('#loggedUser').text().toString();
-              var follower = memcachejs.get("skeetUser");
-              var getFollowImage =   memcachejs.get("profileimage");
+              var follower = localStorage.getItem("skeetUser");
+              var getFollowImage =   localStorage.getItem("profileimage");
+              if (follower){
 
               var followUser = {
                 artist: userToFollow,
@@ -120,6 +121,9 @@ skeetApp.directive('followBtn', ['$compile', 'skeetAppFactory',  function($compi
            }).error(function(error){
 
            });
+         } else{
+          alert("YOU NEED TO LOG IN DUN!")
+         }
         });
       }
     }
