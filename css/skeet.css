@@ -10,6 +10,7 @@ h2{
   margin-top: 10px;
   font-size: 26px;
   text-transform: uppercase;
+  float:left;
 }
 
 h3{
@@ -248,10 +249,18 @@ margin-bottom: 6px;
     height: 200px;
     position: relative;
     overflow: hidden;
+    -webkit-transition: all 350ms ease;
+-moz-transition: all 350ms ease;
+-ms-transition: all 350ms ease;
+-o-transition: all 350ms ease;
+transition: all 350ms ease;
 
 }
 
-
+.discoveryBuckets:hover{
+  opacity: 0.7;
+  cursor: pointer;
+}
 
 .discoveryBg{
     width: 110%;
@@ -259,7 +268,17 @@ margin-bottom: 6px;
     left:0;
     top:-20px;
 }
+#discoverynav{
+  display: none;
+  float:left;
+  color:#fff;
+}
 
+#discoverynav li{
+  float:left;
+  list-style: none;
+  margin-left:20px;
+}
 
 .discoveryBucketsOverlay{
 position: absolute;
@@ -274,11 +293,33 @@ padding:3%;
 .powerbar{
   width: 0;
   height:3px;
-  background: red;
+background: #ff6100; /* Old browsers */
+background: -moz-linear-gradient(left,  #ff6100 0%, #ff3d3d 100%); /* FF3.6+ */
+background: -webkit-gradient(linear, left top, right top, color-stop(0%,#ff6100), color-stop(100%,#ff3d3d)); /* Chrome,Safari4+ */
+background: -webkit-linear-gradient(left,  #ff6100 0%,#ff3d3d 100%); /* Chrome10+,Safari5.1+ */
+background: -o-linear-gradient(left,  #ff6100 0%,#ff3d3d 100%); /* Opera 11.10+ */
+background: -ms-linear-gradient(left,  #ff6100 0%,#ff3d3d 100%); /* IE10+ */
+background: linear-gradient(to right,  #ff6100 0%,#ff3d3d 100%); /* W3C */
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ff6100', endColorstr='#ff3d3d',GradientType=1 ); /* IE6-9 */
+
+}
+
+.discoveryglyph{
+color: #fff;
+    position: absolute;
+    right: 190px;
+    top: 12px;
+    font-size: 1.7em!important;
+
 }
 
 .followed{
   background: #c4c4c4;
+  pointer-events:none;
+}
+.followed:hover{
+   background: #c4c4c4;
+  pointer-events:none; 
 }
 
 /*Carousel Styles*/

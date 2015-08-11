@@ -80,7 +80,6 @@ skeetApp.factory('skeetAppFactory', [ '$rootScope', '$http', function($rootScope
   }
 
 
-
 //POST
 
  skeetAppFactory.storeUser = function(userObject){

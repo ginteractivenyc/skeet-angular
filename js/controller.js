@@ -424,7 +424,7 @@ console.log(error)
 }).controller('userViewCtrl', function( $scope, $location, $http, $routeParams, skeetAppFactory){
    // get Music Items
   $('#loggedUser').html($routeParams.nameHolder);
-angular.element('.followersCount').show();
+angular.element('.followersCount, .discoveryglyph').show();
 angular.element('#followBtn').show();
 angular.element('#followBtn').removeClass('followed');
 
@@ -547,6 +547,7 @@ if (soundcloudOn === "on"){
        
         angular.element('#followBtn').addClass('followed');
         angular.element('#followBtn').html("followed");
+        angular.element('#followBtn').unbind();
 
       }
     }
@@ -1193,12 +1194,24 @@ if (soundcloudOn === "on"){
     soundManager.stopAll();
   }
 }).controller('discoveryCtrl', function($scope,$location, $routeParams,skeetAppFactory){
+
+angular.element('#discoverynav').show();
+  //get All Followers
+skeetAppFactory.getFollower().success(function(success){
+  console.log(success.results.length)
+  $scope.allFollowersCount = success.results.length;
+}).error(function(error){
+
+});
  $('#loggedUser').html("Discovery");
-angular.element('.followersCount').hide();
+angular.element('.followersCount, .discoveryglyph').hide();
 angular.element('#followBtn').hide();
     skeetAppFactory.getParseUser().success(function(success){
       //console.log(success)
         $scope.allusers = success.results;
+
+
+
         //console.log( $scope.allusers)
 for(var i =0;  i < $scope.allusers.length; i++){
       var getFollowFrom = $scope.allusers[i].username;
@@ -1211,7 +1224,10 @@ for(var i =0;  i < $scope.allusers.length; i++){
       console.log(success)
       for(var i = 0; i < success.results.length; i++){
           //console.log(success.results[i])
-          var percentage = success.results.length/100 * 100 ;
+
+          var discoveryBuckets = document.getElementsByClassName('discoveryBuckets')[0];
+          var outerWidth = discoveryBuckets.offsetWidth;
+          var percentage = success.results.length/ $scope.allFollowersCount * 100 ;
          console.log(percentage)
       angular.element('.artistname:contains(' + success.results[0].artist + ')').parent().find('.powerbar').css('width', percentage + '%')
 
@@ -1245,11 +1261,11 @@ for(var i =0;  i < $scope.allusers.length; i++){
 }).controller('followersCtrl', function($scope,$location, $routeParams,skeetAppFactory){
 
 //get Followers
+angular.element('.discoveryglyph').show();
 angular.element('.followersCount').hide();
 angular.element('#followBtn').hide();
 angular.element("#loggedUser").html($routeParams.nameHolder);
-  angular.element('#loggedUser').append("<span style='font-weight:100; font-size:20px;'>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;Followers</span>");
-
+angular.element('#loggedUser').append("<span style='font-weight:100; font-size:20px;'>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;Followers</span>");
 
 
     var getFollowFrom = $routeParams.nameHolder;

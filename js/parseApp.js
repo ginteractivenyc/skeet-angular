@@ -126,6 +126,20 @@ skeetApp.directive('followBtn', ['$compile', 'skeetAppFactory',  function($compi
 }])
 
 
+//go discovery
+skeetApp.directive('goDiscovery', ['$location',  function(location){
+       return {
+        
+            link: function($scope, $elm) {
+                $scope.$location = location;
+                 $elm.on('click', function() {
+                  $scope.$apply(function(){
+                      location.path('/discovery');
 
+                  })
+                  });
+               }
+             }
+}]);
 
 
