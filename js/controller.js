@@ -22,9 +22,9 @@ var skeetUser = {
 //signup user
     skeetAppFactory.storeUser(skeetUser).success(function(success) {
       console.log(success)
-          memcachejs.set("objectid", success.objectId );
-          memcachejs.set("sessionToken", success.sessionToken);   
-          memcachejs.set("skeetUser", userName);        
+          localStorage.setItem("objectid", success.objectId );
+          localStorage.setItem("sessionToken", success.sessionToken);   
+          localStorage.setItem("skeetUser", userName);        
             skeetUserId.push(success.objectId)
       $('#skeetLogin').fadeOut();
 
@@ -73,10 +73,10 @@ var skeetUser = {
       console.log(success)
       angular.element('#followBtn').attr('data-profileimage', success.profileimage);
       skeetUserId.push(success.objectId)
-          memcachejs.set("objectid", success.objectId );
-          memcachejs.set("sessionToken", success.sessionToken); 
-          memcachejs.set("skeetUser", userName); 
-          memcachejs.set("profileimage", success.profileimage);       
+          localStorage.setItem("objectid", success.objectId );
+          localStorage.setItem("sessionToken", success.sessionToken); 
+          localStorage.setItem("skeetUser", userName); 
+          localStorage.setItem("profileimage", success.profileimage);       
         $('#skeetLogin').fadeOut();
         $('#loginModal').modal('hide')
         $('body').removeClass('modal-open');
@@ -97,7 +97,7 @@ var skeetUser = {
           $('#loggedUser').html($routeParams.nameHolder);
 
 //first check for IG name
-    var objectid = memcachejs.get("objectid");
+    var objectid = localStorage.getItem("objectid");
 
       skeetAppFactory.getIGUser(objectid).success(function(success) {
         console.log(success);
@@ -120,8 +120,8 @@ SC.connect(function(){
         $("#username").text($scope.soundcloudName);
         $("#description").val(me.description);
 
-        var objectid = memcachejs.get("objectid");
-        var sessionToken = memcachejs.get("sessionToken");
+        var objectid = localStorage.getItem("objectid");
+        var sessionToken = localStorage.getItem("sessionToken");
         var soundcloudUser = {
           soundcloud: $scope.soundcloudName
         }
@@ -156,8 +156,8 @@ $window.open('https://instagram.com/oauth/authorize/?client_id=7380072fbc2f43899
 
 //switch functions
   function soundcloudSwitchOn(state, onoff) {
-    var objectid = memcachejs.get("objectid");
-    var sessionToken = memcachejs.get("sessionToken");
+    var objectid = localStorage.getItem("objectid");
+    var sessionToken = localStorage.getItem("sessionToken");
 
     var soundCloudSwitch = {
       soundcloudOn: onoff
@@ -175,8 +175,8 @@ $window.open('https://instagram.com/oauth/authorize/?client_id=7380072fbc2f43899
   }
 
   function youtubeSwitchOn(state, onoff) {
-    var objectid = memcachejs.get("objectid");
-    var sessionToken = memcachejs.get("sessionToken");
+    var objectid = localStorage.getItem("objectid");
+    var sessionToken = localStorage.getItem("sessionToken");
 
     var youTubeSwitch = {
       youtubeOn: onoff
@@ -193,8 +193,8 @@ $window.open('https://instagram.com/oauth/authorize/?client_id=7380072fbc2f43899
   }
 
   function instagramSwitchOn(state, onoff) {
-    var objectid = memcachejs.get("objectid");
-    var sessionToken = memcachejs.get("sessionToken");
+    var objectid = localStorage.getItem("objectid");
+    var sessionToken = localStorage.getItem("sessionToken");
 
     var instagramSwitch = {
       instagramOn: onoff
@@ -216,7 +216,7 @@ $window.open('https://instagram.com/oauth/authorize/?client_id=7380072fbc2f43899
 
 
     //Switch Check: Soundcloud
-     var objectid = memcachejs.get("objectid");
+     var objectid = localStorage.getItem("objectid");
 
       skeetAppFactory.getSoundcloudUser(objectid).success(function(success) {
         console.log(success);
@@ -273,8 +273,8 @@ $(".switcher").bootstrapSwitch({
                 var profileImage = {
                   profileimage: success.url
                 }
-    var objectid = memcachejs.get("objectid");
-    var sessionToken = memcachejs.get("sessionToken");
+    var objectid = localStorage.getItem("objectid");
+    var sessionToken = localStorage.getItem("sessionToken");
                 skeetAppFactory.assignProfileImage(objectid, profileImage, sessionToken).success(function(success){
                   console.log(success);
                 }).error(function(){
@@ -314,8 +314,8 @@ $scope.ytLogin = function(){
 
   //toggle soundcloud switch
   $('input[name="soundcloud-checkbox"]').on('switchChange.bootstrapSwitch', function(event, state) {
-        var objectid = memcachejs.get("objectid");
-        var sessionToken = memcachejs.get("sessionToken");   
+        var objectid = localStorage.getItem("objectid");
+        var sessionToken = localStorage.getItem("sessionToken");   
     if (state === false) {
          soundcloudSwitchOn(false, "off");
 
@@ -341,8 +341,8 @@ $scope.ytLogin = function(){
 
   //toggle youtube switch
   $('input[name="youtube-checkbox"]').on('switchChange.bootstrapSwitch', function(event, state) {
-        var objectid = memcachejs.get("objectid");
-        var sessionToken = memcachejs.get("sessionToken");   
+        var objectid = localStorage.getItem("objectid");
+        var sessionToken = localStorage.getItem("sessionToken");   
     if (state === false) {
          youtubeSwitchOn(false, "off");
        
@@ -368,8 +368,8 @@ $scope.ytLogin = function(){
 
   //toggle instagram switch
   $('input[name="instagram-checkbox"]').on('switchChange.bootstrapSwitch', function(event, state) {
-        var objectid = memcachejs.get("objectid");
-        var sessionToken = memcachejs.get("sessionToken");   
+        var objectid = localStorage.getItem("objectid");
+        var sessionToken = localStorage.getItem("sessionToken");   
     if (state === false) {
          instagramSwitchOn(false, "off");
 
@@ -426,6 +426,7 @@ console.log(error)
   $('#loggedUser').html($routeParams.nameHolder);
 angular.element('.followersCount').show();
 angular.element('#followBtn').show();
+angular.element('#followBtn').removeClass('followed');
 
   
   var parseServiceGet = function() {
@@ -538,8 +539,17 @@ if (soundcloudOn === "on"){
         artist: getFollowFrom
       }
     }).success(function(success) {
-      console.log(success.results.length)
 
+     
+      for(var i = 0; i < success.results.length; i++){
+         console.log(success.results[i])
+      if (success.results[i].follower === localStorage.getItem("skeetUser")){
+       
+        angular.element('#followBtn').addClass('followed');
+        angular.element('#followBtn').html("followed");
+
+      }
+    }
       var followCount = success.results.length;
       angular.element('#followcount').html(followCount);
     }).error(function(error) {
@@ -549,10 +559,6 @@ if (soundcloudOn === "on"){
 
 
   };
-
-
-
-
 
 
   $scope.trackOpen = function($event) {
@@ -1191,10 +1197,31 @@ if (soundcloudOn === "on"){
 angular.element('.followersCount').hide();
 angular.element('#followBtn').hide();
     skeetAppFactory.getParseUser().success(function(success){
-      console.log(success)
+      //console.log(success)
         $scope.allusers = success.results;
-        
+        //console.log( $scope.allusers)
+for(var i =0;  i < $scope.allusers.length; i++){
+      var getFollowFrom = $scope.allusers[i].username;
 
+    skeetAppFactory.getFollower({
+      where: {
+        artist: getFollowFrom
+      }
+    }).success(function(success) {
+      console.log(success)
+      for(var i = 0; i < success.results.length; i++){
+          //console.log(success.results[i])
+          var percentage = success.results.length/100 * 100 ;
+         console.log(percentage)
+      angular.element('.artistname:contains(' + success.results[0].artist + ')').parent().find('.powerbar').css('width', percentage + '%')
+
+      }
+
+
+    }).error(function(error) {
+
+    });
+}
 
     /*setTimeout(function() {
       var list = document.getElementsByClassName('discoveryBuckets');
@@ -1339,8 +1366,8 @@ function requestUserUploadsPlaylistId() {
     var youtubeid = response.items[0].contentDetails.relatedPlaylists.uploads;
     var youtubechannelid = response.items[0].id;
     console.log(youtubechannelid)
-    var objectid = memcachejs.get("objectid");
-    var sessionToken = memcachejs.get("sessionToken");
+    var objectid = localStorage.getItem("objectid");
+    var sessionToken = localStorage.getItem("sessionToken");
 
     var youtubeUser = {
       youtube: youtubeid,
@@ -1363,8 +1390,8 @@ function requestUserUploadsPlaylistId() {
         console.log(resultData)
         $('input[name="youtube-checkbox"]').bootstrapSwitch('state', 'true');
 
-        var objectid = memcachejs.get("objectid");
-        var sessionToken = memcachejs.get("sessionToken");
+        var objectid = localStorage.getItem("objectid");
+        var sessionToken = localStorage.getItem("sessionToken");
 
         var youTubeSwitch = {
           youtubeOn: 'on'

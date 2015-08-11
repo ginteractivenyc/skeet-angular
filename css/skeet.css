@@ -242,6 +242,7 @@ margin-bottom: 6px;
 
 #discoveryPage{
   margin-top:50px;
+
 }
 .discoveryBuckets{
     height: 200px;
@@ -249,6 +250,8 @@ margin-bottom: 6px;
     overflow: hidden;
 
 }
+
+
 
 .discoveryBg{
     width: 110%;
@@ -267,6 +270,15 @@ background: rgba(0,0,0,0.77);
 color: #fff;
 padding:3%;
 
+}
+.powerbar{
+  width: 0;
+  height:3px;
+  background: red;
+}
+
+.followed{
+  background: #c4c4c4;
 }
 
 /*Carousel Styles*/
