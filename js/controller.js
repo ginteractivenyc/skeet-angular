@@ -1195,7 +1195,7 @@ if (soundcloudOn === "on"){
   }
 }).controller('discoveryCtrl', function($scope,$location, $routeParams,skeetAppFactory){
 
-angular.element('#discoverynav').show();
+angular.element('.globalHeader, #discoverynav').show();
   //get All Followers
 skeetAppFactory.getFollower().success(function(success){
   console.log(success.results.length)
@@ -1261,7 +1261,7 @@ for(var i =0;  i < $scope.allusers.length; i++){
 }).controller('followersCtrl', function($scope,$location, $routeParams,skeetAppFactory){
 
 //get Followers
-angular.element('.discoveryglyph').show();
+angular.element('.globalHeader, .discoveryglyph').show();
 angular.element('.followersCount').hide();
 angular.element('#followBtn').hide();
 angular.element("#loggedUser").html($routeParams.nameHolder);
