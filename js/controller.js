@@ -111,8 +111,32 @@ var skeetUser = {
         console.log(error)
       });
 
+//get Followers
 
+    var getFollowFrom = $('#loggedUser').text().toString();
 
+    skeetAppFactory.getFollower({
+      where: {
+        artist: getFollowFrom
+      }
+    }).success(function(success) {
+
+     
+      for(var i = 0; i < success.results.length; i++){
+         console.log(success.results[i])
+      if (success.results[i].follower === localStorage.getItem("skeetUser")){
+       
+        angular.element('#followBtn').addClass('followed');
+        angular.element('#followBtn').html("followed");
+        angular.element('#followBtn').unbind();
+
+      }
+    }
+      var followCount = success.results.length;
+      angular.element('#followcount').html(followCount);
+    }).error(function(error) {
+
+    });
 function storeSoundCloudUser(){
 SC.connect(function(){
       SC.get("/me", function(me){
@@ -423,6 +447,7 @@ console.log(error)
 
 }).controller('userViewCtrl', function( $scope, $location, $http, $routeParams, skeetAppFactory){
    // get Music Items
+   angular.element('.globalHeader, #discoverynav').show();
   $('#loggedUser').html($routeParams.nameHolder);
 angular.element('.followersCount, .discoveryglyph').show();
 angular.element('#followBtn').show();
