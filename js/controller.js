@@ -445,7 +445,7 @@ console.log(error)
   }
 
 
-}).controller('userViewCtrl', function( $scope, $location, $http, $routeParams, skeetAppFactory){
+}).controller('userViewCtrl', function( $scope, $location, $http, $routeParams, skeetAppFactory, $rootScope){
    // get Music Items
    angular.element('.globalHeader, #discoverynav').show();
   $('#loggedUser').html($routeParams.nameHolder);
@@ -465,22 +465,10 @@ angular.element('#followBtn').removeClass('followed');
     }
   }).success(function(success){
       console.log(success)
+      $scope.homeMusic = success.results;
 
-      for(var i = 0; i < success.results.length; i++){
 
-      var soundcloudId = success.results[i].sourceid
-      $http({
-        method: 'GET',
-        url: 'https://api.soundcloud.com/users/' + soundcloudId +'/tracks.json?client_id=0f993f2250c9e82a24acc020437d5da9'
-      }).success(function(data) {
-        // With the data succesfully returned, call our callback
-        //console.log(data)
-        $scope.homeMusic = data;
 
-      }).error(function() {
-        alert("error");
-      });
-    }
 
 
   });

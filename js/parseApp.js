@@ -147,3 +147,72 @@ skeetApp.directive('goDiscovery', ['$location',  function(location){
 }]);
 
 
+
+skeetApp.directive('soundcloudItems', ['$http', function($http) {
+  return {
+    restrict: 'E',
+    scope: {
+      // creates a scope variable in your directive
+      // called `locations` bound to whatever was passed
+      // in via the `locations` attribute in the DOM
+      soundcloudname: '='
+    },    
+    template: '<ul rn-carousel rn-carousel-controls  rn-carousel-duration="300" class="image carouselholder"> <li ng-repeat="data in homeMusicItems" class="square" data-url="{{data.id}}" ng-click="trackOpen()"><div class="squareThumb"><img ng-src="{{data.artwork_url | artworkCheck}}"></div><div class="itemTitle">{{data.title}}</div></li></ul>',
+
+    link: function(scope, element, attrs) {
+
+       var soundcloudId = scope.$parent.music.sourceid
+
+      $http({
+        method: 'GET',
+        url: 'https://api.soundcloud.com/users/' + soundcloudId +'/tracks.json?client_id=0f993f2250c9e82a24acc020437d5da9'
+      }).success(function(data) {
+        // With the data succesfully returned, call our callback
+
+        scope.homeMusicItems = data;
+
+
+      }).error(function() {
+        alert("error");
+      });      
+          // do something
+      
+    
+    }
+  };
+}]);
+
+/*skeetApp.directive("soundcloudItems", function () {
+        return {
+            restrict: 'EA',
+            scope: false,
+            template: '<ul rn-carousel rn-carousel-controls  rn-carousel-duration="300" class="image carouselholder"> <li ng-repeat="data in homeMusicItems" class="square" data-url="{{data.id}}" ng-click="trackOpen()"><div class="squareThumb"><img ng-src="{{data.artwork_url | artworkCheck}}"></div><div class="itemTitle">{{data.title}}</div></li></ul>'
+              
+        };
+    });
+
+/*
+skeetApp.directive('soundCloud', function() {
+    return {
+        restrict: 'E',
+        link: function(scope, elm, attrs) {
+            scope.$on('handleBroadcast', function() {
+                scope.homeMusic = [];
+            });                     
+        }
+    };
+});
+
+
+
+
+skeetApp.directive('soundCloudItems', function() {
+    return {
+        restrict: 'E',
+        link: function(scope, elm, attrs) {
+            scope.$on('handleBroadcastItems', function() {
+                scope.homeMusicItems = [];
+            });                     
+        }
+    };
+});*/
