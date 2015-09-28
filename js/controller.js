@@ -455,54 +455,20 @@ angular.element('#followBtn').removeClass('followed');
 
   
   var parseServiceGet = function() {
+  
 
-      skeetAppFactory.getParseUser({
-        where: {
-          username: $routeParams.nameHolder
-        }
-      }).success(function(success) {
+//get SoundCLouds
+  skeetAppFactory.getSoundcloudUser({
+    where:{
+      endpointname: "soundcloud",
+      username: "bklynstickup"
+    }
+  }).success(function(success){
+      console.log(success)
 
-       //$scope.homeMusic = data;
-        console.log(success.results[0])
-        var soundcloudId = success.results[0].soundcloud;
-         var soundcloudOn = success.results[0].soundcloudOn;
-       
-        var youtubeId = success.results[0].youtube;
-         var youtubeOn = success.results[0].youtubeOn;
-        var instagramId = success.results[0].instagram; 
-         var instagramOn = success.results[0].instagramOn;
+      for(var i = 0; i < success.results.length; i++){
 
-
-        var twittername = success.results[0].twittername;       
-     
-        if (success.results[0].profileimage === undefined){
-          $scope.profileImage = 'http://placehold.it/640x360'
-        } else{
-           $scope.profileImage = success.results[0].profileimage;
-        }
-
-
-      if (twittername === undefined) {
-
-      } else {
-
-        twttr.widgets.load();
-
-        twttr.widgets.createTimeline('253171957271498752',
-          document.getElementById('timeline'), {
-            width: '450',
-            height: '700',
-            screenName: twittername
-          }).then(function(el) {
-          console.log("Embedded a timeline.")
-        });
-
-
-      }
-
-//get music 
-if (soundcloudOn === "on"){
-
+      var soundcloudId = success.results[i].sourceid
       $http({
         method: 'GET',
         url: 'https://api.soundcloud.com/users/' + soundcloudId +'/tracks.json?client_id=0f993f2250c9e82a24acc020437d5da9'
@@ -511,50 +477,15 @@ if (soundcloudOn === "on"){
         //console.log(data)
         $scope.homeMusic = data;
 
-
       }).error(function() {
         alert("error");
       });
     }
-      //get videos
-      if (youtubeOn === "on") {
-        $http({
-          method: 'GET',
-          url: 'https://www.googleapis.com/youtube/v3/playlistItems?part=snippet&maxResults=50&playlistId=' + youtubeId.toString() + '&key=AIzaSyBZGeefjprHm8Zq6DkblpvNV0eQ65l2E84'
-        }).success(function(data) {
-          console.log(data)
-          // With the data succesfully returned, call our callback
-          $scope.homeVideo = data.items;
-         //getInstagram();
-          $('.rn-carousel-controls').each(function(){
-              $(this).insertAfter($(this).parent('ul.carouselholder'));
-          });
-
-        }).error(function() {
-          //alert("error");
-        });
-
-      }
-
-      if (instagramOn === "on") {
-
-        $http.jsonp('https://api.instagram.com/v1/users/' + instagramId + '/media/recent?count=5&client_id=7380072fbc2f438994b747e10485357f&callback=JSON_CALLBACK').success(function(data) {
-          // With the data succesfully returned, call our callback
-          console.log(data)
-          $scope.homeIg = data.data;
-        }).error(function() {
-          // alert("error");
-        });
- 
 
 
-      }
+  });
 
 
-      }).error(function(error){
-          console.log(error)
-      });
-  
 //get Followers
 
     var getFollowFrom = $('#loggedUser').text().toString();
