@@ -15,12 +15,16 @@
 	</ul>-->
 </div>
 
-<div ng-repeat="music in homeMusic" soundcloudname="{{music.sourceid}}">
+	
 <div class="carouselWrapperOuter">
 <div class="carouselWrapper">
 	<h3>Music</h3>
-<soundcloud-items></soundcloud-items>
-</div>
+	<ul rn-carousel rn-carousel-controls  rn-carousel-duration="300" class="image carouselholder">
+		<li ng-repeat="music in homeMusic" class="square" data-url="{{music.id}}" ng-click="trackOpen()">
+			<div class="squareThumb"><img ng-src="{{music.artwork_url | artworkCheck}}"></div>
+			<div class="itemTitle">{{music.title}}</div>
+		</li>
+	</ul>
 </div>
 </div>
 
