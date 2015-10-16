@@ -1,58 +1,61 @@
-<div class="skeetWrapper">
+<div class="container-fluid">
+<div id="loggedInPage">
 
-<form id="uploadPhoto" runat="server">
-    <label for="imgInp">Select Profile Image</label>
+	<div class="row">
 
-    <img id="profilePlaceholder" src="http://placehold.it/640x360" alt="your image" />
-    <input type='file' id="imgInp" />   
-</form>
+     <div class="discoveryBuckets col-md-8"  ng-click="openUser()" >
+     	<img class="discoveryBg" ng-src="{{loggedIn.profileimage}}" />
+     	<div class="discoveryBucketsOverlay">
+     		{{loggedIn.username}}
+     		<div class="activeWrapper">
+     			<div ng-if="loggedIn.soundcloudOn == 'on' " class="activeEndpPoints"><img  ng-src="img/soundcloud.png"/></div>
+     			<div ng-if="loggedIn.youtubeOn == 'on' " class="activeEndpPoints"><img ng-src="img/youtube-active.png"/></div>
+     			<div ng-if="loggedIn.instagramOn == 'on' " class="activeEndpPoints"><img  ng-src="img/igicon.png"/></div>
 
-<div class="contentOptionsWrapper">
-  <ul id="contentOptions">
-   <li class="soundcloudSwitch">
-   	<img ng-click="scLogin()" src="img/soundcloud.png">
-	<input type="checkbox"  class="switcher"  name="soundcloud-checkbox" checked />
-   </li>
-   <li class="youtubeSwitch">
-   	<img ng-click="ytLogin()" src="img/YouTube-logo-full_color.png">
-	<input type="checkbox"  class="switcher"  name="youtube-checkbox" checked />   	
-   </li>
-<li class="instagramSwitch">
-   	<img ng-click="igLogin()" src="img/igicon.png">
-    <input type="checkbox" class="switcher"  name="instagram-checkbox" checked />  
-   </li>
-   <!--
-   <li>
-    <img ng-click="twLogin()" src="img/twicon.png">
-    <input type="checkbox" class="switcher"  name="twitter-checkbox" checked />  
+     		</div>
 
+     	</div>
 
+     </div>
 
-      <div class="modal fade" id="twModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-          <div class="modal-content">
-            <div class="modal-header">
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-              <h4 class="modal-title" id="myModalLabel">Enter a Twitter User</h4>
-            </div>
-            <div class="modal-body">
-              <div class="form-group">
-              <input id="twitterInput" type="text" class="form-control" />
-            </div>
-           <button type="button" class="btn btn-primary" id="twSubmit" ng-click="twSubmit()">Create Timeline</button>
-
-            </div>
+<div class="col-md-4">
+     <div class="row">
+          <div  class="newestuser col-sm-12"  ng-click="openUser()" >
+               <img class="discoveryBg" ng-src="{{loggedIn.profileimage}}" />
+               <div class="discoveryBucketsOverlay">
+                    {{loggedIn.username}}
+                    <div class="activeWrapper">
+                         <div ng-if="loggedIn.soundcloudOn == 'on' " class="activeEndpPoints"><img  ng-src="img/soundcloud.png"/></div>
+                         <div ng-if="loggedIn.youtubeOn == 'on' " class="activeEndpPoints"><img ng-src="img/youtube-active.png"/></div>
+                         <div ng-if="loggedIn.instagramOn == 'on' " class="activeEndpPoints"><img  ng-src="img/igicon.png"/></div>
+                    </div>
+               </div>
 
 
-          </div>
-        </div>
-      </div>
+          </div> 
+           <div class="newestuser col-sm-12"  ng-click="openUser()" >
+               <img class="discoveryBg" ng-src="{{loggedIn.profileimage}}" />
+               <div class="discoveryBucketsOverlay">
+                    {{loggedIn.username}}
+                    <div class="activeWrapper">
+                         <div ng-if="loggedIn.soundcloudOn == 'on' " class="activeEndpPoints"><img  ng-src="img/soundcloud.png"/></div>
+                         <div ng-if="loggedIn.youtubeOn == 'on' " class="activeEndpPoints"><img ng-src="img/youtube-active.png"/></div>
+                         <div ng-if="loggedIn.instagramOn == 'on' " class="activeEndpPoints"><img  ng-src="img/igicon.png"/></div>
+                    </div>
+               </div>
 
 
-   </li>-->
-  </ul>
+          </div>          
+     </div>
+                    
+                    
+
 </div>
 
 
-<div id="profile"></div>
+
+
+</div>
+
+</div>
 </div>

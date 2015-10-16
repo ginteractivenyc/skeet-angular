@@ -28,7 +28,7 @@ var skeetUser = {
             skeetUserId.push(success.objectId)
       $('#skeetLogin').fadeOut();
 
-      $window.location = '#/' + $scope.nameHolder + '/loggedin';
+      $window.location = '#/' + $scope.nameHolder + '/home';
 
     }).error(function(error) {
       console.log(error)
@@ -50,7 +50,7 @@ var skeetUser = {
         $('#loginModal').modal('hide')
         $('body').removeClass('modal-open');
         $('.modal-backdrop').remove();
-        $window.location = '#/' + $scope.nameHolder + '/loggedin';
+        $window.location = '#/' + $scope.nameHolder + '/home';
 
         // initiate auth popup
         // return false;    // Do stuff after successful login.
@@ -81,7 +81,7 @@ var skeetUser = {
         $('#loginModal').modal('hide')
         $('body').removeClass('modal-open');
         $('.modal-backdrop').remove();
-      $window.location = '#/' + userName + '/loggedin';
+      $window.location = '#/' + userName + '/home';
 
     }).error(function(error) {
       console.log(error)
@@ -90,9 +90,20 @@ var skeetUser = {
 
 
   }
+}).controller('loggedInCtrl', function($scope, $location, $window, $routeParams, skeetAppFactory){
 
 
-}).controller('loggedinCtrl', function($scope, $location, $window, $routeParams, skeetAppFactory){
+    var objectid = localStorage.getItem("objectid");
+
+      skeetAppFactory.getIGUser(objectid).success(function(success) {
+        console.log(success);
+        $scope.loggedIn = success;
+      }).error(function(error) {
+        console.log(error)
+      });
+
+
+}).controller('userHomeCtrl', function($scope, $location, $window, $routeParams, skeetAppFactory){
   angular.element('.globalHeader').show();
           $('#loggedUser').html($routeParams.nameHolder);
 

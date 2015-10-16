@@ -5,6 +5,10 @@ html, body{
 
 } 
 
+img{
+  width:100%;
+}
+
 h2{
   color: #ffffff;
   margin-top: 10px;
@@ -246,7 +250,6 @@ margin-bottom: 6px;
 
 }
 .discoveryBuckets{
-    height: 200px;
     position: relative;
     overflow: hidden;
     -webkit-transition: all 350ms ease;
@@ -254,6 +257,7 @@ margin-bottom: 6px;
 -ms-transition: all 350ms ease;
 -o-transition: all 350ms ease;
 transition: all 350ms ease;
+padding:0;
 
 }
 
@@ -262,12 +266,7 @@ transition: all 350ms ease;
   cursor: pointer;
 }
 
-.discoveryBg{
-    width: 110%;
-    position: absolute;
-    left:0;
-    top:-20px;
-}
+
 #discoverynav{
   display: none;
   float:left;
@@ -446,6 +445,14 @@ ul.trackList li {
 display:none;
 }
 
+
+
+#loggedInPage{
+  max-width:960px;
+  margin: 50px auto 0;
+}
+
+
 }
 
 @media only screen and (min-width : 640px){
@@ -524,6 +531,10 @@ margin-top: 20px;
 display:block;
 }
 
+.discoveryBuckets{
+  height:300px;
+}
+
 }
 
 
@@ -578,6 +589,19 @@ left: -2%;
 .rectWrapper  .rn-carousel-control.rn-carousel-control-prev , .rectWrapper  .rn-carousel-control.rn-carousel-control-next{
 	top:40%;
 }
+
+
+
+.discoveryBuckets{
+  height:350px;
+}
+.newestuser{
+    height: 175px;
+    position: relative;
+    overflow: hidden;
+    padding:0;
+}
+
 
 
 }

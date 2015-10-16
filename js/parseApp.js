@@ -21,9 +21,12 @@ skeetApp.config(['$routeProvider', function($routeProvider) {
     }).when('/discovery',{
       templateUrl: 'views/discovery.html',
       controller:'discoveryCtrl'      
+    }).when('/:nameHolder/home',{
+      templateUrl: 'views/home.html',
+      controller:'userHomeCtrl'
     }).when('/:nameHolder/loggedin',{
       templateUrl: 'views/loggedin.html',
-      controller:'loggedinCtrl'
+      controller:'loggedInCtrl'
     }).when('/:nameHolder', {
       templateUrl: 'views/userpage.html',
       controller: 'userViewCtrl'

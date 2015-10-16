@@ -1,74 +1,58 @@
-<div class="carouselWrapperOuter">
-<div class="carouselWrapper">
-	<h3>Music</h3>
-	<ul rn-carousel rn-carousel-controls  rn-carousel-duration="300" class="image">
-		<li ng-repeat="music in homeMusic" class="square" data-url="{{music.id}}" ng-click="musicClick()">
-			<div class="squareThumb"><img ng-src="{{music.artwork_url | artworkCheck}}"></div>
-			<div class="itemTitle">{{music.title}}</div>
-		</li>
-	</ul>
-</div>
-</div>
+<div class="skeetWrapper">
 
-<div class="carouselWrapperOuter">
-<div class="carouselWrapper rectWrapper">
-	<h3>Video</h3>
-	<ul rn-carousel rn-carousel-controls  rn-carousel-duration="300" class="image">
-		<li ng-repeat="video in homeVideo" class="rectangle" data-url="{{video['media$group']['yt$videoid']['$t']}}">
-			<div class="rectangleThumb"><img ng-src="http://img.youtube.com/vi/{{video['media$group']['yt$videoid']['$t']}}/maxresdefault.jpg"></div>
-			<div class="itemTitle-rectangle">{{video["media$group"]["media$title"]["$t"]}}</div>
+<form id="uploadPhoto" runat="server">
+    <label for="imgInp">Select Profile Image</label>
 
-		</li>
-	</ul>
-</div>
-</div>
+    <img id="profilePlaceholder" src="http://placehold.it/640x360" alt="your image" />
+    <input type='file' id="imgInp" />   
+</form>
 
-<div class="carouselWrapperOuter">
-<div class="carouselWrapper">
-	<h3>Instagram</h3>
-	<ul rn-carousel rn-carousel-controls  rn-carousel-duration="300" class="image">
-		<li ng-repeat="item in homeIg" class="square" data-url="{{item.link}}">
-			<div class="squareThumb"><img ng-src="{{item.images.standard_resolution.url}}"></div>
-			<div class="itemTitle">#{{item.tags[0]}}</div>
-
-		</li>
-	</ul>
-</div>
-</div>
+<div class="contentOptionsWrapper">
+  <ul id="contentOptions">
+   <li class="soundcloudSwitch">
+   	<img ng-click="scLogin()" src="img/soundcloud.png">
+	<input type="checkbox"  class="switcher"  name="soundcloud-checkbox" checked />
+   </li>
+   <li class="youtubeSwitch">
+   	<img ng-click="ytLogin()" src="img/YouTube-logo-full_color.png">
+	<input type="checkbox"  class="switcher"  name="youtube-checkbox" checked />   	
+   </li>
+<li class="instagramSwitch">
+   	<img ng-click="igLogin()" src="img/igicon.png">
+    <input type="checkbox" class="switcher"  name="instagram-checkbox" checked />  
+   </li>
+   <!--
+   <li>
+    <img ng-click="twLogin()" src="img/twicon.png">
+    <input type="checkbox" class="switcher"  name="twitter-checkbox" checked />  
 
 
-<div class="carouselWrapperOuter">
-<div class="carouselWrapper">
-	<h3>Merch</h3>
-	<ul rn-carousel rn-carousel-controls  rn-carousel-duration="300" class="image">
-		<li ng-repeat="item in homeMerch" class="square">
-			<div class="squareThumb"><img ng-src="{{item.images[0].url}}"></div>
-			<div class="itemTitle">#{{item.name}}</div>
 
-		</li>
-	</ul>
-</div>
-</div>
+      <div class="modal fade" id="twModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+              <h4 class="modal-title" id="myModalLabel">Enter a Twitter User</h4>
+            </div>
+            <div class="modal-body">
+              <div class="form-group">
+              <input id="twitterInput" type="text" class="form-control" />
+            </div>
+           <button type="button" class="btn btn-primary" id="twSubmit" ng-click="twSubmit()">Create Timeline</button>
+
+            </div>
 
 
-<div class="carouselWrapperOuter">
-<div class="carouselWrapper">
-	<h3>News</h3>
-	<ul rn-carousel rn-carousel-controls  rn-carousel-duration="300" class="image">
-		<li ng-repeat="item in homeNewsImg" class="square">
-			<div class="squareThumb"><img ng-src="{{item}}"></div>
-			<div class="itemTitle">{{newsTitle[$index].title}}</div>
+          </div>
+        </div>
+      </div>
 
-		</li>
-	</ul>
-</div>
+
+   </li>-->
+  </ul>
 </div>
 
-  <!-- <div style="height: 305px;">
-   <carousel interval="myInterval">
-      <slide active="slide.active">
-    <div class="squareThumb" ng-repeat="music in homeMusic" ><img ng-src="{{music.artwork_url | artworkCheck}}"></div>
 
-      </slide>
-    </carousel>
-</div>-->
+<div id="profile"></div>
+</div>
