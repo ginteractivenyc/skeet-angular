@@ -1,26 +1,9 @@
 <div class="container-fluid">
 <div id="loggedInPage">
 
-	<div class="row">
-
-     <div class="discoveryBuckets col-md-8"  ng-click="openUser()" >
-     	<img class="discoveryBg" ng-src="{{loggedIn.profileimage}}" />
-     	<div class="discoveryBucketsOverlay">
-     		{{loggedIn.username}}
-     		<div class="activeWrapper">
-     			<div ng-if="loggedIn.soundcloudOn == 'on' " class="activeEndpPoints"><img  ng-src="img/soundcloud.png"/></div>
-     			<div ng-if="loggedIn.youtubeOn == 'on' " class="activeEndpPoints"><img ng-src="img/youtube-active.png"/></div>
-     			<div ng-if="loggedIn.instagramOn == 'on' " class="activeEndpPoints"><img  ng-src="img/igicon.png"/></div>
-
-     		</div>
-
-     	</div>
-
-     </div>
-
-<div class="col-md-4">
-     <div class="row">
-          <div  class="newestuser col-sm-12"  ng-click="openUser()" >
+<div class="row">
+     <div class="col-xs-8"  ng-click="openUser()" >
+          <div class="discoveryBuckets">
                <img class="discoveryBg" ng-src="{{loggedIn.profileimage}}" />
                <div class="discoveryBucketsOverlay">
                     {{loggedIn.username}}
@@ -30,32 +13,64 @@
                          <div ng-if="loggedIn.instagramOn == 'on' " class="activeEndpPoints"><img  ng-src="img/igicon.png"/></div>
                     </div>
                </div>
-
-
-          </div> 
-           <div class="newestuser col-sm-12"  ng-click="openUser()" >
-               <img class="discoveryBg" ng-src="{{loggedIn.profileimage}}" />
-               <div class="discoveryBucketsOverlay">
-                    {{loggedIn.username}}
-                    <div class="activeWrapper">
-                         <div ng-if="loggedIn.soundcloudOn == 'on' " class="activeEndpPoints"><img  ng-src="img/soundcloud.png"/></div>
-                         <div ng-if="loggedIn.youtubeOn == 'on' " class="activeEndpPoints"><img ng-src="img/youtube-active.png"/></div>
-                         <div ng-if="loggedIn.instagramOn == 'on' " class="activeEndpPoints"><img  ng-src="img/igicon.png"/></div>
+          </div>
+     </div>
+     <div class="col-xs-4 nopad">
+               <div  class="col-sm-12"  ng-click="openUser()" >
+                    <div class="newestuser">
+                         <img class="discoveryBg" ng-src="{{loggedIn.profileimage}}" />
+                         <div class="discoveryBucketsOverlay">
+                              {{loggedIn.username}}
+                              <div class="activeWrapper">
+                                   <div ng-if="loggedIn.soundcloudOn == 'on' " class="activeEndpPoints"><img  ng-src="img/soundcloud.png"/></div>
+                                   <div ng-if="loggedIn.youtubeOn == 'on' " class="activeEndpPoints"><img ng-src="img/youtube-active.png"/></div>
+                                   <div ng-if="loggedIn.instagramOn == 'on' " class="activeEndpPoints"><img  ng-src="img/igicon.png"/></div>
+                              </div>
+                         </div>
                     </div>
                </div>
 
-
-          </div>          
+               <div  class="col-sm-12"  ng-click="openUser()" >
+                    <div class="newestuser">
+                         <img class="discoveryBg" ng-src="{{loggedIn.profileimage}}" />
+                         <div class="discoveryBucketsOverlay">
+                              {{loggedIn.username}}
+                              <div class="activeWrapper">
+                                   <div ng-if="loggedIn.soundcloudOn == 'on' " class="activeEndpPoints"><img  ng-src="img/soundcloud.png"/></div>
+                                   <div ng-if="loggedIn.youtubeOn == 'on' " class="activeEndpPoints"><img ng-src="img/youtube-active.png"/></div>
+                                   <div ng-if="loggedIn.instagramOn == 'on' " class="activeEndpPoints"><img  ng-src="img/igicon.png"/></div>
+                              </div>
+                         </div>
+                    </div>
+               </div>
+          
+          
+          
      </div>
-                    
-                    
-
 </div>
 
+<!--follow view-->
 
+<div class="row">
+     <div class="col-sm-12"> <h3>FOLLOWING</h3></div>
+     
+          <div ng-repeat="users in following" class="col-xs-4"  ng-click="openUser()" >
+               <div class="newestuser">
+                    <img class="discoveryBg" ng-src="{{users.profileimage}}" />
+                    <div class="discoveryBucketsOverlay">
+                         {{users.artist}}
+                         <div class="activeWrapper">
+                              <div ng-if="loggedIn.soundcloudOn == 'on' " class="activeEndpPoints"><img  ng-src="img/soundcloud.png"/></div>
+                              <div ng-if="loggedIn.youtubeOn == 'on' " class="activeEndpPoints"><img ng-src="img/youtube-active.png"/></div>
+                              <div ng-if="loggedIn.instagramOn == 'on' " class="activeEndpPoints"><img  ng-src="img/igicon.png"/></div>
+                         </div>
+                    </div>
+               </div>
+          </div>
+          
 
+          
 
 </div>
-
 </div>
 </div>

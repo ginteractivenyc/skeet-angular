@@ -103,6 +103,19 @@ var skeetUser = {
       });
 
 
+      //get following
+      var getFollowing = localStorage.getItem('skeetUser');
+    skeetAppFactory.getFollower({
+      where: {
+        follower: getFollowing
+      }
+    }).success(function(success) {
+      console.log(success)
+      $scope.following = success.results;
+    }).error(function(error){
+      console.log(error)
+    });
+
 }).controller('userHomeCtrl', function($scope, $location, $window, $routeParams, skeetAppFactory){
   angular.element('.globalHeader').show();
           $('#loggedUser').html($routeParams.nameHolder);

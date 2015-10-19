@@ -2,6 +2,7 @@ html, body{
   margin:0;
       font-family: 'Raleway', sans-serif;
       font-weight: 200;
+      background:#181818;
 
 } 
 
@@ -23,6 +24,18 @@ h3{
   font-weight: 300;
   letter-spacing: -1px;
   margin:0;
+  text-align: center;
+  color:#fff;
+}
+
+ div[class^="col"]{padding:5px;}
+
+.nopad{
+  padding:0!important;
+}
+
+.margintop{
+  margin-top:10px;
 }
 
 
@@ -257,7 +270,7 @@ margin-bottom: 6px;
 -ms-transition: all 350ms ease;
 -o-transition: all 350ms ease;
 transition: all 350ms ease;
-padding:0;
+
 
 }
 
@@ -452,7 +465,13 @@ display:none;
   margin: 50px auto 0;
 }
 
-
+.newestuser{
+    position: relative;
+    overflow: hidden;
+    padding:0;
+    /*margin-left: 10px;*/
+   /* margin-bottom: 10px;*/
+}
 }
 
 @media only screen and (min-width : 640px){
@@ -532,8 +551,14 @@ display:block;
 }
 
 .discoveryBuckets{
-  height:300px;
+  /*height:300px;*/
 }
+
+}
+
+
+
+@media only screen and (min-width: 768px){
 
 }
 
@@ -593,15 +618,15 @@ left: -2%;
 
 
 .discoveryBuckets{
-  height:350px;
+ /* height:350px;*/
 }
 .newestuser{
-    height: 175px;
-    position: relative;
-    overflow: hidden;
-    padding:0;
+   /* height: 175px;*/
+
+}
+
+
+
 }
 
 
-
-}

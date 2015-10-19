@@ -75,10 +75,19 @@ skeetApp.factory('skeetAppFactory', [ '$rootScope', '$http', function($rootScope
       method: 'GET',
       url: urlBase + '/1/classes/followers/' ,
       headers: {'X-Parse-Application-Id':'tzlVexuKShRsUHAGSV30qJYz28953tIOPSs0dl3z', 'X-Parse-REST-API-Key':'tY4eHyUnom4FZC9xAypgXsquEauGFQErvqx2YZZQ', "Content-Type": "application/json"},
-       params: getFollowers
+      params: getFollowers
     })
   }
 
+
+  skeetAppFactory.getFollowing = function(getFollowing){
+    return $http({
+      method: 'GET',
+      url: urlBase + '/1/classes/followers/' ,
+      headers: {'X-Parse-Application-Id':'tzlVexuKShRsUHAGSV30qJYz28953tIOPSs0dl3z', 'X-Parse-REST-API-Key':'tY4eHyUnom4FZC9xAypgXsquEauGFQErvqx2YZZQ', "Content-Type": "application/json"},
+      params: getFollowing
+    })
+  }
 
 //POST
 
@@ -115,7 +124,6 @@ skeetApp.factory('skeetAppFactory', [ '$rootScope', '$http', function($rootScope
   }
 
 
-
   skeetAppFactory.storeSoundcloudUser = function(objectid, soundcloudUser, sessionToken){
     return $http({
       method: 'PUT',
@@ -124,7 +132,6 @@ skeetApp.factory('skeetAppFactory', [ '$rootScope', '$http', function($rootScope
       headers: {'X-Parse-Application-Id':'tzlVexuKShRsUHAGSV30qJYz28953tIOPSs0dl3z', 'X-Parse-REST-API-Key':'tY4eHyUnom4FZC9xAypgXsquEauGFQErvqx2YZZQ', "Content-Type": "application/json", "X-Parse-Session-Token" : sessionToken}
     })
   }
-
 
 
 
